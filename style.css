@@ -4,179 +4,151 @@
   box-sizing: border-box;
 }
 .nav-menu-btn i {
-  color: inherit !important; /* पैरेंट बटन का ग्रे या वाइट कलर अपने आप पकड़ लेगा */
+  color: inherit !important;  
   display: inline-flex;
   align-items: center;
 }
-/* ==========================================================================
-   🚀 मेहेर का स्पेशल जॉब गेटवे बटन्स डिज़ाइन सिस्टम (100% फिक्स)
-   ========================================================================== */
-
-/* दोनों बटनों को आमने-सामने रखने वाला मास्टर रो डिब्बा */
+ 
+ 
  
 
-/* 🔮 मेहेर का यूनिवर्सल नवबार एक्टिव टैब कंट्रोलर */
-/* .dashboard-master-navbar .nav-menu-links-center-row a.nav-menu-btn.active-tab { */
-  /* background-color: rgba(99, 102, 241, 0.12) !important; /* चमकीला पारदर्शी पर्पल बैकग्राउंड */
-  /* color: #ffffff !important;                              /* बिल्कुल प्योर वाइट टेक्स्ट */
-  /* border: 1px solid rgba(99, 102, 241, 0.35) !important;  /* थिन पर्पल नियॉन बॉर्डर लाइन */
-  /* box-shadow: 0 0 15px rgba(99, 102, 241, 0.25) !important; /* सुंदर सा नियॉन औरा ग्लो */
-  /* padding: 8px 16px !important;                           /* परफेक्ट पैडिंग साइज */
-  /* border-radius: 6px !important;                          स्मूथ कोने */ */ */
+ 
 /* }  */
 
-/* एक्टिव टैब होने पर उसके अंदर का आइकॉन भी सफ़ेद चमकेगा */
-/* .dashboard-master-navbar .nav-menu-links-center-row a.nav-menu-btn.active-tab .nav-icon {
-  color: #ffffff !important;
-} */
-/* ==========================================================================
-   🔮 मेहेर का यूनिवर्सल नवबार एक्टिव टैब कंट्रोलर (100% फ़िक्स)
-   ========================================================================== */
+
 .nav-menu-btn.active-tab {
-  background-color: rgba(99, 102, 241, 0.12) !important;   /* प्यारा पारदर्शी पर्पल ग्लास बॉक्स */
-  color: #ffffff !important;                                /* हाई-कॉन्ट्रैस्ट सफ़ेद टेक्स्ट */
-  border: 1px solid rgba(99, 102, 241, 0.35) !important;    /* चमकीली पतली पर्पल नियॉन बॉर्डर */
-  box-shadow: 0 0 15px rgba(99, 102, 241, 0.25) !important;  /* हल्का सा नियॉन औरा ग्लो */
-  padding: 8px 16px !important;                             /* परफेक्ट समान पैडिंग */
-  border-radius: 6px !important;                            /* कोनों का सुंदर घुमाव */
-  display: flex !important;                                 /* फ्लेक्स लेआउट को चालू रखना */
+  background-color: rgba(99, 102, 241, 0.12) !important;    
+  color: #ffffff !important;                                 
+  border: 1px solid rgba(99, 102, 241, 0.35) !important;     
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.25) !important;  
+  padding: 8px 16px !important;                              
+  border-radius: 6px !important;                             
+  display: flex !important;                                 
   align-items: center !important;
 }
 
-/* एक्टिव टैब होने पर उसके अंदर का आइकॉन भी सफ़ेद चमकेगा */
+ 
 .nav-menu-btn.active-tab .nav-icon {
   color: #ffffff !important;
 }
-/* ==========================================================================
-   🚀 मेहेर का स्पेशल जॉब गेटवे बटन्स डिज़ाइन सिस्टम (100% फिक्स)
-   ========================================================================== */
-
-/* दोनों बटनों को आमने-सामने रखने वाला मास्टर रो डिब्बा */
+ 
 .dual-gateway-action-button-row {
   display: flex !important;
   flex-direction: row !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: 20px !important;            /* दोनों बटनों के बीच का परफेक्ट फासला */
+  gap: 20px !important;            
   width: 100% !important;
   margin-top: 35px !important;
 }
-
-/* 🟣 OPTION A: चूज़ अ जॉब ट्रैक (बैंगनी बटन) */
+ 
 .state1-choose-track-btn {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 10px !important;
-  background-color: #6366f1 !important; /* इलेक्ट्रिक पर्पल */
-  color: #ffffff !important;
+  background-color: #6366f1 !important;  
   border: none !important;
   font-family: 'Plus Jakarta Sans', sans-serif !important;
   font-weight: 700 !important;
-  font-size: 14.5px !important;        /* लिखावट का यूनिफॉर्म साइज */
-  padding: 14px 32px !important;       /* शानदार ब्रीदिंग स्पेस */
-  border-radius: 100px !important;     /* परफेक्ट कैप्सूल घुमाव */
+  font-size: 14.5px !important;        
+  padding: 14px 32px !important;       
+  border-radius: 100px !important;    
   cursor: pointer !important;
   box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3) !important;
   transition: all 0.25s ease-in-out !important;
 }
 
-/* माउस ले जाने पर बैंगनी बटन थोड़ा और ब्राइट होगा */
+ 
 .state1-choose-track-btn:hover {
   background-color: #4f46e5 !important;
   box-shadow: 0 0 25px rgba(99, 102, 241, 0.5) !important;
   transform: translateY(-1px) !important;
 }
-
-/* 🟢 OPTION B: वेरीफाई एंड इम्प्रूव स्किल्स (चमकीला ग्रीन नियॉन बटन) */
+ 
 .gateway-improve-skills-btn {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 10px !important;
-  background-color: transparent !important; /* 🛑 फिक्स: वाइट बैकग्राउंड हटाकर पारदर्शी किया */
-  color: #10b981 !important;               /* चमकीला एमेरल्ड ग्रीन टेक्स्ट */
-  border: 1px solid rgba(16, 185, 129, 0.4) !important; /* नियॉन ग्रीन बॉर्डर */
+  background-color: transparent !important;  
+  color: #10b981 !important;               
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;  
   font-family: 'Plus Jakarta Sans', sans-serif !important;
   font-weight: 700 !important;
-  font-size: 14.5px !important;        /* बैंगनी बटन के बिल्कुल बराबर साइज */
-  padding: 14px 32px !important;       /* बराबर पैडिंग */
-  border-radius: 100px !important;     /* समान कैप्सूल आकार */
+  font-size: 14.5px !important;        
+  padding: 14px 32px !important;      
+  border-radius: 100px !important;      
   cursor: pointer !important;
   box-shadow: 0 4px 15px rgba(16, 185, 129, 0.05) !important;
   transition: all 0.25s ease-in-out !important;
 }
 
-/* 🔥 माउस ले जाने पर ग्रीन बटन एकदम नियॉन ट्यूबलाइट की तरह चमकेगा! */
+ 
 .gateway-improve-skills-btn:hover {
   background-color: rgba(16, 185, 129, 0.06) !important;
   border-color: #10b981 !important;
-  color: #ffffff !important;           /* होवर करने पर टेक्स्ट वाइट होकर चमकेगा */
+  color: #ffffff !important;           
   box-shadow: 0 0 25px rgba(16, 185, 129, 0.35) !important;
   transform: translateY(-1px) !important;
 }
 
-/* बटन्स के अंदर के छोटे SVG या एम्बेडेड आइकॉन्स का कलर कंट्रोलर */
+
 .state1-choose-track-btn svg,
 .gateway-improve-skills-btn svg {
   fill: none !important;
-  stroke: currentColor !important;     /* टेक्स्ट के कलर के साथ अपने आप सिंक होगा */
+  stroke: currentColor !important;      
   flex-shrink: 0 !important;
 }
 
-/*BUTTONS
-/* ==========================================================================
-   🚀 मेहेर का स्पेशल जॉब गेटवे ट्विन पारदर्शी नियॉन बटन्स (100% एडिटेड)
-   ========================================================================== */
-
-/* दोनों बटनों को आमने-सामने रखने वाला मास्टर रो डिब्बा */
+ 
 .dual-gateway-action-button-row {
   display: flex !important;
   flex-direction: row !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: 20px !important;            /* दोनों बटनों के बीच का परफेक्ट फासला */
+  gap: 20px !important;            
   width: 100% !important;
   margin-top: 35px !important;
 }
 
-/* 🟣 OPTION A: चूज़ अ जॉब ट्रैक (अब यह भी पूरी तरह पारदर्शी और नियॉन बॉर्डर वाला है) */
+ 
 .state1-choose-track-btn {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 10px !important;
-  background-color: transparent !important; /* 🌟 एडिट: सॉलिड कलर हटाकर इसे पूरी तरह पारदर्शी किया */
-  color: #6366f1 !important;               /* इलेक्ट्रिक पर्पल टेक्स्ट */
-  border: 1px solid rgba(99, 102, 241, 0.4) !important; /* पर्पल नियॉन बॉर्डर line */
+  background-color: transparent !important;  
+  color: #6366f1 !important;              
+  border: 1px solid rgba(99, 102, 241, 0.4) !important;  
   font-family: 'Plus Jakarta Sans', sans-serif !important;
   font-weight: 700 !important;
-  font-size: 14.5px !important;        /* लिखावट का यूनिफॉर्म साइज */
-  padding: 14px 32px !important;       /* शानदार ब्रीदिंग स्पेस */
-  border-radius: 100px !important;     /* परफेक्ट कैप्सूल घुमाव */
+  font-size: 14.5px !important;         
+  padding: 14px 32px !important;      
+  border-radius: 100px !important;      
   cursor: pointer !important;
   box-shadow: 0 4px 15px rgba(99, 102, 241, 0.05) !important;
   transition: all 0.25s ease-in-out !important;
 }
 
-/* 🔥 माउस ले जाने पर बैंगनी बटन अब एकदम पर्पल नियॉन ट्यूबलाइट की तरह चमकेगा! */
+ 
 .state1-choose-track-btn:hover {
   background-color: rgba(99, 102, 241, 0.06) !important;
   border-color: #6366f1 !important;
-  color: #ffffff !important;           /* होवर करने पर टेक्स्ट वाइट होकर चमकेगा */
-  box-shadow: 0 0 25px rgba(99, 102, 241, 0.35) !important; /* कड़क पर्पल नियॉन औरा ग्लो */
+  color: #ffffff !important;            
+  box-shadow: 0 0 25px rgba(99, 102, 241, 0.35) !important; 
   transform: translateY(-1px) !important;
 }
 
-/* 🟢 OPTION B: वेरीफाई एंड इम्प्रूव स्किल्स (पहले जैसा ही पारदर्शी नियॉन) */
+ 
 .gateway-improve-skills-btn {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 10px !important;
   background-color: transparent !important; 
-  color: #10b981 !important;               /* चमकीला एमेरल्ड ग्रीन टेक्स्ट */
-  border: 1px solid rgba(16, 185, 129, 0.4) !important; /* नियॉन ग्रीन बॉर्डर */
+  color: #10b981 !important;               
+  border: 1px solid rgba(16, 185, 129, 0.4) !important; 
   font-family: 'Plus Jakarta Sans', sans-serif !important;
   font-weight: 700 !important;
   font-size: 14.5px !important;        
@@ -187,7 +159,7 @@
   transition: all 0.25s ease-in-out !important;
 }
 
-/* 🔥 माउस ले जाने पर ग्रीन बटन एकदम ग्रीन नियॉन ट्यूबलाइट की तरह चमकेगा! */
+ 
 .gateway-improve-skills-btn:hover {
   background-color: rgba(16, 185, 129, 0.06) !important;
   border-color: #10b981 !important;
@@ -196,16 +168,16 @@
   transform: translateY(-1px) !important;
 }
 
-/* बटन्स के अंदर के छोटे स्पैन और आइकॉन्स का कलर कंट्रोलर */
+ 
 .state1-choose-track-btn span,
 .gateway-improve-skills-btn span {
   font-size: 16px !important;
-  color: inherit !important;           /* टेक्स्ट के कलर के साथ अपने आप सिंक होगा */
+  color: inherit !important;        
   flex-shrink: 0 !important;
 }
 
  
-/* 🔮 MASTER LOGO TEXT STYLING CONFIGURATION */
+/*  MASTER LOGO TEXT STYLING CONFIGURATION */
 .applyrank-logo-wrapper {
   font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; /* Tech brand fonts matrix */
   font-size: 26px;             /* Logo ka exact sharp size */
@@ -213,7 +185,7 @@
   letter-spacing: -0.5px;      /* Letter spacing tight karne se premium feel aata he */
   cursor: pointer;
   display:flex;
-  top: 40px;                   /* ऊपर के कोने से सटीक दूरी */
+  top: 40px;                 
   left: 60px;  
   z-index: 10;
   position: absolute;
@@ -234,7 +206,7 @@
   transition: color 0.3s ease;
 }
 
-/* 🔥 MEHER'S INTERACTIVE HOVER ENGINE (माउस ले जाने पर रंग बदलना) */
+/* 🔥 MEHER'S INTERACTIVE HOVER ENGINE  */
 .applyrank-logo-wrapper:hover .logo-accent-purple {
   color: #10b981;              /* Smooth morphing parameters switch to emerald tech green! */
   filter: drop-shadow(0px 0px 10px rgba(16, 185, 129, 0.4)); /* Halki si glowing light */
@@ -259,7 +231,7 @@
  .login-left-robot-zone  {
      background-color: #0f172a;
   flex: 1;
-  width: 50%;                  /* स्क्रीन का आधा हिस्सा */
+  width: 50%;                  
   height: 100vh;               
    display: flex;
    position: relative;
@@ -294,13 +266,13 @@
   font-family:"Playfair Display", serif;
    font-size: 32px;
   font-weight: 800;
-  color: #ffffff;              /* डिफ़ॉल्ट सफ़ेद रंग */
-  line-height: 1.4;            /* लाइनों के बीच का गैप मख्खन जैसा करने के लिए */
+  color: #ffffff;            
+  line-height: 1.4;             
   letter-spacing: -0.5px;
   margin-bottom: 20px;
 }
 .text-accent-green {
-  color: #10b981;              /* ब्राइट एमेरल्ड ग्रीन कलर */
+  color: #10b981;               
 }
 .text-accent-blue{
    color: #3b82f6;
@@ -308,17 +280,17 @@
 .slogan-sub-description{
    font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 15px;
-  color: #94a3b8;              /* हल्का स्लेट ग्रे कलर बिल्कुल स्क्रीनशॉट जैसा */
+  color: #94a3b8;             
   line-height: 1.6;
   font-weight: 500;
 }
-/* 🟢 दोनों फीचर्स को एक लाइन में आमने-सामने सेट करने का मास्टर डिब्बा */
+ 
 .robot-footer-features {
   display: flex !important;
-  justify-content: center;     /* दोनों आइटम्स को हॉरिजॉन्टली एकदम सेंटर में रखना */
+  justify-content: center;     
   gap: 35px;     
   flex-direction: row !important; 
-   align-items: center;             /* दोनों फीचर्स के बीच का परफेक्ट स्क्रीनशॉट गैप */
+   align-items: center;              
   margin-top: 40px; 
  /* border: 1px solid rgb(31, 9, 63);    */
 }
@@ -338,35 +310,35 @@
   /* border: 1px solid red;             Icon visual asset aur label text ke beech ki halki doori */
 }
 
-/* 🏢 हर एक सिंगल फीचर आइटम का इंटरनल लेआउट */
+ 
  
 
-/* 🛡️ पहला आइकॉन: स्क्रीनशॉट जैसा प्यारा नियॉन ग्रीन शील्ड */
+ 
 .icon-shield-green {
   color: #10b981;  
   /* display: inline-flex; */
-  align-items: center;            /* एमेरल्ड नियॉन ग्रीन */
-  font-size: 20px !important;  /* आइकॉन का परफेक्ट साइज */
-  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3)); /* हल्की सी ग्रीन लाइट ग्लो */
+  align-items: center;            
+  font-size: 20px !important;   
+  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3)); 
 }
 
-/* ✨ दूसरा आइकॉन: स्क्रीनशॉट जैसा चमकीला नियॉन पर्पल स्पार्कल */
+ 
 .star  {
   color:#6366f1;   
   align-items: center;  
   /* border: 1px solid red; */
-   display: inline-block;        /* इलेक्ट्रिक नियॉन पर्पल */
+   display: inline-block;         
   font-size: 20px !important;  
-  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.3));  /* हल्की सी पर्पल लाइट ग्लो */
+  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.3));   
 }
 .star i {
   color: inherit;
 }
-/* ⚪ दोनों फीचर्स के बगल में लिखे टेक्स्ट की स्टाइल */
+ 
 .feature-text {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 14px;
-  color: #64748b;              /* स्क्रीनशॉट जैसा म्यूटेड स्लेट ग्रे कलर */
+  color: #64748b;              
   font-weight: 500;
 }
 /* .local-star-icon {
@@ -432,10 +404,10 @@
   letter-spacing: 0.8px;       /* Spacing spaces out characters for high-end SaaS feel */
   line-height: 1;
 }
-/* 🏢 फॉर्म कार्ड कंटेनर की चौड़ाई */
+ 
 .login-interface-form-card {
   width: 100%;
-  max-width: 420px;            /* ताकि फॉर्म ज्यादा चौड़ा न फैले */
+  max-width: 420px;            
 }
 
 .form-main-title {
@@ -450,11 +422,10 @@
 .form-sub-text-line {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 14px;
-  color: #94a3b8;              /* हल्का स्लेट ग्रे कलर */
-  margin-bottom: 35px;         /* नीचे के ईमेल लेबल से दूरी */
+  color: #94a3b8;              
+  margin-bottom: 35px;          
 }
-
-/* 🏷️ इनपुट बॉक्स के ऊपर आने वाला छोटा लेबल */
+ 
 .form-field-label {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 11px;
@@ -465,236 +436,222 @@
   margin-bottom: 8px;
 }
 
-/* 📥 इनपुट और आइकॉन को लपेटने वाला डार्क बॉक्स */
+ 
 .input-with-icon-holder {
   display: flex;
   align-items: center;
-  background-color: #0f172a;   /* स्क्रीनशॉट जैसा डार्क इनपुट बैकग्राउंड */
-  border: 1px solid #1e293b;   /* म्यूटेड थिन बॉर्डर लाइन */
-  border-radius: 8px;          /* कोनों का स्मूथ घुमाव */
+  background-color: #0f172a;   
+  border: 1px solid #1e293b;    
+  border-radius: 8px;          
   padding: 12px 16px;
   gap: 12px;
   transition: all 0.3s ease-in-out;
 }
 
-/* ✉️ ईमेल बॉक्स के अंदर का लिफाफा (Envelope) आइकॉन */
+ 
 .input-icon-envelope {
-  color: #64748b;              /* डिफ़ॉल्ट ग्रे रंग */
+  color: #64748b;             
   font-size: 20px !important;
 }
 
-/* ✍️ असली टेक्स्ट इनपुट फील्ड की स्टाइल */
+ 
 .form-text-input-field {
-  background: none;            /* बैकग्राउंड हटा दिया ताकि पैरेंट का डार्क कलर दिखे */
-  border: none;                /* बॉर्डर्स हटा दिए */
-  outline: none;               /* पीली आउटलाइन को रोकने के लिए */
+  background: none;            
+  border: none;                 
+  outline: none;               
   color: #ffffff;
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 14px;
   width: 100%;
 }
 
-/* 🔥 HOVER & FOCUS GLOW EFFECT: जब यूज़र ईमेल बॉक्स पर क्लिक करेगा */
+/* 🔥 HOVER & FOCUS GLOW EFFECT:   */
 .input-with-icon-holder:focus-within {
-  border-color: #6366f1;       /* बॉर्डर का रंग बदलकर पर्पल हो जाएगा */
-  box-shadow: 0 0 15px rgba(99, 102, 241, 0.15); /* हल्का सा नियॉन पर्पल औरा ग्लो */
+  border-color: #6366f1;        
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.15);  
 }
 
 .input-with-icon-holder:focus-within .input-icon-envelope {
-  color: #6366f1;              /* क्लिक करते ही लिफाफे का रंग भी पर्पल हो जाएगा */
+  color: #6366f1;              
 }
-/* 🏢 लेबल हेडर रो - जो PASSWORD टेक्स्ट और Forgot? लिंक को आमने-सामने रखेगा */
+ 
 .field-label-header-row {
   display: flex;
-  justify-content: space-between; /* दोनों को कोनों पर धकेलने के लिए */
+  justify-content: space-between; 
   align-items: center;
   width: 100%;
-  margin-bottom: 8px;           /* नीचे के इनपुट बॉक्स से दूरी */
+  margin-bottom: 8px;           
 }
-
-/* 🟣 'Forgot?' लिंक की फॉन्ट स्टाइल और उसका म्यूटेड पर्पल कलर */
+ 
 .forgot-password-trigger-link {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #6366f1;               /* स्क्रीनशॉट जैसा म्यूटेड पर्पल रंग */
-  text-decoration: none;        /* नीचे की अंडरलाइन हटाने के लिए */
+  color: #6366f1;             
+  text-decoration: none;         
   transition: color 0.2s ease-in-out;
 }
 
-/* माउस ले जाने पर 'Forgot?' लिंक थोड़ा ब्राइट हो जाएगा */
+ 
 .forgot-password-trigger-link:hover {
   color: #818cf8;               
 }
 
-/* 🔒 ताले (Lock) आइकॉन की डिफ़ॉल्ट स्टाइल */
+ 
 .input-icon-lock {
-  color: #64748b;               /* डिफ़ॉल्ट ग्रे रंग */
+  color: #64748b;              
   font-size: 20px !important;
 }
 
-/* 🔥 FOCUS GLOW EFFECT FOR LOCK: जब यूज़र पासवर्ड बॉक्स पर क्लिक करेगा */
+ 
 .input-with-icon-holder:focus-within .input-icon-lock {
-  color: #6366f1;               /* क्लिक करते ही ताले का रंग भी पर्पल हो जाएगा */
+  color: #6366f1;                
 }
-/* ⚪ बटन के ठीक नीचे वाले प्राइवेसी नोट की फॉन्ट स्टाइल */
+ 
 .form-privacy-policy-note-line {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 12px;             /* स्क्रीनशॉट जैसा छोटा और म्यूटेड लुक */
-  color: #475569;              /* गहरा स्लेट ग्रे कलर */
+  font-size: 12px;             
+  color: #475569;              
   text-align: center;
-  margin-top: 22px;            /* बटन से उचित दूरी */
-  margin-bottom: 25px;         /* नीचे के डेमो अलर्ट कार्ड से गैप */
+  margin-top: 22px;            
+  margin-bottom: 25px;          
   line-height: 1.5;
 }
-
-/* प्राइवेसी और टर्म्स की सफ़ेद चमकीली लिंक्स */
+ 
 .policy-link-string {
-  color: #94a3b8;              /* हल्का चमकीला स्लेट कलर */
-  text-decoration: none;       /* अंडरलाइन हटाने के लिए */
-  font-weight: 600;
+  color: #94a3b8;             
+  text-decoration: none;       
   transition: color 0.2s ease;
 }
 .policy-link-string:hover {
-  color: #ffffff;              /* माउस ले जाने पर एकदम प्योर वाइट हो जाएगा */
+  color: #ffffff;              
 }
-
-/* 🟢 सबसे नीचे का "Demo Build" अलर्ट कार्ड कंटेनर (ग्लास बॉर्डर लुक) */
+ 
 .demo-build-alert-card-wrapper {
   display: flex;
-  align-items: flex-start;     /* आइकॉन और बड़े टेक्स्ट को ऊपर की सीध में रखना */
-  gap: 12px;                   /* आइकॉन और अलर्ट मैसेज के बीच का गैप */
-  
-  /* 🛠️ स्क्रीनशॉट जैसा पारदर्शी डार्क ग्रीन बैकग्राउंड और थिन ग्रीन बॉर्डर */
+  align-items: flex-start;      
+  gap: 12px;                    
+   
   background-color: rgba(16, 185, 129, 0.04); 
   border: 1px solid rgba(16, 185, 129, 0.12);  
   
-  padding: 14px 16px;          /* कार्ड के अंदर की बढ़िया स्पेसिंग */
-  border-radius: 8px;          /* कोनों का स्मूथ घुमाव */
+  padding: 14px 16px;          
+  border-radius: 8px;           
   margin-top: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* नीचे का सॉफ्ट डार्क शैडो */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
 }
-
-/* 🛡️ अलर्ट कार्ड के अंदर चमकने वाला ग्रीन शील्ड-टिक आइकॉन */
+ 
 .alert-shield-check-icon {
-  color: #10b981;              /* चमकीला एमेरल्ड ग्रीन रंग */
-  font-size: 20px !important;  /* आइकॉन का परफेक्ट यूनिफॉर्म साइज */
-  margin-top: 1px;             /* टेक्स्ट की पहली लाइन के साथ सिंक करने के लिए */
-  filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.3)); /* हल्की सी ग्रीन ग्लो लाइट */
+  color: #10b981;               
+  font-size: 20px !important;   
+  margin-top: 1px;              
+  filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.3));  
 }
 
-/* 🟢 अलर्ट कार्ड के अंदर लिखे मैसेज की स्टाइल */
+ 
 .alert-card-message-string {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px;             /* पढ़ने में आसान बारीक साइज */
-  color: #94a3b8;              /* स्लेट ग्रे कलर बिल्कुल स्क्रीनशॉट जैसा */
-  line-height: 1.5;            /* लाइनों के बीच का गैप */
+  font-size: 13px;            
+  color: #94a3b8;               
+  line-height: 1.5;            
   font-weight: 500;
-  text-align: left;            /* मैसेज हमेशा लेफ्ट से शुरू होगा */
+  text-align: left;          
 }
-/* 🚀 मुख्य सबमिशन बटन की डिज़ाइन */
+ 
 .form-submit-continue-btn {
-  width: 100%;                 /* इनपुट बॉक्स जितना पूरा चौड़ा */
-  background-color: #6366f1;   /* हमारा थीम इलेक्ट्रिक पर्पल कलर */
+  width: 100%;                 
+  background-color: #6366f1;   
   color: #ffffff;
   border: none;
-  border-radius: 8px;          /* कोनों का स्मूथ घुमाव */
+  border-radius: 8px;           
   padding: 14px 20px;
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 15px;
-  font-weight: 700;            /* बटन टेक्स्ट को बोल्ड करने के लिए */
+  font-weight: 700;             
   cursor: pointer;
   display: flex;
-  justify-content: center;     /* टेक्स्ट और एरो को बीच में रखने के लिए */
+  justify-content: center;     
   align-items: center;
-  gap: 8px;                    /* एरो और लिखे हुए शब्द के बीच का गैप */
+  gap: 8px;                    
   transition: all 0.3s ease-in-out;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2); /* हल्का सा पर्पल ग्लो */
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);  
 }
 
-/* ➔ बटन के अंदर का एरो आइकॉन */
+ 
 .btn-arrow-icon {
   font-size: 18px !important;
-  transition: transform 0.2s ease-in-out; /* एरो के खिसकने की स्पीड */
+  transition: transform 0.2s ease-in-out; 
 }
 
-/* 🔥 INTERACTIVE HOVER EFFECT: माउस ले जाने पर बटन चमकेगा और एरो आगे खिसकेगा */
+/* 🔥 INTERACTIVE HOVER EFFECT:   */
 .form-submit-continue-btn:hover {
-  background-color: #4f46e5;   /* थोड़ा सा गहरा पर्पल */
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); /* नियॉन पर्पल औरा ग्लो */
+  background-color: #4f46e5;    
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);  
 }
 
 .form-submit-continue-btn:hover .btn-arrow-icon {
-  transform: translateX(4px);  /* माउस ले जाते ही एरो जादुई रूप से आगे खिसकेगा! */
+  transform: translateX(4px);   
 }
 
-/* ⚪ बटन के नीचे वाले फुट नोट्स की स्टाइल */
+ 
 .form-signup-footer-line {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 13px;
-  color: #64748b;              /* हल्का ग्रे कलर */
+  color: #64748b;              
   text-align: center;
-  margin-top: 20px;            /* बटन से उचित दूरी */
+  margin-top: 20px;            
 }
-
-/* पर्पल रंग की "Create an account" लिंक */
 .signup-redirect-link {
   color: #6366f1;
-  text-decoration: none;       /* अंडरलाइन हटाने के लिए */
+  text-decoration: none;        
   font-weight: 600;
   transition: color 0.2s ease;
 }
 .signup-redirect-link:hover {
-  color: #818cf8;              /* माउस ले जाने पर लाइट पर्पल */
+  color: #818cf8;             
 }
-
- /* 🏛️ पूरे डैशबोर्ड पेज का डार्क बैकग्राउंड बेस */
+ 
 .dashboard-body-canvas {
   background-color: #0b0f19;
   min-height: 100vh;
   color: #ffffff;
    margin: 0;
   padding: 0;
-     /* एकदम गहरा डार्क थीम बेस */
+     
   position: relative;
   overflow-x: hidden;
 }
-/* 🎇 २. जादुई फ्लोटिंग साइबर डॉट्स और टॉर्च लाइट की परत */
-/* अब हम एनिमेशन को नवबार पर नहीं, बल्कि इस छुपकर तैरने वाली बैकग्राउंड लेयर पर चलाएंगे */
+ 
 .dashboard-body-canvas::before {
   content: '';
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
-  pointer-events: none;        /* ताकि पेजों के किसी बटन पर क्लिक करने में दिक्कत न हो */
+  pointer-events: none;        
   
-  /* 🛠️ बारीक साइबर डॉट्स का ग्रिड पैटर्न */
-  background-image: 
+   background-image: 
     radial-gradient(rgba(99, 102, 241, 0.15) 1px, transparent 1px), 
     radial-gradient(rgba(16, 185, 129, 0.05) 1px, transparent 1px);
   background-size: 24px 24px;
   background-position: 0 0, 12px 12px;
   
-  /* ⚡ स्क्रीन के सेंटर-राइट हिस्से में तैरती हुई सुंदर नियॉन टॉर्च लाइट */
-  background-blend-mode: screen;
+   background-blend-mode: screen;
   background-color: transparent;
   
-  /* 🔥 फिक्स 2: जादुई मख्खन जैसी स्मूथ तैरने वाली वेव (0 झटके, नवबार अपनी जगह फिक्स रहेगा) */
-  animation: cyberSmoothAmbientGlow 15s linear infinite;
+   animation: cyberSmoothAmbientGlow 15s linear infinite;
   z-index: 1;
 }
-
-/* 🚀 टॉप नवबार का मास्टर फ्लेक्स लेआउट (एकदम ऊपर फिक्स रहेगा) */
+ 
 .dashboard-master-navbar {
   display: flex;
-  justify-content: space-between; /* लोगो लेफ्ट में, मेनू बीच में, प्रोफाइल राइट में */
+  justify-content: space-between;  
   align-items: center;
-  background-color: #0f172a;   /* हल्का सा चमकीला डार्क ब्लू बॉक्स */
-  border-bottom: 1px solid #1e293b; /* नीचे की बारीक म्यूटेड बॉर्डर लाइन */
-  padding: 16px 40px;          /* नवबार के अंदर की प्रोफेशनल स्पेसिंग */
+  background-color: #0f172a;    
+  border-bottom: 1px solid #1e293b; 
+  padding: 16px 40px;           
   width: 100%;
-  position: sticky;            /* ताकि स्क्रॉल करने पर भी नवबार ऊपर ही टिका रहे */
+  position: sticky;             
   top: 0;
   z-index: 100;
 }
@@ -716,15 +673,14 @@
 }
 .purple-text { color: #6366f1; }
 
-/* (B) बीच वाले बटन्स की रो (Row) का डिज़ाइन */
+ 
 .nav-menu-links-center-row {
   display: flex;
   align-items: center;
   gap:15px;  
-                   /* सारे बटन्स के बीच का गैप */
+                  
 }
-
-/* सिंगल नवबार बटन की कस्टमाइज्ड स्टाइल */
+ 
 /* .nav-menu-btn {
   display: flex;
   align-items: center;
@@ -750,28 +706,24 @@
   text-decoration: none;
   padding: 8px 16px;
   border-radius: 6px;
-  
-  /* 📍 फिक्स 3: पहले से ही एक अदृश्य (Transparent) बॉर्डर लगा कर रखेंगे, 
-     ताकि होवर करने पर जब असली बॉर्डर आए, तो नवबार की पट्टी को झटका न लगे! */
+   
   border: 1px solid transparent; 
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* मख्खन जैसी स्मूथ ट्रांजिशन */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);  
   letter-spacing: 0.5px;
 }
-
-/* 🔵 ACTIVE TAB LINK BUTTON (जैसे HOME) */
+ 
 .nav-menu-btn.active-tab {
   background-color: rgba(99, 102, 241, 0.1); 
   color: #ffffff;              
   border: 1px solid rgba(99, 102, 241, 0.2);
-}
-/* 🔵 ACTIVE TAB LINK BUTTON: जो बटन सेलेक्टेड रहेगा (जैसे HOME) */
+} 
 .nav-menu-btn.active-tab {
-  background-color: rgba(99, 102, 241, 0.1); /* हल्का पारदर्शी पर्पल बैकग्राउंड */
-  color: #ffffff;              /* बिल्कुल चमकीला वाइट */
+  background-color: rgba(99, 102, 241, 0.1);  
+  color: #ffffff;              
   border: 1px solid rgba(99, 102, 241, 0.2);
 }
 
-/* माउस ले जाने पर होने वाला होवर इफ़ेक्ट */
+ 
 .nav-menu-btn:hover {
   color: #ffffff;
    background-color: rgba(99, 102, 241, 0.12) !important;
@@ -782,10 +734,10 @@
 }
 
 .nav-icon {
-  font-size: 18px !important;  /* आइकॉन का छोटा और क्रिस्प प्रो साइज */
+  font-size: 18px !important;  
 }
 
-/* (C) राइट साइड प्रोफाइल ज़ोन */
+ 
 .nav-profile-right-zone {
   display: flex;
   align-items: center;
@@ -804,9 +756,9 @@
     transform: scale(1);
   }
   50% {
-    /* डॉट्स बहुत ही धीरे से बिना झटका दिए पीछे तैरते हुए गोल घूमेंगे */
+   
     background-position: 12px 12px, 24px 24px;
-    transform: scale(1.02);    /* हल्का सा सांस लेता हुआ औरा इफ़ेक्ट */
+    transform: scale(1.02);    
   }
   100% {
     background-position: 24px 24px, 36px 36px;
@@ -840,11 +792,11 @@
 .dash-logo{
   color: #eed300;  
   /* display: inline-flex; */
-  align-items: center;            /* एमेरल्ड नियॉन ग्रीन */
-  font-size: 20px !important;  /* आइकॉन का परफेक्ट साइज */
-  filter: drop-shadow(0 0 8px rgba(231, 251, 16, 0.3)); /* हल्की सी ग्रीन लाइट ग्लो */
+  align-items: center;             
+  font-size: 20px !important;   
+  filter: drop-shadow(0 0 8px rgba(231, 251, 16, 0.3));  
 }
-/* 🏢 डैशबोर्ड के मुख्य हिस्से की आउटर स्पेसिंग */
+ 
 .dashboard-main-content-workspace {
   max-width: 1040px;
   margin: 40px auto 0 auto;
@@ -979,8 +931,7 @@
 .utility-action-card:hover {
   transform: translateY(-2px);
 }
-
-/* 📄 ब्लू थीम कार्ड (Resume) */
+ 
 .blue-theme-card {
   background: linear-gradient(135deg, #0f1527 0%, #070a13 100%);
   border: 1px solid rgba(59, 130, 246, 0.1);
@@ -988,7 +939,7 @@
 .blue-badge { background-color: rgba(59, 130, 246, 0.1); color: #3b82f6; }
 .blue-link { color: #3b82f6; }
 
-/* ⏱️ ग्रीन थीम कार्ड (Skill Test) */
+ 
 .green-theme-card {
   background: linear-gradient(135deg, #0a171d 0%, #050d12 100%);
   border: 1px solid rgba(16, 185, 129, 0.08);
@@ -1013,12 +964,11 @@
 .card-sub-description { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; color: #64748b; line-height: 1.5; text-align: left; margin-bottom: 16px; }
 .card-action-trigger-link { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 600; text-decoration: none; }
 
-
-/* नवबार के बटन्स को एक समान और साफ़ रखने का नियम */
+ 
 .nav-menu-links-center-row {
   display: flex;
   align-items: center;
-  gap: 15px;                   /* सारे बटन्स के बीच का परफेक्ट गैप */
+  gap: 15px;                  
 }
 
 .nav-menu-btn {
@@ -1274,11 +1224,7 @@
 
 ---
 
-/* ## 🎨 2. THE CHAMELEON TRACK LAYOUT CSS (`style.css` के नीचे जोड़ो) */
-
-/* अब इन ५ ट्रैक्स, शानदार ग्रिड, और फ़ॉर्म एलिमेंट्स को बिल्कुल स्क्रीनशॉट जैसा डार्क हाई-टेक लुक देने के लिए अपनी **`style.css`** फ़ाइल के सबसे नीचे यह पूरा कोड जोड़ लो:
-
-```css */
+ 
 /* ==========================================================================
    🧬 MULTI-STATE JOB TRACK GRID & FORM DESIGN SYSTEM
    ========================================================================== */
@@ -1353,7 +1299,7 @@
 
 .tracks-matrix-grid-system {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* 5 कार्ड्स को ऑटोमैटिक रो में एडजस्ट करना */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));  
   gap: 25px;
   margin-bottom: 50px;
 }
@@ -1382,7 +1328,7 @@
 }
 .track-timer { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11px; font-weight: 700; color: #475569; }
 
-/* कार्ड आइकॉन्स के नियॉन शेड्स */
+ 
 .icon-pink { color: #ec4899; filter: drop-shadow(0 0 6px rgba(236,72,153,0.4)); }
 .icon-blue { color: #3b82f6; filter: drop-shadow(0 0 6px rgba(59,130,246,0.4)); }
 .icon-green { color: #10b981; filter: drop-shadow(0 0 6px rgba(16,185,129,0.4)); }
@@ -1407,7 +1353,7 @@
 /* [ Select Path ] Button */
 .select-path-action-btn {
   width: 100%;
-  background-color: #312e81;   /* गहरा पर्पल */
+  background-color: #312e81;   
   border: 1px solid rgba(99, 102, 241, 0.2);
   color: #ffffff;
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -1417,7 +1363,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-top: auto;            /* बटन को हमेशा कार्ड के नीचे लॉक रखना */
+  margin-top: auto;             
 }
 .select-path-action-btn:hover { background-color: #6366f1; box-shadow: 0 4px 15px rgba(99,102,241,0.3); }
 
@@ -1425,7 +1371,7 @@
 .status-hidden { display: none !important; }
 
 
-/* 🔮 MEHER'S ULTRA UNIVERSAL ACTIVE TAB ENFORCER */
+/*  ULTRA UNIVERSAL ACTIVE TAB ENFORCER */
 .active-tab {
   background-color: rgba(99, 102, 241, 0.12) !important;   /* Crisp transparent purple glass box */
   color: #ffffff !important;                                /* Pure high-contrast white text */
@@ -1850,12 +1796,7 @@ display: none !important;
  /* ==========================================================================
    SKILL TEST PAGE STYLES
    ========================================================================== */
-/*   */
-/* ==========================================================================
-   APPLYRANK · SKILL TEST  (skilltest.css)
-   Load AFTER style.css. Every class starts with "st-" so nothing clashes
-   with old styles. The robot circle keeps your existing .silly-face-circle.
-   ========================================================================== */
+ 
 
 .st-hidden { display: none !important; }
 

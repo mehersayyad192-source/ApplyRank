@@ -12,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -25,10 +28,14 @@ public class AuthController {
     private final NotificationService notes;
     private final LoginAttemptService attempts;
     private final AuditService audit;
+    private final TokenService tokens;
+    private final EmailService email;
 
     public AuthController(UserRepository users, ProfileRepository profiles, PasswordEncoder encoder, JwtService jwt,
                           Mapper mapper, CurrentUser current, NotificationService notes,
-                          LoginAttemptService attempts, AuditService audit) {
+                          LoginAttemptService attempts, AuditService audit,
+                          TokenService tokens, EmailService email) {
+        this.tokens = tokens; this.email = email;
         this.attempts = attempts; this.audit = audit; this.dummyHash = encoder.encode("not-a-real-password");
         this.users = users; this.profiles = profiles; this.encoder = encoder; this.jwt = jwt;
         this.mapper = mapper; this.current = current; this.notes = notes;
@@ -51,6 +58,7 @@ public class AuthController {
         audit.record(u.getEmail(), "REGISTER", "role=" + u.getRole(), req.getRemoteAddr());
         notes.push(u, "updates", "Welcome to ApplyRank!", "Take the skill test to earn your verified rank.",
                 "Take the test", "link", "skilltest.html");
+        sendVerification(u);
         return new AuthResponse(jwt.generate(u.getEmail(), u.getRole().name()), mapper.user(u));
     }
 
@@ -73,6 +81,58 @@ public class AuthController {
         attempts.succeeded(email, ip);
         audit.record(email, "LOGIN_OK", null, ip);
         return new AuthResponse(jwt.generate(u.getEmail(), u.getRole().name()), mapper.user(u));
+    }
+
+    private void sendVerification(User u) {
+        String t = tokens.issue(u, "VERIFY", Duration.ofHours(24));
+        email.sendLink(u.getEmail(), "Verify your ApplyRank email", "Welcome to ApplyRank! Please confirm your e-mail address:", "verify-email.html", t);
+    }
+
+    /** Always answers the same text, so nobody can use this to find out which e-mails are registered. */
+    @PostMapping("/forgot-password")
+    public Map<String, String> forgot(@Valid @RequestBody ForgotRequest r, HttpServletRequest req) {
+        String e = r.email().trim().toLowerCase();
+        users.findByEmail(e).ifPresent(u -> {
+            if (!tokens.recentlyIssued(u, "RESET", Duration.ofMinutes(1))) {          // max 1 mail per minute per account
+                String t = tokens.issue(u, "RESET", Duration.ofMinutes(30));
+                email.sendLink(u.getEmail(), "Reset your ApplyRank password", "Someone (hopefully you) asked to reset your password. This link works for 30 minutes:", "reset-password.html", t);
+                audit.record(e, "PASSWORD_RESET_REQUESTED", null, req.getRemoteAddr());
+            }
+        });
+        return Map.of("message", "If this email is registered, a reset link has been sent.");
+    }
+
+    @PostMapping("/reset-password")
+    public Map<String, String> reset(@Valid @RequestBody ResetRequest r, HttpServletRequest req) {
+        AuthToken t = tokens.consume(r.token(), "RESET")
+                .orElseThrow(() -> new ApiException(HttpStatus.BAD_REQUEST, "This reset link is invalid or has expired. Please ask for a new one."));
+        User u = t.getUser();
+        u.setPasswordHash(encoder.encode(r.password()));
+        users.save(u);
+        attempts.succeeded(u.getEmail(), req.getRemoteAddr());
+        audit.record(u.getEmail(), "PASSWORD_RESET_DONE", null, req.getRemoteAddr());
+        notes.push(u, "updates", "Password changed", "Your password was just changed. If this was not you, reset it again right away.",
+                "Open", "link", "index.html");
+        return Map.of("message", "Password changed. You can log in now.");
+    }
+
+    @PostMapping("/verify-email")
+    public Map<String, String> verify(@Valid @RequestBody VerifyRequest r, HttpServletRequest req) {
+        AuthToken t = tokens.consume(r.token(), "VERIFY")
+                .orElseThrow(() -> new ApiException(HttpStatus.BAD_REQUEST, "This verification link is invalid or has expired."));
+        User u = t.getUser();
+        u.setEmailVerified(true);
+        users.save(u);
+        audit.record(u.getEmail(), "EMAIL_VERIFIED", null, req.getRemoteAddr());
+        return Map.of("message", "Email verified. Thank you!");
+    }
+
+    @PostMapping("/resend-verification")
+    public Map<String, String> resend() {
+        User u = current.get();
+        if (u.isEmailVerified()) return Map.of("message", "Your email is already verified.");
+        if (!tokens.recentlyIssued(u, "VERIFY", Duration.ofMinutes(1))) sendVerification(u);
+        return Map.of("message", "Verification email sent.");
     }
 
     @GetMapping("/me")

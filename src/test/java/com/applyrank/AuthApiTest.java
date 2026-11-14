@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(properties = {"spring.datasource.url=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1", "app.upload-dir=./target/test-uploads"})
 class AuthApiTest {
     @Autowired MockMvc mvc;
+    @Autowired com.applyrank.service.EmailService email;
 
     @Test
     void healthIsPublic() throws Exception {
@@ -87,5 +88,56 @@ class AuthApiTest {
         mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"gone@x.dev\",\"password\":\"secret12\"}"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    private static String tokenFrom(String link) { return link.substring(link.indexOf("token=") + 6); }
+
+    @Test
+    void passwordResetFlowWorksOnlyOnceAndOldPasswordStopsWorking() throws Exception {
+        mvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"reset@x.dev\",\"password\":\"oldpass12\",\"name\":\"Rey\"}")).andExpect(status().isCreated());
+        // unknown e-mail gets the SAME answer (no account enumeration)
+        mvc.perform(post("/api/auth/forgot-password").contentType(MediaType.APPLICATION_JSON).content("{\"email\":\"nobody@x.dev\"}"))
+                .andExpect(status().isOk());
+        mvc.perform(post("/api/auth/forgot-password").contentType(MediaType.APPLICATION_JSON).content("{\"email\":\"reset@x.dev\"}"))
+                .andExpect(status().isOk());
+        String token = tokenFrom(email.lastLink("reset@x.dev"));
+        // weak new password is rejected
+        mvc.perform(post("/api/auth/reset-password").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"token\":\"" + token + "\",\"password\":\"abcdefgh\"}")).andExpect(status().isBadRequest());
+        mvc.perform(post("/api/auth/reset-password").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"token\":\"" + token + "\",\"password\":\"newpass34\"}")).andExpect(status().isOk());
+        // the same link cannot be used twice
+        mvc.perform(post("/api/auth/reset-password").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"token\":\"" + token + "\",\"password\":\"another56\"}")).andExpect(status().isBadRequest());
+        mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"reset@x.dev\",\"password\":\"oldpass12\"}")).andExpect(status().isUnauthorized());
+        mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"reset@x.dev\",\"password\":\"newpass34\"}")).andExpect(status().isOk());
+    }
+
+    @Test
+    void fakeResetTokenIsRejected() throws Exception {
+        mvc.perform(post("/api/auth/reset-password").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"token\":\"not-a-real-token\",\"password\":\"newpass34\"}")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void emailVerificationMarksUserVerified() throws Exception {
+        String res = mvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"ver@x.dev\",\"password\":\"secret12\",\"name\":\"Vera\"}"))
+                .andExpect(jsonPath("$.user.emailVerified").value(false)).andReturn().getResponse().getContentAsString();
+        String jwt = res.replaceAll(".*\"token\":\"([^\"]+)\".*", "$1");
+        String token = tokenFrom(email.lastLink("ver@x.dev"));
+        mvc.perform(post("/api/auth/verify-email").contentType(MediaType.APPLICATION_JSON).content("{\"token\":\"" + token + "\"}"))
+                .andExpect(status().isOk());
+        mvc.perform(get("/api/auth/me").header("Authorization", "Bearer " + jwt)).andExpect(jsonPath("$.emailVerified").value(true));
+    }
+
+    @Test
+    void jobsCanBePaged() throws Exception {
+        mvc.perform(get("/api/jobs?page=0&size=2")).andExpect(status().isOk())
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.header().exists("X-Total-Count"))
+                .andExpect(jsonPath("$.length()").value(2));
     }
 }

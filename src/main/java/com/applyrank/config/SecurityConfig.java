@@ -51,7 +51,8 @@ public class SecurityConfig {
                 .permissionsPolicy(p -> p.policy("camera=(), microphone=(), geolocation=()")))
             .authorizeHttpRequests(a -> a
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/api/auth/register", "/api/auth/login", "/api/health", "/h2-console/**",
+                .requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/forgot-password", "/api/auth/reset-password",
+                        "/api/auth/verify-email", "/api/health", "/h2-console/**",
                         "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/jobs", "/api/jobs/*").permitAll()
                 .requestMatchers("/api/recruiter/**").hasRole("RECRUITER")
@@ -76,6 +77,7 @@ public class SecurityConfig {
         c.setAllowedOriginPatterns(Arrays.asList(origins.split("\\s*,\\s*")));
         c.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         c.setAllowedHeaders(List.of("*"));
+        c.setExposedHeaders(List.of("X-Total-Count", "X-Total-Pages"));      // so the browser may read paging info
         c.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource src = new UrlBasedCorsConfigurationSource();
         src.registerCorsConfiguration("/**", c);

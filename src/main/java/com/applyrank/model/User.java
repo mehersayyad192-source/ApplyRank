@@ -25,6 +25,8 @@ public class User {
     @Column(nullable = false)
     private Instant createdAt = Instant.now();
 
+    private Boolean emailVerified = Boolean.FALSE;      // Boolean (not boolean) so old rows without a value still load
+
     public Long getId() { return id; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
@@ -35,4 +37,6 @@ public class User {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public Instant getCreatedAt() { return createdAt; }
+    public boolean isEmailVerified() { return Boolean.TRUE.equals(emailVerified); }
+    public void setEmailVerified(boolean v) { this.emailVerified = v; }
 }

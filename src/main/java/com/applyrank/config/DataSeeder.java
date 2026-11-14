@@ -44,6 +44,7 @@ public class DataSeeder implements CommandLineRunner {
         u.setName(name);
         u.setRole(role);
         u.setPasswordHash(encoder.encode(pw));
+        u.setEmailVerified(true);                       // demo accounts need no e-mail check
         users.save(u);
         Profile p = new Profile();
         p.setUser(u);

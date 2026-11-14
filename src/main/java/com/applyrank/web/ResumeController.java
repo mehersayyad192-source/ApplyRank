@@ -39,8 +39,10 @@ public class ResumeController {
         String original = file.getOriginalFilename() == null ? "resume" : Path.of(file.getOriginalFilename()).getFileName().toString();
 
         ResumeAnalyzer.Analysis a;
+        String text;
         try {
-            a = analyzer.analyze(analyzer.extractText(data, original), track);
+            text = analyzer.extractText(data, original);
+            a = analyzer.analyze(text, track);
         } catch (IllegalArgumentException e) {
             throw new ApiException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (IOException e) {
@@ -64,19 +66,20 @@ public class ResumeController {
         repo.save(r);
         notes.push(u, "updates", "Resume checked", "Your resume scored " + a.score() + "/100 for the " + track + " track.",
                 "View", "link", "resume.html");
-        return dto(r);
+        // The extracted text is returned once (never stored in the DB) so the browser can build the enhanced resume.
+        return dto(r, text.length() > 30000 ? text.substring(0, 30000) : text);
     }
 
     @GetMapping("/latest")
     public ResumeAnalysisDto latest() {
-        return repo.findFirstByUserOrderByCreatedAtDesc(current.get()).map(this::dto)
+        return repo.findFirstByUserOrderByCreatedAtDesc(current.get()).map(r -> dto(r, null))
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "No resume uploaded yet."));
     }
 
-    private ResumeAnalysisDto dto(ResumeAnalysis r) {
+    private ResumeAnalysisDto dto(ResumeAnalysis r, String text) {
         return new ResumeAnalysisDto(r.getId(), r.getFilename(), r.getTrack(), r.getScore(), Mapper.split(r.getMatched()),
                 Mapper.split(r.getMissing()),
                 r.getTips() == null || r.getTips().isBlank() ? java.util.List.of() : java.util.List.of(r.getTips().split("\\|")),
-                r.getCreatedAt().toString());
+                r.getCreatedAt().toString(), text);
     }
 }

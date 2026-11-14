@@ -9,8 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /** Recruiter-only endpoints (the security config requires the RECRUITER role for /api/recruiter/**). */
 @RestController
@@ -23,9 +27,11 @@ public class RecruiterController {
     private final NotificationService notes;
     private final AuditService audit;
     private final TestResultRepository results;
+    private final ProfileRepository profiles;
 
     public RecruiterController(JobRepository jobs, JobApplicationRepository apps, CurrentUser current, Mapper mapper, NotificationService notes, AuditService audit,
-                               TestResultRepository results) {
+                               TestResultRepository results, ProfileRepository profiles) {
+        this.profiles = profiles;
         this.audit = audit; this.results = results;
         this.jobs = jobs; this.apps = apps; this.current = current; this.mapper = mapper; this.notes = notes;
     }
@@ -90,11 +96,27 @@ public class RecruiterController {
         String what = switch (a.getOutcome()) {
             case SHORTLISTED -> "You are shortlisted for " + j.getTitle() + " at " + j.getCompany() + "!";
             case HIRED -> "Congratulations! " + j.getCompany() + " selected you for " + j.getTitle() + ".";
-            case CLOSED -> "Your application for " + j.getTitle() + " at " + j.getCompany() + " was closed.";
+            case CLOSED -> "Your application for " + j.getTitle() + " at " + j.getCompany() + " was closed." + feedbackFor(a);
             default -> "Your application for " + j.getTitle() + " moved to: " + Mapper.STAGES[a.getStage()] + ".";
         };
         notes.push(a.getUser(), "updates", "Application update", what, "View status", "link", "notifications.html");
         return mapper.application(a);
+    }
+
+    /** "Why not selected": tells the candidate what to improve (rank gap + skills the job asked for that are missing in the profile). */
+    private String feedbackFor(JobApplication a) {
+        Job j = a.getJob();
+        List<String> tips = new ArrayList<>();
+        Integer rank = a.getRankAtApply();
+        if (rank == null) tips.add("take the verified skill test so recruiters can see your rank");
+        else if (rank < j.getMinRank()) tips.add("your rank was " + rank + " and this role usually needs " + j.getMinRank() + " (" + (j.getMinRank() - rank) + " points more)");
+        String have = profiles.findByUser(a.getUser()).map(Profile::getSkills).orElse("");
+        Set<String> mine = Arrays.stream(have.split(",")).map(x -> x.trim().toLowerCase()).filter(x -> !x.isEmpty()).collect(Collectors.toSet());
+        String req = j.getRequirements() == null ? "" : j.getRequirements();
+        List<String> missing = Arrays.stream(req.split(",")).map(String::trim).filter(x -> !x.isEmpty())
+                .filter(x -> !mine.contains(x.toLowerCase())).toList();
+        if (!missing.isEmpty()) tips.add("skills asked in the job but not in your profile: " + String.join(", ", missing));
+        return tips.isEmpty() ? "" : " Feedback to grow: " + String.join("; ", tips) + ".";
     }
 
     private Job ownJob(Long id) {

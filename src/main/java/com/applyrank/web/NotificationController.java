@@ -4,7 +4,11 @@ import com.applyrank.dto.Dtos.NotificationDto;
 import com.applyrank.model.*;
 import com.applyrank.repo.NotificationRepository;
 import com.applyrank.service.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +25,17 @@ public class NotificationController {
         this.repo = repo; this.current = current; this.mapper = mapper;
     }
 
+    /** /api/notifications -> all (old behaviour).  /api/notifications?page=0&size=20 -> one page + X-Total-Count header. */
     @GetMapping
-    public List<NotificationDto> list() {
-        return repo.findByUserOrderByCreatedAtDesc(current.get()).stream().map(mapper::notification).toList();
+    public ResponseEntity<List<NotificationDto>> list(@RequestParam(required = false) Integer page, @RequestParam(defaultValue = "20") int size) {
+        if (page == null)
+            return ResponseEntity.ok(repo.findByUserOrderByCreatedAtDesc(current.get()).stream().map(mapper::notification).toList());
+        Page<Notification> res = repo.findByUser(current.get(),
+                PageRequest.of(Math.max(0, page), Math.max(1, Math.min(50, size)), Sort.by(Sort.Direction.DESC, "createdAt")));
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(res.getTotalElements()))
+                .header("X-Total-Pages", String.valueOf(res.getTotalPages()))
+                .body(res.getContent().stream().map(mapper::notification).toList());
     }
 
     @GetMapping("/unread-count")

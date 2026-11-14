@@ -44,12 +44,14 @@ public class PrivacyController {
     private final JobRepository jobs;
     private final UserRepository users;
     private final TestSessionRepository sessions;
+    private final AuthTokenRepository authTokens;
+    private final SavedJobRepository savedJobs;
 
     public PrivacyController(CurrentUser current, Mapper mapper, PasswordEncoder encoder, AuditService audit,
                              ProfileRepository profiles, TestResultRepository results, JobApplicationRepository apps,
                              NotificationRepository notifications, ResumeAnalysisRepository resumes, JobRepository jobs,
-                             UserRepository users, TestSessionRepository sessions) {
-        this.sessions = sessions;
+                             UserRepository users, TestSessionRepository sessions, AuthTokenRepository authTokens, SavedJobRepository savedJobs) {
+        this.sessions = sessions; this.authTokens = authTokens; this.savedJobs = savedJobs;
         this.current = current; this.mapper = mapper; this.encoder = encoder; this.audit = audit; this.profiles = profiles;
         this.results = results; this.apps = apps; this.notifications = notifications; this.resumes = resumes;
         this.jobs = jobs; this.users = users;
@@ -65,6 +67,7 @@ public class PrivacyController {
         out.put("profile", profiles.findByUser(u).map(p -> mapper.profile(u, p)).orElse(null));
         out.put("testResults", results.findByUserOrderByCreatedAtDesc(u).stream().map(mapper::test).toList());
         out.put("applications", apps.findByUserOrderByAppliedAtDesc(u).stream().map(mapper::application).toList());
+        out.put("savedJobs", savedJobs.findByUserOrderByCreatedAtDesc(u).stream().map(s -> mapper.job(s.getJob())).toList());
         out.put("notifications", notifications.findByUserOrderByCreatedAtDesc(u).stream().map(mapper::notification).toList());
         out.put("resumeChecks", resumes.findByUser(u).stream()
                 .map(r -> Map.of("filename", r.getFilename(), "track", String.valueOf(r.getTrack()), "score", r.getScore(), "at", r.getCreatedAt().toString()))
@@ -90,6 +93,8 @@ public class PrivacyController {
         notifications.deleteByUser(u);
         results.deleteByUser(u);
         sessions.deleteByUser(u);
+        authTokens.deleteByUser(u);
+        savedJobs.deleteByUser(u);
         apps.deleteByUser(u);
         profiles.deleteByUser(u);
         List<Job> mine = jobs.findByPostedByOrderByCreatedAtDesc(u);   // recruiter: close their jobs, keep candidates' history

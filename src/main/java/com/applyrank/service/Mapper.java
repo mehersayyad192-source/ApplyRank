@@ -25,7 +25,7 @@ public class Mapper {
     }
 
     public UserDto user(User u) {
-        return new UserDto(u.getId(), u.getEmail(), u.getName(), u.getRole().name());
+        return new UserDto(u.getId(), u.getEmail(), u.getName(), u.getRole().name(), u.isEmailVerified());
     }
 
     public static List<String> split(String csv) {

@@ -64,6 +64,8 @@ To print every SQL statement the app runs: `mvn spring-boot:run -Dspring-boot.ru
 - **Role-based access:** `/api/recruiter/**` needs RECRUITER; a recruiter can only touch their OWN jobs' applicants.
 - **Privacy by design:** recruiters see a masked e-mail (`a***@x.com`) until they shortlist the candidate.
 - **User rights:** `GET /api/privacy/export` (download all my data) and `DELETE /api/privacy/account` (password-confirmed erasure incl. resume files).
+- **Password reset & e-mail verification:** one-time links (32 random bytes, only the SHA-256 hash is stored, 30 min / 24 h expiry, single use). `POST /api/auth/forgot-password` always gives the same answer, so e-mails cannot be enumerated. Without SMTP the link is printed in the console (dev mode).
+- **Pagination:** `GET /api/jobs?page=0&size=10` and `/api/notifications?page=0&size=20` (total in `X-Total-Count`).
 - **Audit log:** table `audit_log` (LOGIN_OK/FAIL/LOCKED, REGISTER, DATA_EXPORT, ACCOUNT_DELETED, APPLICATION_STATUS) - never stores passwords or tokens.
 - **Hardening:** security headers (HSTS, no-referrer, CSP frame-ancestors, nosniff, permissions-policy), no stack traces in errors, CORS allow-list, upload type check by magic bytes + 5 MB cap, files saved under random UUID names, SQL-injection-safe (JPA parameter binding).
 
@@ -71,4 +73,6 @@ To print every SQL statement the app runs: `mvn spring-boot:run -Dspring-boot.ru
 - Code-round scores are the fraction of tests passed **reported by the browser** (clamped 0..1). Next step: run submissions server-side (Judge0).
 - Resume score is a transparent keyword/length/metrics heuristic, not AI.
 - Anyone can register as RECRUITER (demo). In production: invite codes or admin approval.
+- Old JWTs stay valid after a password reset until they expire (24 h). Next step: a `tokenVersion` claim.
+- No AI rewrite of resumes (needs a paid LLM API key).
 - Change `app.jwt.secret` before deploying (use an environment variable).

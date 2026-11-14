@@ -20,7 +20,12 @@ public final class Dtos {
                                   @NotBlank @Size(max = 80) String name,
                                   String role) {}
     public record LoginRequest(@NotBlank String email, @NotBlank String password) {}
-    public record UserDto(Long id, String email, String name, String role) {}
+    public record UserDto(Long id, String email, String name, String role, boolean emailVerified) {}
+    public record ForgotRequest(@NotBlank @Email String email) {}
+    public record ResetRequest(@NotBlank String token,
+                               @NotBlank @Size(min = 8, max = 72, message = "Password must be 8-72 characters.")
+                               @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d).+$", message = "Password needs at least one letter and one number.") String password) {}
+    public record VerifyRequest(@NotBlank String token) {}
     public record AuthResponse(String token, UserDto user) {}
 
     // ---------- profile (same field names the frontend profile page already uses) ----------
@@ -65,5 +70,5 @@ public final class Dtos {
 
     // ---------- resume ----------
     public record ResumeAnalysisDto(Long id, String filename, String track, int score, List<String> matched,
-                                    List<String> missing, List<String> tips, String at) {}
+                                    List<String> missing, List<String> tips, String at, String text) {}
 }

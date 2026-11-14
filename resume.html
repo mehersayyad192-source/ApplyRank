@@ -1,0 +1,228 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>ApplyRank - AI Resume Canvas</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="silly-robot.css">
+  <script src="api.js"></script>
+  <script src="resume-builder.js"></script>
+</head>
+<body class="dashboard-body-canvas">
+
+  <!-- 🏛️ FIXED NAVBAR: अब तुम्हारे सारे सेक्शन्स बिल्कुल साफ़ दिखाई देंगे -->
+  <nav class="dashboard-master-navbar">
+    <div class="nav-brand-logo-hub">
+      <span class="nav-logo-text">Apply<span class="purple-text">Rank</span></span>
+    </div>
+
+     <!-- 🏛️ नवबार के बीच वाले बटन्स (jobs.html के अंदर) -->
+    <div class="nav-menu-links-center-row">
+      <a href="#" class="nav-menu-btn" onclick="location.href='dashboard.html'">
+        <span class="material-symbols-outlined nav-icon">home</span>
+        <span class="btn-text">HOME</span>
+      </a>
+      <a href="#" class="nav-menu-btn active-tab" onclick="location.href='jobs.html'">
+        <span class="material-symbols-outlined nav-icon">work</span>
+        <span class="btn-text">JOB CORNER</span>
+      </a>
+      <a href="#" class="nav-menu-btn" onclick="location.href='skilltest.html'">
+        <span class="material-symbols-outlined nav-icon">quiz</span>
+        <span class="btn-text">SKILL TEST</span>
+      </a>
+      <a href="#" class="nav-menu-btn" onclick="location.href='notifications.html'">
+        <span class="material-symbols-outlined nav-icon">notifications</span>
+        <span class="btn-text">NOTIFICATIONS</span>
+      </a>
+    </div>
+
+    <div class="nav-profile-right-zone" style="cursor:pointer" onclick="location.href='profile.html'">
+      <span class="material-symbols-outlined nav-icon">account_circle</span>
+      <span class="profile-name-string">YOUR PROFILE</span>
+    </div>
+  </nav>
+
+  <!-- 🖥️ MAIN CANVAS BODY -->
+  <main class="resume-workspace-container">
+    
+    <div class="resume-header-center">
+      <div class="canvas-micro-badge">✨ AI RESUME CANVAS</div>
+      <h1 class="resume-main-title">Upload & Optimize Resume</h1>
+      <p class="resume-sub-text">Drop your resume and Silly's AI rewrites bullet points, surfaces missing keywords, and scores it against your target role.</p>
+    </div>
+
+    <!-- 🔥 असली सीक्रेट इनपुट: इसे हमने CSS से छुपा कर रखा है, पर यही कंप्यूटर की फाइलें खोलता है -->
+    <input type="file" id="realFileInput" accept=".pdf,.doc,.docx" style="display: none;" onchange="handleRealUserFile(this)" />
+
+    <!-- 📥 STEP 1: TRIGGER ZONE (इसपर क्लिक करते ही कंप्यूटर का बॉक्स खुलेगा) -->
+    <div class="resume-drop-zone-card" id="dropZoneContainer" onclick="openComputerFileExplorer()">
+      <span class="material-symbols-outlined upload-cloud-icon">cloud_upload</span>
+      <h3 class="drop-zone-main-text" id="dropZoneText">Drop your resume here</h3>
+      <p class="drop-zone-sub-text">PDF, DOC, or DOCX - up to 5MB</p>
+    </div>
+
+    <!-- 📊 STEP 2: DYNAMIC USER FILE DETAIL PANEL (यहाँ यूज़र की असली फाइल का नाम दिखेगा!) -->
+    <div class="file-processing-action-bar status-hidden" id="fileActionBar">
+      <div class="file-details-left-hub">
+        <span class="material-symbols-outlined document-text-icon">description</span>
+        <div class="file-meta-strings">
+          <!-- 📍 जादुई आईडी: इसके अंदर खुद यूज़र की फाइल का नाम प्रिंट होगा -->
+          <h4 class="file-name-title" id="uploadedFileName">No file selected</h4>
+          <p class="file-size-status" id="uploadedFileSize">0 KB · ready to optimize</p>
+        </div>
+      </div>
+      <button type="button" class="optimize-trigger-action-btn" onclick="triggerAIOptimization()">
+        <span class="material-symbols-outlined">auto_awesome</span>
+        <span>Optimize with AI</span>
+      </button>
+    </div>
+
+    <!-- 🎉 STEP 3: FINAL AI REPORT SCREEN -->
+    <div class="optimization-result-master-hub status-hidden" id="optimizationResultsBlock">
+      <div class="score-alert-green-card">
+        <span class="material-symbols-outlined score-check-icon">check_circle</span>
+        <div class="score-alert-content-strings">
+          <h3 class="score-main-title-string">Your resume report</h3>
+          <p class="score-sub-summary-string">Checking your file...</p>
+        </div>
+      </div>
+
+      <div class="ai-flaws-detector-box">
+        <h3 class="flaws-panel-header">🚨 Analysis Report: Missing Keywords & Flaws</h3>
+        <ul class="flaws-list-items-group" id="flawsList">
+          <li>Waiting for the check...</li>
+        </ul>
+      </div>
+
+      <div class="action-redirection-button-row">
+        <a href="#" class="download-upgraded-resume-btn" onclick="ApplyRankResume.openBest(); return false;">
+          <span class="material-symbols-outlined">download</span>
+          <span>Download Enhanced Resume (PDF)</span>
+        </a>
+        <button type="button" class="prove-skills-redirect-btn" onclick="navigateToSkills()">
+          <span>Prove it with a Skill Test ➔</span>
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 🦾 JAVASCRIPT REAL-TIME DYNAMIC FILE HANDLER -->
+  <script>
+    function navigateToSkills() {
+  // १. भविष्य में जब हम 'skilltest.html' (Skill Test Page) बना लेंगे, 
+  // तो यह लाइन बिना किसी एरर के यूज़र को सीधे स्किल टेस्ट वाले नए कमरे में भेज देगी!
+  window.location.href = 'skilltest.html';
+}
+
+    // १. जब यूज़र डिब्बे पर क्लिक करेगा, तो यह अदृश्य इनपुट को ट्रिगर करके पीसी का डायलॉग बॉक्स खोलेगा
+    function openComputerFileExplorer() {
+      document.getElementById('realFileInput').click();
+    }
+
+    // २. यूज़र ने पीसी से जो असली फ़ाइल चुनी है, उसका डेटा यहाँ कैप्चर होगा!
+    function handleRealUserFile(inputElement) {
+      if (inputElement.files && inputElement.files[0]) {
+        const userFile = inputElement.files[0]; // असली फ़ाइल को पकड़ना
+        
+        // 📍 जादू: यूज़र की असली फ़ाइल का नाम और साइज़ निकाल कर स्क्रीन पर प्रिंट करना!
+        document.getElementById('uploadedFileName').innerText = userFile.name;
+        
+        // साइज़ को Bytes से KB में बदलना
+        const sizeInKB = Math.round(userFile.size / 1024);
+        document.getElementById('uploadedFileSize').innerText = sizeInKB + " KB · ready to optimize";
+        
+        // डिब्बे का टेक्स्ट बदलना
+        document.getElementById('dropZoneText').innerText = "File uploaded! Click again to change file.";
+        
+        // स्टेप २ वाले डिब्बे को स्क्रीन पर लाइव दिखाना
+        document.getElementById('fileActionBar').classList.remove('status-hidden');
+      }
+    }
+
+    // ३. एआई ऑप्टिमाइज़ेशन का फाइनल ट्रिगर
+    function triggerAIOptimization() {
+      document.getElementById('fileActionBar').classList.add('status-hidden');
+      document.getElementById('optimizationResultsBlock').classList.remove('status-hidden');
+    }
+  </script>
+
+  <script>window.__sbErr=[];window.addEventListener("error",function(e){window.__sbErr.push((e.message||"error")+" ["+String(e.filename||"").split("/").pop()+":"+e.lineno+"]");});</script>
+  <script src="silly-robot.js" onerror="window.__sbMissing=1"></script>
+  <script>
+  /* If silly-robot.js did not load, keep the page working and show WHY (instead of crashing). */
+  if (typeof SillyBot === "undefined") {
+    (function () {
+      var why = window.__sbMissing ? "silly-robot.js was NOT FOUND. Put silly-robot.js in the same folder as this page and check the file name (no spaces or (1))." : "silly-robot.js loaded but has an error: " + (window.__sbErr && window.__sbErr[0] || "unknown") + ". Re-download the latest silly-robot.js.";
+      console.warn("[Silly] " + why);
+      var noop = function () {}, P = function () { return Promise.resolve(); };
+      function bot() { return { el: document.createElement("div"), set: noop, sit: noop, stand: noop, say: P, hush: noop, walkTo: P, hearts: noop, destroy: noop, nextTip: noop }; }
+      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["Silly is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
+      document.addEventListener("DOMContentLoaded", function () {
+        var i = document.getElementById("sbIntro"); if (i) i.remove();
+        var b = document.createElement("div"); b.style.cssText = "position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;background:#7f1d1d;color:#fff;font:600 13px sans-serif;padding:12px 16px;border-radius:12px;box-shadow:0 0 24px rgba(0,0,0,.5)";
+        b.textContent = "Silly could not start. " + why; document.body.appendChild(b);
+      });
+    })();
+  }
+  </script>
+<script>
+(function () {
+  var N = SillyBot.name();
+  var bot = SillyBot.dock({
+    greet: (N ? N + ', ' : '') + 'drop your resume right here, PDF or DOCX. I will take a look 📄',
+    tips: ['Add numbers: "improved speed by 40 percent" beats "improved speed" 📈', 'Keep the keywords from the job description in your resume 🔑', 'A one page resume is best for freshers ✂️'],
+    hovers: { '#dropZoneContainer': 'Click here or drop your file 📂' }
+  });
+  var oh = window.handleRealUserFile;
+  window.handleRealUserFile = function (inp) {
+    oh(inp);
+    if (inp.files && inp.files[0]) { bot.set('sit happy', 1700); bot.say('Got it: ' + inp.files[0].name + ' 👌 Now press Optimize with AI!'); }
+  };
+  var oo = window.triggerAIOptimization, running = false;
+  window.triggerAIOptimization = function () {
+    if (running) return; running = true;
+    var bar = document.getElementById('fileActionBar'); bar.classList.add('sb-scanning');
+    bot.set('sit watch');
+    var steps = ['Wait... your resume is being checked ⏳', 'Scanning your keywords 🔍', 'Checking numbers and links 🔢', 'Calculating your A T S score...'];
+    var i = 0; bot.say(steps[0], { keepState: true, ms: 0, speak: true });
+    var iv = setInterval(function () { i++; if (i < steps.length) bot.say(steps[i], { keepState: true, ms: 0 }); }, 1300);
+    var file = document.getElementById('realFileInput').files[0];
+    var real = (file && window.ApplyRankAPI && ApplyRankAPI.isLoggedIn()) ? ApplyRankAPI.uploadResume(file, 'fullstack').then(function (r) { return r; }, function (e) { return { error: e }; }) : Promise.resolve(null);
+    setTimeout(function () {
+      real.then(function (r) {
+        clearInterval(iv); bar.classList.remove('sb-scanning'); oo(); running = false;
+        var say = '', title = document.querySelector('.score-main-title-string'), sub = document.querySelector('.score-sub-summary-string'), list = document.getElementById('flawsList');
+        function fill(items) { list.innerHTML = ''; items.forEach(function (t) { var li = document.createElement('li'); li.textContent = t; list.appendChild(li); }); }
+        if (r && !r.error) {
+          window.__lastResumeAnalysis = r;
+          try { sessionStorage.setItem('applyrank_resume_ctx', JSON.stringify({ text: r.text, missing: r.missing, matched: r.matched })); } catch (e) {}
+          title.textContent = 'Resume checked \u2014 score ' + r.score + '/100';
+          sub.textContent = (r.matched.length ? 'Found ' + r.matched.length + ' key skills. ' : '') + (r.missing.length ? r.missing.length + ' common keywords are missing.' : 'All key skills found.');
+          fill((r.missing.length ? ['Missing keywords for this track: ' + r.missing.join(', ') + '. Add only the ones you really know.'] : []).concat(r.tips));
+          say = 'Done! Your resume scored ' + r.score + ' out of 100. ' + (r.missing.length ? 'Try adding ' + r.missing.slice(0, 2).join(' and ') + ' if you know them.' : 'Great keywords!') + ' You can also build a fresh resume from your profile.';
+        } else if (r && r.error && !r.error.offline) {
+          title.textContent = 'Could not check this file'; sub.textContent = r.error.message; fill([r.error.message]);
+          say = r.error.message;
+        } else {
+          title.textContent = 'Preview only (not a real check)';
+          sub.textContent = 'The backend is not connected or you are not logged in, so no real score was calculated.';
+          fill(['Start the backend, log in on the home page, then upload again for a real score and missing keywords.']);
+          say = 'I could not reach the server, so this is only a preview. Log in with the backend running for a real score.';
+        }
+        bot.set('sit happy', 1800); bot.say(say, { speak: true });
+      });
+    }, 4800);
+  };
+})();
+</script>
+</body>
+</html>

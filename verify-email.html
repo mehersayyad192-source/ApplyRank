@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify email - ApplyRank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="auth-pages.css"><script src="api.js"></script></head>
+<body class="auth-body"><div class="auth-card"><div class="auth-logo">Apply<span>Rank</span></div>
+<h1>Verifying your email...</h1>
+<div class="auth-msg" id="msg">Please wait.</div>
+<a class="auth-back" href="dashboard.html">Go to dashboard &rarr;</a></div>
+<script>
+var tk = new URLSearchParams(location.search).get('token') || '', msg = document.getElementById('msg'), h = document.querySelector('h1');
+if (!tk) { h.textContent = 'Link incomplete'; msg.className = 'auth-msg err'; msg.textContent = 'Open the link from your email again.'; }
+else ApplyRankAPI.verifyEmail(tk).then(function (r) { h.textContent = 'Email verified'; msg.className = 'auth-msg ok'; msg.textContent = r.message; },
+  function (x) { h.textContent = 'Could not verify'; msg.className = 'auth-msg err'; msg.textContent = x.offline ? 'Backend is not running. Start it first.' : x.message; });
+</script></body></html>

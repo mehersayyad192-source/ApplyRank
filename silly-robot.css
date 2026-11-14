@@ -1,0 +1,138 @@
+ /* ApplyRank — silly-robot.css : Silly the robot (shared on every page). Prefix sb- */
+.sb-actor{position:fixed;z-index:400;pointer-events:none}
+.sb-actor.sb-inline{position:relative;z-index:2}
+.sb-actor .sb-svg{display:block;overflow:visible;pointer-events:auto;cursor:pointer}
+.sb-bubble{position:absolute;width:max-content;max-width:270px;min-width:120px;background:#111a33;border:1px solid rgba(99,102,241,.55);color:#e2e8f0;padding:11px 15px;border-radius:16px;font:600 13.5px/1.55 'Plus Jakarta Sans','Inter',sans-serif;box-shadow:0 0 28px rgba(99,102,241,.3);opacity:0;transform:translateY(8px) scale(.96);transition:opacity .3s,transform .3s;pointer-events:none;z-index:3}
+.sb-bubble.sb-show{opacity:1;transform:none}
+.sb-bubble::after{content:'';position:absolute;width:12px;height:12px;background:#111a33;border-right:1px solid rgba(99,102,241,.55);border-bottom:1px solid rgba(99,102,241,.55);transform:rotate(45deg)}
+.sb-bubble.sb-top{bottom:100%;left:50%;margin-bottom:6px;translate:-50% 0}
+.sb-bubble.sb-top::after{bottom:-7px;left:calc(50% - 6px)}
+.sb-bubble.sb-left{right:92%;bottom:62%}
+.sb-bubble.sb-left::after{right:-7px;bottom:16px;transform:rotate(-45deg)}
+.sb-bubble .sb-caret{display:inline-block;width:7px;height:14px;background:#34d399;margin-left:2px;vertical-align:-2px;animation:sbCaret .7s steps(2) infinite}
+@keyframes sbCaret{50%{opacity:0}}
+/* ---- robot parts ---- */
+.sb-svg g{transform-box:view-box}
+.sb-all{animation:sbFloat 3.2s ease-in-out infinite}
+@keyframes sbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.sb-eye{transform-origin:center;transform-box:fill-box;animation:sbBlink 4.6s infinite}
+@keyframes sbBlink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}
+.sb-look{transition:transform .35s ease}
+.sb-eyes-happy{opacity:0;transition:opacity .2s}
+.sb-eyes-open{transition:opacity .2s}
+.sb-mouth-open{opacity:0;transform-origin:100px 106px;transform-box:view-box}
+.sb-heartA,.sb-heartB{transform-box:fill-box;transform-origin:50% 100%;animation:sbHeart 2.2s ease-in-out infinite}
+.sb-heartB{animation-delay:-1.1s}
+@keyframes sbHeart{0%,100%{transform:rotate(-7deg) scale(1)}50%{transform:rotate(7deg) scale(1.15)}}
+.sb-chest{transform-box:fill-box;transform-origin:center;animation:sbPulse 1.6s ease-in-out infinite}
+@keyframes sbPulse{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.18);opacity:1}}
+.sb-armL,.sb-armR,.sb-legL,.sb-legR,.sb-upper,.sb-legs,.sb-head{transition:transform .45s cubic-bezier(.3,1.3,.5,1)}
+.sb-armL{transform-origin:72px 160px}.sb-armR{transform-origin:128px 160px}
+.sb-legL{transform-origin:84px 214px}.sb-legR{transform-origin:116px 214px}
+.sb-head{transform-origin:100px 140px}
+.sb-minute{transform-origin:62px 197px;transform-box:view-box;animation:sbTick 6s linear infinite}
+@keyframes sbTick{to{transform:rotate(360deg)}}
+.sb-flower-glow{animation:sbGlow 2.4s ease-in-out infinite}
+@keyframes sbGlow{0%,100%{opacity:.5}50%{opacity:1}}
+.sb-zz{opacity:0}
+/* STATE: walk */
+.sb-walk .sb-all{animation:sbBob .38s ease-in-out infinite}
+@keyframes sbBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.sb-walk .sb-legL{animation:sbStepA .76s ease-in-out infinite}
+.sb-walk .sb-legR{animation:sbStepB .76s ease-in-out infinite}
+@keyframes sbStepA{0%,100%{transform:rotate(24deg)}50%{transform:rotate(-24deg)}}
+@keyframes sbStepB{0%,100%{transform:rotate(-24deg)}50%{transform:rotate(24deg)}}
+.sb-walk .sb-armL{animation:sbSwingA .76s ease-in-out infinite}
+@keyframes sbSwingA{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(18deg)}}
+.sb-walk .sb-armR{transform:rotate(-8deg)}
+/* STATE: wave */
+.sb-wave .sb-armL{animation:sbWave .5s ease-in-out infinite alternate}
+@keyframes sbWave{from{transform:rotate(118deg)}to{transform:rotate(150deg)}}
+.sb-wave .sb-head{transform:rotate(4deg)}
+/* STATE: talk */
+.sb-talk .sb-mouth-open{animation:sbTalk .28s ease-in-out infinite alternate}
+.sb-talk .sb-mouth-smile{opacity:0}
+.sb-talk .sb-mouth-open{opacity:1}
+@keyframes sbTalk{from{transform:scaleY(.35)}to{transform:scaleY(1)}}
+.sb-talk .sb-head{animation:sbNod .6s ease-in-out infinite}
+@keyframes sbNod{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+/* STATE: happy */
+.sb-happy .sb-eyes-open{opacity:0}
+.sb-happy .sb-eyes-happy{opacity:1}
+.sb-happy .sb-upper{animation:sbHop .5s ease-in-out 3}
+@keyframes sbHop{0%,100%{transform:translateY(0)}40%{transform:translateY(-22px)}}
+.sb-happy .sb-armR{transform:rotate(-35deg)}
+.sb-happy .sb-armL{transform:rotate(30deg)}
+/* STATE: watch (looks at wrist watch, waiting) */
+.sb-watch .sb-armL{transform:rotate(142deg)}
+.sb-watch .sb-head{transform:rotate(-7deg)}
+.sb-watch .sb-look{transform:translate(-9px,5px)}
+.sb-watch .sb-minute{animation-duration:.9s}
+.sb-watch .sb-watchglow{opacity:1}
+.sb-watchglow{opacity:0;transition:opacity .3s}
+.sb-watch .sb-eye{animation:none}
+.sb-watch .sb-upper{animation:sbTap 1s ease-in-out infinite}
+@keyframes sbTap{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+/* STATE: sit */
+.sb-sit .sb-upper{transform:translateY(24px)}
+.sb-sit .sb-legL{transform:rotate(78deg) translateY(8px)}
+.sb-sit .sb-legR{transform:rotate(-78deg) translateY(8px)}
+.sb-sit .sb-all{animation:sbFloatSit 3.6s ease-in-out infinite}
+@keyframes sbFloatSit{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+/* STATE: shy (eyes closed) */
+.sb-shy .sb-eyes-open{opacity:0}
+.sb-shy .sb-eyes-shy{opacity:1}
+.sb-eyes-shy{opacity:0}
+/* hearts pop */
+.sb-pop{position:fixed;z-index:500;pointer-events:none;font-size:20px;animation:sbPop 1.1s ease-out forwards}
+@keyframes sbPop{from{opacity:1;transform:translateY(0) scale(.6)}to{opacity:0;transform:translateY(-80px) scale(1.3)}}
+/* cursor spotlight */
+.sb-spot{position:fixed;left:0;top:0;width:360px;height:360px;margin:-180px 0 0 -180px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle,rgba(99,102,241,.13),transparent 65%);transition:opacity .3s;opacity:0}
+.sb-spot.sb-on{opacity:1}
+/* face-only (inside a circle) */
+.sb-face{width:100%;height:100%;display:block;border-radius:50%;overflow:hidden}
+.sb-face .sb-all{animation:none}
+@media(max-width:640px){.sb-bubble{max-width:200px;font-size:12.5px}}
+@media(prefers-reduced-motion:reduce){.sb-all,.sb-eye,.sb-heartA,.sb-heartB,.sb-chest,.sb-minute{animation:none!important}.sb-wipe{display:none}}
+/* sit + other combined states (keep the sitting offset while animating) */
+.sb-sit.sb-watch .sb-upper{animation:sbTapSit 1s ease-in-out infinite}
+@keyframes sbTapSit{0%,100%{transform:translateY(24px)}50%{transform:translateY(21px)}}
+.sb-sit.sb-happy .sb-upper{animation:sbHopSit .5s ease-in-out 3}
+@keyframes sbHopSit{0%,100%{transform:translateY(24px)}40%{transform:translateY(4px)}}
+/* "Silly is checking…" sweep on any card/bar */
+.sb-scanning{position:relative;overflow:hidden}
+.sb-scanning::after{content:'';position:absolute;top:0;bottom:0;width:90px;left:-90px;background:linear-gradient(90deg,transparent,rgba(52,211,153,.35),transparent);animation:sbSweep 1s linear infinite;pointer-events:none}
+@keyframes sbSweep{to{left:100%}}
+
+/* voice control */
+.sb-voice{position:fixed;left:14px;bottom:14px;z-index:450;display:flex;align-items:center;gap:6px;background:rgba(13,18,32,.92);border:1px solid #26324f;border-radius:100px;padding:4px 6px;}
+.sb-vbtn{border:none;background:transparent;font-size:16px;cursor:pointer;line-height:1;padding:5px 6px;border-radius:50%}
+.sb-vbtn:hover{background:rgba(99,102,241,.25)}
+.sb-vsel{max-width:150px;background:#080b11;color:#c7d2fe;border:1px solid #26324f;border-radius:100px;font:600 11.5px 'Plus Jakarta Sans',sans-serif;padding:5px 8px;outline:none}
+@media(max-width:640px){.sb-vsel{display:none}}
+
+/* ---------- premium polish (all GPU-friendly: opacity / transform only) ---------- */
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{animation:sbEnter .4s ease both}
+@keyframes sbEnter{from{opacity:0}to{opacity:1}}
+html.sb-leaving body{opacity:0;transition:opacity .22s ease}
+.sb-topbar{position:fixed;left:0;top:0;height:3px;width:0;z-index:9999;background:linear-gradient(90deg,#6366f1,#10b981);box-shadow:0 0 12px rgba(16,185,129,.8);animation:sbBar .24s ease-out forwards}
+@keyframes sbBar{to{width:92%}}
+.sb-rv{opacity:0}
+.sb-rise{animation:sbRise .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes sbRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+::selection{background:rgba(99,102,241,.45);color:#fff}
+*{scrollbar-width:thin;scrollbar-color:#2a3760 transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:#26324f;border-radius:100px;border:2px solid #080b11}
+::-webkit-scrollbar-thumb:hover{background:#6366f1}
+:focus-visible{outline:2px solid #818cf8;outline-offset:3px;border-radius:8px}
+button,a,.utility-action-card,.track-item-cyber-card{transition-property:transform,opacity,background-color,border-color,color,box-shadow;transition-duration:.2s;transition-timing-function:ease}
+button:active{transform:scale(.97)}
+.sb-spot{will-change:transform}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}body{animation:none}.sb-rise{animation:none}.sb-rv{opacity:1}}
+
+.sb-vhint{display:none;font:600 11.5px 'Plus Jakarta Sans',sans-serif;color:#c7d2fe;padding:0 4px 0 8px;white-space:nowrap}
+.sb-voice.sb-hint .sb-vhint{display:inline}
+.sb-voice.sb-hint{border-color:#6366f1;animation:sbHintPulse 1.6s ease-in-out infinite}
+@keyframes sbHintPulse{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.5)}50%{box-shadow:0 0 0 7px rgba(99,102,241,0)}}

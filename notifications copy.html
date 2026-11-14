@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApplyRank - Notifications & Status</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="notifications.css">
+  <link rel="stylesheet" href="silly-robot.css">
+  <script src="api.js"></script>
+</head>
+<body class="dashboard-body-canvas">
+
+  <!-- 🏛️ MASTER GLOBAL NAVBAR -->
+  <nav class="dashboard-master-navbar">
+    <div class="nav-brand-logo-hub">
+      <span class="nav-logo-text">Apply<span class="purple-text">Rank</span></span>
+    </div>
+    <div class="nav-menu-links-center-row">
+      <a href="dashboard.html" class="nav-menu-btn">
+        <span class="material-symbols-outlined nav-icon">home</span>
+        <span class="btn-text">HOME</span>
+      </a>
+      <a href="jobs.html" class="nav-menu-btn">
+        <span class="material-symbols-outlined nav-icon">work</span>
+        <span class="btn-text">JOB CORNER</span>
+      </a>
+      <a href="skilltest.html" class="nav-menu-btn">
+        <span class="material-symbols-outlined nav-icon">quiz</span>
+        <span class="btn-text">SKILL TEST</span>
+      </a>
+      <a href="notifications.html" class="nav-menu-btn active-tab">
+        <span class="material-symbols-outlined nav-icon">notifications</span>
+        <span class="btn-text">NOTIFICATIONS</span>
+        <span class="nt-nav-badge" id="ntNavBadge">0</span>
+      </a>
+    </div>
+    <div class="nav-profile-right-zone" style="cursor:pointer" onclick="location.href='profile.html'">
+      <span class="material-symbols-outlined nav-icon">account_circle</span>
+      <span class="profile-name-string">YOUR PROFILE</span>
+    </div>
+  </nav>
+
+  <main class="nt-wrap">
+
+    <!-- ===== HEADER ===== -->
+    <span class="canvas-micro-badge">🔔 NOTIFICATION &amp; APPLICATION STATUS</span>
+    <h1 class="nt-title">Your application <span>ledger</span></h1>
+    <p class="nt-sub">Track every application in real time. If a door closes, Silly shows you exactly what happened, what you did right, and how to walk through the next one.</p>
+
+    <!-- ===== AI REALITY CHECK ===== -->
+    <section class="nt-reality">
+      <div>
+        <div class="nt-reality-eyebrow">🌍 REALITY CHECK</div>
+        <h2 class="nt-reality-title">AI is trending. <span>That doesn't mean there are no jobs.</span></h2>
+        <p class="nt-reality-text">
+          Roles are changing, not vanishing. Companies still hire people who understand the fundamentals, can build real things,
+          explain their own code, and use AI tools well. That is exactly what your ApplyRank verified rank proves.
+        </p>
+      </div>
+      <div class="nt-reality-card" id="ntRealityCard">
+        <div class="nt-reality-card-label">SILLY SAYS</div>
+        <div class="nt-reality-msg" id="ntRealityMsg"></div>
+        <div class="nt-reality-dots" id="ntRealityDots"></div>
+      </div>
+    </section>
+
+    <!-- ===== STATS ===== -->
+    <section class="nt-stats">
+      <div class="nt-stat"><div class="nt-stat-l">APPLICATIONS</div><div class="nt-stat-v" id="stApps">0</div></div>
+      <div class="nt-stat"><div class="nt-stat-l">UNREAD UPDATES</div><div class="nt-stat-v" id="stUnread">0</div></div>
+      <div class="nt-stat"><div class="nt-stat-l">LESSONS COLLECTED</div><div class="nt-stat-v" id="stLessons">0</div></div>
+      <div class="nt-stat"><div class="nt-stat-l">VERIFIED RANK</div><div class="nt-stat-v"><span id="stRank">0</span><small>/ 100</small></div></div>
+    </section>
+
+    <!-- ===== LEDGER + SILLY CARD ===== -->
+    <section class="nt-grid2">
+      <div class="nt-card nt-ledger">
+        <div class="nt-lhead"><span>ROLE</span><span>COMPANY</span><span>APPLIED</span><span>STATUS</span></div>
+        <div id="ntLedger"></div>
+      </div>
+      <div id="ntSilly"></div>
+    </section>
+
+    <!-- ===== JOURNEY TRACKER ===== -->
+    <section class="nt-card nt-card-pad nt-journey" id="ntJourney"></section>
+
+    <!-- ===== AUTOPSY FLOW (opens on "Scan Profile") ===== -->
+    <section class="nt-flow nt-hidden" id="ntFlow"></section>
+
+    <!-- ===== FEED + EMAIL DECODER ===== -->
+    <section class="nt-grid2b">
+      <div class="nt-card nt-card-pad">
+        <div class="nt-feed-head">
+          <div>
+            <h3 class="nt-h3">Notifications</h3>
+            <p class="nt-h3-sub" style="margin:0">Everything that moved — in one place.</p>
+          </div>
+          <button type="button" class="nt-btn-ghost nt-btn-sm" onclick="markAllRead()">Mark all read</button>
+        </div>
+        <div class="nt-tabs" id="ntTabs" style="margin-bottom:14px"></div>
+        <div class="nt-feed" id="ntFeed"></div>
+      </div>
+
+      <div class="nt-card nt-card-pad" id="ntDecoderCard">
+        <h3 class="nt-h3">📧 Rejection Email Decoder</h3>
+        <p class="nt-h3-sub">Most companies send the same template: “thanks for your interest… best of luck”. Paste yours and Silly will translate what it really means.</p>
+        <textarea class="nt-dec-area" id="ntDecIn" placeholder="Paste the email you received here…" spellcheck="false"></textarea>
+        <div class="nt-dec-actions">
+          <button type="button" class="nt-btn nt-btn-sm" onclick="decodeEmail()">Decode it</button>
+          <button type="button" class="nt-btn-ghost nt-btn-sm" onclick="fillSample()">Use a sample</button>
+        </div>
+        <div class="nt-dec-out" id="ntDecOut"></div>
+      </div>
+    </section>
+
+    <div class="nt-foot">
+      <span>ApplyRank — Learn, level up, build a verified rank.</span>
+      <span>Demo build · sample applications &amp; notifications · your skill-test scores are real</span>
+    </div>
+  </main>
+
+  <!-- 🤖 SILLY ROBOT ANCHOR (same hooks as the Skill Test page) -->
+  <div class="nt-dock">
+    <div class="nt-say" id="ntSay"></div>
+    <div class="silly-face-circle" id="sillyAnchor"></div>
+  </div>
+
+  <script>
+    /* =====================================================================
+       DEMO DATA  (Meher: replace APPS / FEED with data from the Java backend)
+       ===================================================================== */
+    const USER = 'Balaji';
+    const STAGES = ['Applied', 'Resume check', 'Rank check', 'Skill & interview', 'Final decision'];
+    const SKILLS = {
+      frontend: ['React', 'JavaScript', 'CSS', 'HTML'],
+      backend:  ['Java', 'Spring Boot', 'REST APIs', 'SQL'],
+      data:     ['SQL', 'Joins', 'Indexing', 'Data cleaning']
+    };
+    let APPS = [
+      { id: 'a1', role: 'Frontend Dev Consultant', track: 'Frontend Developer', ctc: '₹42 LPA', company: 'Google Inc.', applied: '12 Jul 2026',
+        status: 'closed', stage: 3, needs: ['React', 'TypeScript', 'Testing', 'Performance'], cutoff: { mcq: 30, code: 28, iv: 20 }, rankBar: 80 },
+      { id: 'a2', role: 'Backend Engineer', track: 'Backend Developer', ctc: '₹36 LPA', company: 'Amazon', applied: '28 Jul 2026', status: 'review', stage: 2 },
+      { id: 'a3', role: 'Full-Stack Developer', track: 'Full-Stack Developer', ctc: '₹47 LPA', company: 'Meta', applied: '02 Aug 2026', status: 'review', stage: 1 },
+      { id: 'a4', role: 'UI Engineer', track: 'Frontend Developer', ctc: '₹28 LPA', company: 'Nimbus Labs', applied: '20 Oct 2026', status: 'short', stage: 3, interviewOn: '06 Nov 2026, 11:00 AM' }
+    ];
+    let FEED = [
+      { id: 'f1', type: 'updates', tone: 'updates', icon: 'eco', title: 'Google Inc. closed your application', desc: 'Frontend Dev Consultant · Silly can show you what to sharpen — and what you did right.', time: '2 hours ago', cta: { label: 'Scan profile ›', kind: 'scan', arg: 'a1' } },
+      { id: 'f2', type: 'updates', tone: 'good', icon: 'celebration', title: 'Nimbus Labs shortlisted you 🎉', desc: 'UI Engineer · Interview on 06 Nov, 11:00 AM.', time: '5 hours ago', cta: { label: 'Prep in the Hot Seat ›', kind: 'link', arg: 'skilltest.html' } },
+      { id: 'f3', type: 'rank', tone: 'rank', icon: 'trending_up', title: 'Your verified rank moved up (+3)', desc: 'Nice! Consistent practice is showing.', time: 'Yesterday', cta: { label: 'Improve more ›', kind: 'link', arg: 'skilltest.html' } },
+      { id: 'f4', type: 'jobs', tone: 'jobs', icon: 'work', title: '3 new roles match your rank', desc: 'React Developer, UI Engineer and more are open right now.', time: 'Yesterday', cta: { label: 'View in Job Corner ›', kind: 'link', arg: 'jobs.html' } },
+      { id: 'f5', type: 'updates', tone: 'updates', icon: 'swap_horiz', title: 'Amazon moved you to Rank check', desc: 'Backend Engineer · Your application is still active.', time: '3 days ago', cta: null },
+      { id: 'f6', type: 'jobs', tone: 'jobs', icon: 'alarm', title: 'Deadline tomorrow: Pixelforge', desc: 'Frontend Intern applications close in 24 hours.', time: '3 days ago', cta: { label: 'Open Job Corner ›', kind: 'link', arg: 'jobs.html' } }
+    ];
+    const REALITY = [
+      "Hiring is slower right now — not stopped. Companies are still building products, they just look harder at who can really do the work.",
+      "AI can write code quickly, but someone still has to understand it, test it and own it. Interviews check exactly that — your fundamentals.",
+      "Developers who use AI tools well are valuable. Learning to work with AI is a skill you can build, not a door that closed.",
+      "A “no” is data about one role, one hiring team, one day. It is not a verdict on your career.",
+      "Every verified skill on your ApplyRank profile is proof you can show, not just something you claim.",
+      "Almost every new joiner feels this at the start. You're not behind — you're early in a process that rewards people who keep going."
+    ];
+    const MOODS = {
+      low:  { e: '😞', t: 'Pretty low', s: 'It stings a bit',
+              msg: "That's completely okay — a “no” stings, especially at the start of your career. Hiring is tighter right now and AI has changed what companies ask for. <strong>That's the market talking, not a verdict on you.</strong> Before we look at any numbers, here's a 60-second win to remind you what you can do:" },
+      mid:  { e: '😐', t: 'Okay-ish', s: 'Mixed feelings',
+              msg: "Fair — mixed feelings are normal. Let's look at the facts together, and we'll start with what you did <strong>right</strong>." },
+      high: { e: '🙂', t: 'Ready to improve', s: 'Show me the plan',
+              msg: "Love that energy! 🚀 A rejection is just data. Let's turn this one into a plan." }
+    };
+    const QUICK = { q: 'Which React hook keeps a value between renders AND re-renders the component when it changes?', opts: ['useRef', 'useState', 'useMemo'], a: 1 };
+    const FIT_JOBS = [
+      { role: 'React Developer', co: 'Nimbus Labs', m: 91 },
+      { role: 'UI Engineer', co: 'Pixelforge', m: 88 },
+      { role: 'Frontend Associate', co: 'Brightloop', m: 84 }
+    ];
+    const DECODE_RULES = [
+      { re: /thank(s| you) for (your )?(interest|applying|time)/i, says: '“Thank you for your interest”', means: 'A standard opening line sent to every applicant. Nothing personal here.' },
+      { re: /unfortunately|we regret|regret to inform/i, says: '“Unfortunately / we regret”', means: 'The decision for this opening is final.' },
+      { re: /other candidates|move forward with|moving forward with|not (be )?moving forward|proceed with (other|another)/i, says: '“Move forward with other candidates”', means: 'They picked different people for this one opening — usually about fit, timing or numbers, not your worth.' },
+      { re: /more closely (match|align)|current needs|better (suited|match)/i, says: '“More closely match our needs”', means: 'Stock wording. It never tells you which need you missed.' },
+      { re: /keep (your )?(resume|cv|profile) on file|future (opportunities|openings|roles)/i, says: '“Keep your resume on file”', means: 'Usually generic. If you still like the company, apply to new openings when they appear.' },
+      { re: /best of luck|wish you (the best|all the best|luck|success)/i, says: '“Best of luck”', means: 'A polite goodbye. No feedback inside.' },
+      { re: /position (has been|was) (filled|closed)|role (has been|was) (filled|closed)|no longer (available|open)/i, says: '“Position filled / closed”', means: 'Likely not about you at all — the role simply no longer exists.' }
+    ];
+    const SAMPLE_EMAIL = "Hi " + USER + ",\n\nThank you for your interest in the Frontend role at [Company]. After careful consideration, we have decided to move forward with other candidates whose experience more closely matches our current needs. We will keep your resume on file for future opportunities.\n\nWe wish you the best of luck in your job search.\n\nRegards,\nTalent Team";
+
+    /* =====================================================================
+       HELPERS + STORAGE
+       ===================================================================== */
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    const lsGet = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } };
+    const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+
+    let sel = 'a1';              // selected application
+    let feedFilter = 'all';
+    let F = null;                // autopsy flow state
+    let sayTimer = null;
+    const getApp = (id) => APPS.find(a => a.id === id);
+
+    function getScores() {
+      const r = lsGet('applyrank_last_result', null);
+      if (r && [r.mcq, r.code, r.interview, r.total].every(v => typeof v === 'number'))
+        return { mcq: r.mcq, code: r.code, iv: r.interview, total: r.total, domain: SKILLS[r.domain] ? r.domain : 'frontend', real: true };
+      return { mcq: 28, code: 28, iv: 16, total: 72, domain: 'frontend', real: false };
+    }
+
+    /* 🤖 Silly hooks — same as the Skill Test page */
+    window.sillyReact = function (state, msg) {
+      const el = $('sillyAnchor'); if (!el) return;
+      el.classList.remove('silly-happy', 'silly-sad', 'silly-jump');
+      if (state && state !== 'reset') {
+        void el.offsetWidth; el.classList.add('silly-' + state);
+        if (state === 'jump') setTimeout(() => el.classList.remove('silly-jump'), 700);
+        else setTimeout(() => el.classList.remove('silly-' + state), 2400);
+      }
+      if (msg) {
+        const b = $('ntSay'); b.textContent = msg; b.classList.add('nt-show');
+        clearTimeout(sayTimer); sayTimer = setTimeout(() => b.classList.remove('nt-show'), 3200);
+      }
+    };
+
+    /* =====================================================================
+       REALITY ROTATOR
+       ===================================================================== */
+    let rIdx = 0, rTimer = null;
+    function showReality(i) {
+      rIdx = i;
+      const m = $('ntRealityMsg'); m.style.opacity = 0;
+      setTimeout(() => { m.textContent = REALITY[rIdx]; m.style.opacity = 1; }, 180);
+      $('ntRealityDots').innerHTML = REALITY.map((_, k) => '<button type="button" class="nt-rdot' + (k === rIdx ? ' nt-on' : '') + '" aria-label="Message ' + (k + 1) + '" onclick="showReality(' + k + ')"></button>').join('');
+    }
+    function startReality() { clearInterval(rTimer); rTimer = setInterval(() => showReality((rIdx + 1) % REALITY.length), 7500); }
+
+    /* =====================================================================
+       STATS + NAV BADGE
+       ===================================================================== */
+    const readSet = () => new Set(lsGet('applyrank_read', []));
+    const unreadCount = () => { const r = readSet(); return FEED.filter(f => !r.has(f.id)).length; };
+    function renderStats() {
+      const u = unreadCount();
+      $('stApps').textContent = APPS.length;
+      $('stUnread').textContent = u;
+      $('stLessons').textContent = Object.keys(lsGet('applyrank_lessons', {})).length;
+      $('stRank').textContent = getScores().total;
+      const b = $('ntNavBadge'); b.textContent = u; b.classList.toggle('nt-hidden', u === 0);
+    }
+
+    /* =====================================================================
+       LEDGER + SILLY CARD + JOURNEY
+       ===================================================================== */
+    const PILL = {
+      closed: ['nt-pill-closed', 'eco', 'Closed · lesson inside'],
+      review: ['nt-pill-review', 'hourglass_top', 'In review'],
+      short:  ['nt-pill-short', 'celebration', 'Shortlisted']
+    };
+    function renderLedger() {
+      $('ntLedger').innerHTML = APPS.map(a => {
+        const p = PILL[a.status];
+        return '<button type="button" class="nt-row' + (a.id === sel ? ' nt-sel' : '') + '" onclick="selectApp(\'' + a.id + '\')">' +
+          '<div><div class="nt-role">' + esc(a.role) + '</div><div class="nt-role-sub">' + esc(a.track) + ' · ' + esc(a.ctc) + '</div></div>' +
+          '<div class="nt-company">' + esc(a.company) + '</div>' +
+          '<div class="nt-date">' + esc(a.applied) + '</div>' +
+          '<div class="nt-status-cell"><span class="nt-pill ' + p[0] + '"><span class="material-symbols-outlined">' + p[1] + '</span>' + p[2] + '</span></div>' +
+        '</button>';
+      }).join('');
+    }
+
+    function renderSilly() {
+      const a = getApp(sel); let tone, eyebrow, msg, btns;
+      if (a.status === 'closed') {
+        tone = 'closed'; eyebrow = '⚠ UPDATE · A DOOR CLOSED';
+        msg = USER + ', ' + a.company + ' closed your application. <br>Nothing here says you aren\'t good enough — let\'s find out what to sharpen. Want Silly to audit it?';
+        btns = '<button type="button" class="nt-btn" onclick="startAutopsy(\'' + a.id + '\')">' + (F && F.appId === a.id ? 'Continue the audit' : 'Yes, Scan Profile') + ' <span class="material-symbols-outlined">chevron_right</span></button>' +
+               '<button type="button" class="nt-btn-ghost" onclick="document.getElementById(\'ntDecoderCard\').scrollIntoView({behavior:\'smooth\',block:\'center\'})">Decode the email</button>';
+      } else if (a.status === 'review') {
+        tone = 'review'; eyebrow = '⏳ STILL IN PLAY';
+        msg = a.company + ' is still reviewing your application at <strong>' + esc(STAGES[a.stage]) + '</strong>. That\'s a good sign — it isn\'t an instant “no”. Use the wait to get sharper.';
+        btns = '<button type="button" class="nt-btn" onclick="location.href=\'skilltest.html\'">Practise while you wait <span class="material-symbols-outlined">chevron_right</span></button>';
+      } else {
+        tone = 'short'; eyebrow = '🎉 SHORTLISTED';
+        msg = 'Big one, ' + USER + '! ' + a.company + ' shortlisted you. Your interview is on <strong>' + esc(a.interviewOn) + '</strong>. Let\'s rehearse in the Hot Seat.';
+        btns = '<button type="button" class="nt-btn-green" onclick="location.href=\'skilltest.html\'">Rehearse with Silly <span class="material-symbols-outlined">mic</span></button>';
+      }
+      $('ntSilly').innerHTML = '<div class="nt-silly nt-tone-' + tone + ' nt-fade"><div class="nt-silly-top"><div class="nt-avatar"><span class="material-symbols-outlined">smart_toy</span></div>' +
+        '<div><div class="nt-eyebrow">' + eyebrow + '</div><div class="nt-silly-msg">' + msg + '</div></div></div><div class="nt-silly-btns">' + btns + '</div></div>';
+    }
+
+    function renderJourney() {
+      const a = getApp(sel);
+      const steps = STAGES.map((n, i) => {
+        let c = '', tag = '', inner = '<b>' + (i + 1) + '</b>';
+        if (i < a.stage) { c = 'nt-done'; tag = 'CLEARED'; inner = '<span class="material-symbols-outlined">check</span>'; }
+        else if (i === a.stage) {
+          if (a.status === 'closed') { c = 'nt-stop'; tag = 'STOPPED HERE'; inner = '<span class="material-symbols-outlined">flag</span>'; }
+          else if (a.status === 'short') { c = 'nt-win'; tag = 'YOU ARE HERE'; inner = '<span class="material-symbols-outlined">star</span>'; }
+          else { c = 'nt-now'; tag = 'IN PROGRESS'; inner = '<span class="material-symbols-outlined">hourglass_top</span>'; }
+        }
+        return '<div class="nt-step ' + c + '"><div class="nt-dot">' + inner + '</div><div class="nt-step-name">' + esc(n) + (tag ? '<span class="nt-step-tag">' + tag + '</span>' : '') + '</div></div>';
+      }).join('');
+      let note;
+      if (a.status === 'closed') note = 'You cleared <strong>' + a.stage + ' of 5 stages</strong> (' + STAGES.slice(0, a.stage).join(', ') + '). That is real progress — the round to sharpen is <strong>' + esc(STAGES[a.stage]) + '</strong>.';
+      else if (a.status === 'review') note = 'Your application is at <strong>' + esc(STAGES[a.stage]) + '</strong>. Hiring teams often take a while between stages — silence isn\'t a “no”.';
+      else note = 'You\'re through <strong>' + a.stage + ' stages</strong>. Interview on <strong>' + esc(a.interviewOn) + '</strong>. Practise in Silly\'s Hot Seat to walk in confident.';
+      $('ntJourney').innerHTML = '<h3 class="nt-h3">🧭 Journey · ' + esc(a.role) + ' @ ' + esc(a.company) + '</h3><p class="nt-h3-sub">See exactly how far you got — not just the final result.</p>' +
+        '<div class="nt-steps">' + steps + '</div><div class="nt-journey-note">' + note + '</div>';
+    }
+
+    function selectApp(id) { sel = id; renderLedger(); renderSilly(); renderJourney(); }
+
+    /* =====================================================================
+       AUTOPSY FLOW:  1 Check-in → 2 Scan → 3 Autopsy → 4 Comeback plan
+       ===================================================================== */
+    const FLOW_STEPS = ['Check-in', 'Scan', 'Autopsy', 'Comeback plan'];
+
+    function startAutopsy(id) {
+      if (F) F.timers.forEach(clearTimeout);
+      selectApp(id);
+      F = { appId: id, step: 0, mood: null, quick: null, timers: [] };
+      $('ntFlow').classList.remove('nt-hidden');
+      renderFlow();
+      $('ntFlow').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.sillyReact('jump', "I'm with you. Let's look at this together 💙");
+      renderSilly();
+    }
+    function closeFlow() {
+      if (F) F.timers.forEach(clearTimeout);
+      F = null; $('ntFlow').classList.add('nt-hidden'); renderSilly();
+    }
+
+    function flowFrame(body) {
+      const a = getApp(F.appId);
+      const steps = FLOW_STEPS.map((n, i) => '<span class="nt-fstep' + (i === F.step ? ' nt-on' : i < F.step ? ' nt-ok' : '') + '"><i>' + (i < F.step ? '✓' : i + 1) + '</i>' + n + '</span>').join('');
+      return '<div class="nt-flow-head"><h3 class="nt-flow-title">Silly\'s audit · <span>' + esc(a.role) + ' @ ' + esc(a.company) + '</span></h3>' +
+        '<button type="button" class="nt-close" onclick="closeFlow()">Close</button></div><div class="nt-fsteps">' + steps + '</div>' + body;
+    }
+    const sillyBubble = (html) => '<div class="nt-bubble"><div class="nt-avatar"><span class="material-symbols-outlined">smart_toy</span></div><div class="nt-bubble-text">' + html + '</div></div>';
+
+    function renderFlow() {
+      if (!F) return;
+      let body = '';
+      if (F.step === 0) body = stepCheckin();
+      else if (F.step === 1) body = stepScan();
+      else if (F.step === 2) body = stepReport();
+      else body = stepPlan();
+      $('ntFlow').innerHTML = flowFrame(body);
+      if (F.step === 1) runScan();
+      if (F.step === 2) setTimeout(() => document.querySelectorAll('#ntFlow .nt-fill').forEach(el => el.style.width = el.dataset.w + '%'), 120);
+    }
+
+    /* ---- step 0: mood check-in ---- */
+    function stepCheckin() {
+      let h = sillyBubble('Before we look at any numbers — <strong>how are you feeling</strong> about this one, ' + esc(USER) + '? Be honest, there\'s no wrong answer.');
+      h += '<div class="nt-moods">' + Object.keys(MOODS).map(k => '<button type="button" class="nt-mood' + (F.mood === k ? ' nt-picked' : '') + '" onclick="pickMood(\'' + k + '\')"><span class="nt-mood-e">' + MOODS[k].e + '</span><span class="nt-mood-t">' + MOODS[k].t + '</span><span class="nt-mood-s">' + MOODS[k].s + '</span></button>').join('') + '</div>';
+      if (F.mood) {
+        h += '<div style="margin-top:18px">' + sillyBubble(MOODS[F.mood].msg) + '</div>';
+        if (F.mood === 'low') {
+          h += '<div class="nt-quick"><div class="nt-quick-label">⚡ 60-SECOND WIN</div><div class="nt-quick-q">' + esc(QUICK.q) + '</div><div class="nt-quick-opts">' +
+            QUICK.opts.map((o, i) => {
+              let c = 'nt-qopt';
+              if (F.quick !== null) { if (i === QUICK.a) c += ' nt-good'; else if (i === F.quick) c += ' nt-bad'; }
+              return '<button type="button" class="' + c + '" ' + (F.quick !== null ? 'disabled' : '') + ' onclick="answerQuick(' + i + ')">' + esc(o) + '</button>';
+            }).join('') + '</div>' +
+            (F.quick !== null ? '<p style="margin:12px 0 0;font-size:13.5px;color:' + (F.quick === QUICK.a ? '#34d399' : '#fcd34d') + '">' + (F.quick === QUICK.a ? '✔ Correct! +10 XP — you clearly still know your stuff 💪' : 'Close! It\'s useState — a state change is what triggers a re-render. You know more than you think.') + '</p>' : '') + '</div>';
+        }
+        const lock = F.mood === 'low' && F.quick === null;
+        h += '<button type="button" class="nt-btn" ' + (lock ? 'disabled' : '') + ' onclick="goStep(1)">Scan my profile <span class="material-symbols-outlined">chevron_right</span></button>' +
+             (lock ? '<span style="margin-left:12px;font-size:12px;color:#64748b">Answer the quick one first</span>' : '');
+      }
+      return h;
+    }
+    function pickMood(k) { F.mood = k; F.quick = null; renderFlow(); window.sillyReact(k === 'low' ? 'sad' : 'jump', k === 'low' ? "It's okay. I've got you 💙" : 'Great, let\'s go!'); }
+    function answerQuick(i) { F.quick = i; renderFlow(); window.sillyReact(i === QUICK.a ? 'happy' : 'jump', i === QUICK.a ? '+10 XP! 🎉' : 'So close!'); }
+    function goStep(n) { F.timers.forEach(clearTimeout); F.timers = []; F.step = n; renderFlow(); $('ntFlow').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+
+    /* ---- step 1: scan animation ---- */
+    const SCAN_LINES = ['Looking for what went RIGHT first…', 'Reading your verified rank and round scores…', 'Comparing them with what this role asks for…', 'Separating fixable gaps from things outside your control…'];
+    function stepScan() {
+      return sillyBubble('Scanning now. I always start with what <strong>went well</strong> — then the gaps, then a plan.') +
+        '<div class="nt-scan">' + SCAN_LINES.map((l, i) => '<div class="nt-scan-line" id="scanL' + i + '"><span class="nt-tick">✓</span>' + esc(l) + '</div>').join('') + '</div><div class="nt-scan-bar"><div id="scanBar"></div></div>';
+    }
+    function runScan() {
+      SCAN_LINES.forEach((_, i) => {
+        F.timers.push(setTimeout(() => {
+          const el = $('scanL' + i); if (!el) return;
+          el.classList.add('nt-run');
+          if (i > 0) { const p = $('scanL' + (i - 1)); if (p) { p.classList.remove('nt-run'); p.classList.add('nt-fin'); } }
+          $('scanBar').style.width = Math.round(((i + 1) / SCAN_LINES.length) * 90) + '%';
+        }, i * 750));
+      });
+      F.timers.push(setTimeout(() => {
+        const p = $('scanL' + (SCAN_LINES.length - 1)); if (p) { p.classList.remove('nt-run'); p.classList.add('nt-fin'); }
+        if ($('scanBar')) $('scanBar').style.width = '100%';
+      }, SCAN_LINES.length * 750));
+      F.timers.push(setTimeout(() => { if (F) goStep(2); }, SCAN_LINES.length * 750 + 500));
+    }
+
+    /* ---- step 2: the autopsy report ---- */
+    function computeReport(a) {
+      const sc = getScores();
+      const rounds = [
+        { name: 'Brain Check (MCQ)', max: 40, v: sc.mcq, cut: a.cutoff.mcq, color: '#6366f1' },
+        { name: 'Code Lab', max: 35, v: sc.code, cut: a.cutoff.code, color: '#10b981' },
+        { name: "Silly's Hot Seat (Interview)", max: 25, v: sc.iv, cut: a.cutoff.iv, color: '#f59e0b' }
+      ];
+      rounds.forEach(r => r.gap = r.cut - r.v);
+      const weakest = rounds.filter(r => r.gap > 0).sort((x, y) => y.gap - x.gap)[0] || null;
+      const have = SKILLS[sc.domain].map(s => s.toLowerCase());
+      const matched = a.needs.filter(n => have.includes(n.toLowerCase()));
+      const missing = a.needs.filter(n => !have.includes(n.toLowerCase()));
+      const reasons = [];
+      if (weakest) reasons.push({ fix: true, text: '<strong>' + esc(weakest.name) + '</strong> was ' + weakest.gap + ' point' + (weakest.gap > 1 ? 's' : '') + ' under the typical bar for this role. Small gap, very trainable.', w: weakest.gap });
+      if (missing.length) reasons.push({ fix: true, text: '<strong>' + esc(missing.join(', ')) + '</strong> ' + (missing.length > 1 ? 'are' : 'is') + ' asked for in this role but not in your verified skills yet.', w: missing.length * 2 });
+      if (sc.total < a.rankBar) reasons.push({ fix: true, text: 'Your verified rank (' + sc.total + ') was below the usual shortlist range for this role (around ' + a.rankBar + ').', w: (a.rankBar - sc.total) / 2 });
+      reasons.sort((x, y) => y.w - x.w);
+      reasons.push({ fix: false, text: 'Top-tier roles attract a huge number of applicants, so strong candidates are often closed out on timing or fit alone. <strong>This part isn\'t about you.</strong>', w: 0 });
+      return { sc, rounds, weakest, matched, missing, reasons };
+    }
+
+    function stepReport() {
+      const a = getApp(F.appId), R = computeReport(a);
+      // remember the lesson
+      const les = lsGet('applyrank_lessons', {}); if (!les[a.id]) { les[a.id] = true; lsSet('applyrank_lessons', les); renderStats(); }
+
+      const goods = [];
+      goods.push('You cleared <b>' + a.stage + ' of 5 stages</b> — Resume check and Rank check included. Many applicants don\'t get this far.');
+      R.rounds.filter(r => r.gap <= 0).forEach(r => goods.push('<b>' + esc(r.name) + ': ' + r.v + '/' + r.max + '</b> — at or above the typical bar for this role 💪'));
+      if (R.matched.length) goods.push('Verified skills that match the job: <b>' + esc(R.matched.join(', ')) + '</b>.');
+      if (goods.length < 3) goods.push('You\'ve already built a verified rank of <b>' + R.sc.total + '</b> — proof you can show recruiters.');
+
+      const bars = R.rounds.map(r => {
+        const note = r.gap <= 0 ? '<div class="nt-bar-note nt-up">✔ Above the bar by ' + Math.abs(r.gap) + ' pt' + (Math.abs(r.gap) === 1 ? '' : 's') + '</div>' : '<div class="nt-bar-note nt-dn">▲ ' + r.gap + ' point' + (r.gap > 1 ? 's' : '') + ' to reach the typical bar' + (R.weakest === r ? ' — your closest miss' : '') + '</div>';
+        return '<div><div class="nt-bar-top"><span>' + esc(r.name) + '</span><span>you ' + r.v + ' · bar ' + r.cut + ' · max ' + r.max + '</span></div>' +
+          '<div class="nt-track"><div class="nt-fill" data-w="' + Math.round(r.v / r.max * 100) + '" style="background:' + r.color + '"></div><div class="nt-cut" style="left:calc(' + Math.round(r.cut / r.max * 100) + '% - 1px)"></div></div>' + note + '</div>';
+      }).join('');
+
+      return '<div class="nt-rep">' +
+        '<div class="nt-rep-card nt-rep-good"><h4>🌟 What went right</h4><p class="nt-rep-sub">Always first — because it\'s true.</p><div class="nt-goods">' + goods.map(g => '<div class="nt-goodline"><span>✔</span><span>' + g + '</span></div>').join('') + '</div></div>' +
+        '<div class="nt-rep-card"><h4>🧩 Skills vs this role</h4><p class="nt-rep-sub">What ' + esc(a.company) + ' asked for compared with your verified skills.</p><div class="nt-chips">' +
+          '<span class="nt-chip-lbl">YOU HAVE</span>' + (R.matched.length ? R.matched.map(s => '<span class="nt-chip nt-chip-have">✔ ' + esc(s) + '</span>').join('') : '<span style="font-size:13px;color:#64748b">Nothing matched yet — that\'s what the plan is for.</span>') +
+          (R.missing.length ? '<span class="nt-chip-lbl">TO LEARN NEXT</span>' + R.missing.map(s => '<span class="nt-chip nt-chip-miss">+ ' + esc(s) + '</span>').join('') : '') + '</div></div>' +
+        '<div class="nt-rep-card"><h4>📊 Round by round</h4><p class="nt-rep-sub">' + (R.sc.real ? 'Using your latest real Skill Test scores.' : 'Sample scores — take the Skill Test and these become your real ones.') + ' The white marker is the typical bar for this role.</p><div class="nt-bars">' + bars + '</div></div>' +
+        '<div class="nt-rep-card"><h4>🔎 Likely reasons</h4><span class="nt-estimate">⚠ SILLY\'S ESTIMATE, NOT THE COMPANY\'S WORDS</span><p class="nt-rep-sub">Companies rarely share the real reason, so this compares your verified data with the role. Green = you can change it. Grey = out of your hands.</p><div class="nt-reasons">' +
+          R.reasons.map(r => '<div class="nt-reason"><span class="nt-reason-tag ' + (r.fix ? 'nt-tag-fix' : 'nt-tag-out') + '">' + (r.fix ? 'FIXABLE' : 'NOT IN YOUR CONTROL') + '</span><span>' + r.text + '</span></div>').join('') + '</div></div>' +
+        '<div><button type="button" class="nt-btn" onclick="goStep(3)">Build my comeback plan <span class="material-symbols-outlined">chevron_right</span></button></div></div>';
+    }
+
+    /* ---- step 3: comeback plan ---- */
+    const planKey = (id) => 'applyrank_plan_' + id;
+    const loadPlan = (id) => { const p = lsGet(planKey(id), [false, false, false]); return Array.isArray(p) && p.length === 3 ? p : [false, false, false]; };
+
+    function planItems(a, R) {
+      return [
+        { day: 'DAY 1–2', t: R.weakest ? 'Re-take your weakest round: ' + R.weakest.name : 'Re-take the Skill Test to lift your rank', d: R.weakest ? 'You were ' + R.weakest.gap + ' pts under the bar here. Short, focused practice closes this fastest.' : 'A fresh score keeps your verified rank current for recruiters.', href: 'skilltest.html', cta: 'Open Skill Test' },
+        { day: 'DAY 3–4', t: R.missing.length ? 'Close the gap: ' + R.missing.slice(0, 2).join(' + ') : 'Polish your resume keywords', d: 'Practise first, then add it to your resume — Silly\'s resume scan shows exactly which keywords are missing.', href: 'resume.html', cta: 'Open AI Resume' },
+        { day: 'DAY 5–7', t: 'Apply to 3 better-fit roles', d: 'Roles where your current rank already meets the bar. Momentum beats waiting.', href: 'jobs.html', cta: 'Browse Job Corner' }
+      ];
+    }
+
+    function trendSvg(rank, goal) {
+      const vals = [58, 64, 69, rank], labs = ['Jul', 'Aug', 'Sep', 'Now'];
+      const X = (i) => 34 + i * (260 / 4), Y = (v) => 118 - ((v - 40) / 60) * 100;
+      const pts = vals.map((v, i) => X(i) + ',' + Y(v)).join(' ');
+      let s = '<svg viewBox="0 0 320 150" role="img" aria-label="Verified rank trend"><defs><linearGradient id="ntTg" x1="0" x2="1"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#10b981"/></linearGradient></defs>';
+      s += '<line x1="34" x2="294" y1="' + Y(goal) + '" y2="' + Y(goal) + '" stroke="#34d399" stroke-width="1" stroke-dasharray="4 4" opacity=".6"/><text x="294" y="' + (Y(goal) - 6) + '" text-anchor="end" fill="#34d399" font-size="10" font-weight="700">Goal ' + goal + '</text>';
+      s += '<polyline points="' + pts + '" fill="none" stroke="url(#ntTg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';
+      s += '<line x1="' + X(3) + '" y1="' + Y(rank) + '" x2="' + X(4) + '" y2="' + Y(goal) + '" stroke="#818cf8" stroke-width="2" stroke-dasharray="4 4"/><circle cx="' + X(4) + '" cy="' + Y(goal) + '" r="5" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="3 2"/>';
+      vals.forEach((v, i) => { s += '<circle cx="' + X(i) + '" cy="' + Y(v) + '" r="5" fill="#0d1220" stroke="' + (i === 3 ? '#34d399' : '#6366f1') + '" stroke-width="2.5"/><text x="' + X(i) + '" y="' + (Y(v) - 10) + '" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="700">' + v + '</text><text x="' + X(i) + '" y="142" text-anchor="middle" fill="#64748b" font-size="10">' + labs[i] + '</text>'; });
+      s += '<text x="' + X(4) + '" y="142" text-anchor="middle" fill="#64748b" font-size="10">Plan</text></svg>';
+      return s;
+    }
+
+    function stepPlan() {
+      const a = getApp(F.appId), R = computeReport(a), plan = loadPlan(a.id), items = planItems(a, R);
+      const done = plan.filter(Boolean).length;
+      const goal = Math.max(80, Math.ceil((R.sc.total + 5) / 5) * 5);
+      const got = done >= 2;
+      return sillyBubble('Here\'s your <strong>7-day comeback plan</strong>. Three small steps — tick them off as you go. You don\'t need to do it all today.') +
+        '<div class="nt-plan">' + items.map((it, i) =>
+          '<div class="nt-plan-item' + (plan[i] ? ' nt-checked' : '') + '"><button type="button" class="nt-check" aria-label="Mark step done" onclick="togglePlan(' + i + ')">✓</button><div class="nt-plan-body"><div class="nt-plan-day">' + it.day + '</div><div class="nt-plan-t">' + esc(it.t) + '</div><div class="nt-plan-d">' + esc(it.d) + '</div>' +
+          '<button type="button" class="nt-btn-ghost nt-btn-sm" onclick="location.href=\'' + it.href + '\'">' + it.cta + ' ›</button></div></div>').join('') + '</div>' +
+        '<h4 style="margin:22px 0 0;font-size:15px;font-weight:800">🎯 Better-fit roles right now</h4><div class="nt-fit">' +
+          FIT_JOBS.map(j => '<div class="nt-fit-card"><div class="nt-fit-role">' + esc(j.role) + '</div><div class="nt-fit-co">' + esc(j.co) + '</div><div class="nt-fit-m"><div><i style="width:' + j.m + '%"></i></div>' + j.m + '% match</div></div>').join('') + '</div>' +
+        '<div class="nt-comeback"><div class="nt-trend"><div class="nt-h3" style="font-size:14px">📈 Your verified rank</div>' + trendSvg(R.sc.total, goal) +
+          '<div class="nt-trend-cap">You\'re at <strong style="color:#fff">' + R.sc.total + '</strong>. Finishing this plan puts you on track toward <strong style="color:#34d399">' + goal + '</strong>.</div></div>' +
+        '<div class="nt-unlock' + (got ? ' nt-got' : '') + '"><div class="nt-unlock-e">' + (got ? '🔥' : '🔒') + '</div><div class="nt-unlock-t">' + (got ? 'Comeback Kid unlocked!' : 'Comeback Kid badge') + '</div><div class="nt-unlock-s">' + (got ? 'You turned a “no” into action. That\'s exactly what gets people hired.' : 'Complete 2 of 3 steps (' + done + '/3 so far) to earn it.') + '</div></div></div>' +
+        '<div style="margin-top:20px"><button type="button" class="nt-btn-ghost" onclick="goStep(2)">‹ Back to the report</button></div>';
+    }
+
+    function togglePlan(i) {
+      const p = loadPlan(F.appId), before = p.filter(Boolean).length;
+      p[i] = !p[i]; lsSet(planKey(F.appId), p);
+      const after = p.filter(Boolean).length;
+      renderFlow();
+      if (after >= 2 && before < 2) window.sillyReact('happy', '🔥 Comeback Kid unlocked!');
+      else if (p[i]) window.sillyReact('happy', 'Step done! Keep going 💪');
+    }
+
+    /* =====================================================================
+       FEED
+       ===================================================================== */
+    const FEED_TABS = [['all', 'All'], ['updates', 'Updates'], ['rank', 'Rank'], ['jobs', 'Jobs']];
+    function renderFeed() {
+      const read = readSet();
+      $('ntTabs').innerHTML = FEED_TABS.map(([k, n]) => {
+        const c = FEED.filter(f => k === 'all' || f.type === k).filter(f => !read.has(f.id)).length;
+        return '<button type="button" class="nt-tab' + (feedFilter === k ? ' nt-on' : '') + '" onclick="setFilter(\'' + k + '\')">' + n + (c ? '<span class="nt-tab-n">' + c + '</span>' : '') + '</button>';
+      }).join('');
+      const list = FEED.filter(f => feedFilter === 'all' || f.type === feedFilter);
+      $('ntFeed').innerHTML = list.length ? list.map(f => {
+        const tone = f.tone === 'good' ? 'nt-ic-good' : f.tone === 'rank' ? 'nt-ic-rank' : f.tone === 'jobs' ? 'nt-ic-jobs' : 'nt-ic-updates';
+        return '<div class="nt-fi' + (read.has(f.id) ? '' : ' nt-unread') + '" onclick="readOne(\'' + f.id + '\')"><div class="nt-fi-ic ' + tone + '"><span class="material-symbols-outlined">' + f.icon + '</span></div>' +
+          '<div class="nt-fi-body"><div class="nt-fi-t">' + esc(f.title) + '</div><div class="nt-fi-d">' + esc(f.desc) + '</div><div class="nt-fi-foot"><span class="nt-fi-time">' + esc(f.time) + '</span>' +
+          (f.cta ? '<button type="button" class="nt-fi-cta" onclick="event.stopPropagation();feedAction(\'' + f.id + '\')">' + esc(f.cta.label) + '</button>' : '') + '</div></div></div>';
+      }).join('') : '<div class="nt-empty">Nothing here yet — you\'re all caught up ✨</div>';
+    }
+    function setFilter(k) { feedFilter = k; renderFeed(); }
+    function readOne(id) { const r = readSet(); if (!r.has(id)) { r.add(id); lsSet('applyrank_read', [...r]); renderFeed(); renderStats(); } }
+    function markAllRead() { lsSet('applyrank_read', FEED.map(f => f.id)); renderFeed(); renderStats(); window.sillyReact('happy', 'All caught up ✨'); }
+    function feedAction(id) {
+      const f = FEED.find(x => x.id === id); readOne(id);
+      if (f.cta.kind === 'scan') startAutopsy(f.cta.arg);
+      else location.href = f.cta.arg;
+    }
+
+    /* =====================================================================
+       REJECTION EMAIL DECODER
+       ===================================================================== */
+    function fillSample() { $('ntDecIn').value = SAMPLE_EMAIL; decodeEmail(); }
+    function decodeEmail() {
+      const text = $('ntDecIn').value.trim(), out = $('ntDecOut');
+      if (!text) { out.innerHTML = '<div class="nt-verdict nt-v-none"><strong>Paste an email first</strong>Or tap “Use a sample” to see how the decoder works.</div>'; return; }
+      const hits = DECODE_RULES.filter(r => r.re.test(text));
+      const personal = /feedback|we noticed|lacked|lack of|improve|recommend|specifically|your (portfolio|project|code|interview|answer)/i.test(text);
+      let verdict;
+      if (personal) verdict = '<div class="nt-verdict nt-v-personal"><strong>✨ This email looks personalised</strong>It seems to mention specifics about you. Read it slowly — real feedback is rare and valuable. Save it and share it with Silly.</div>';
+      else if (hits.length >= 2) verdict = '<div class="nt-verdict nt-v-tpl"><strong>📄 Template rejection detected (' + hits.length + ' standard phrases)</strong>This is the same message sent to many applicants. It contains <u>no</u> information about your skills — so it can\'t tell you that you\'re bad at anything.</div>';
+      else if (hits.length === 1) verdict = '<div class="nt-verdict nt-v-tpl"><strong>📄 Probably a template</strong>Only one standard phrase found, but there is no personal feedback in it either.</div>';
+      else verdict = '<div class="nt-verdict nt-v-none"><strong>No standard rejection phrases found</strong>This may not be a rejection, or it\'s written in an unusual way. Silly can still scan the application for you.</div>';
+      let h = verdict;
+      if (hits.length) h += '<div class="nt-dec-list">' + hits.map(r => '<div class="nt-dec-row"><b>' + esc(r.says) + '</b>' + esc(r.means) + '</div>').join('') + '</div>';
+      h += '<div class="nt-not"><strong>What this email does NOT say:</strong> anything about your rank, your code, your interview answers or your potential. For a data-based view of what to improve, use <em>Scan Profile</em> on the application.</div>';
+      out.innerHTML = h;
+      window.sillyReact('jump', hits.length >= 2 && !personal ? 'Template email — not about you 💙' : 'Decoded!');
+    }
+
+    /* =====================================================================
+       INIT
+       ===================================================================== */
+    renderStats(); renderLedger(); renderSilly(); renderJourney(); renderFeed();
+
+    /* ---- Backend data (falls back to the demo data above when the API is offline / not logged in) ---- */
+    (function () {
+      if (!(window.ApplyRankAPI && ApplyRankAPI.isLoggedIn())) return;
+      const TRACK = { frontend: 'Frontend Developer', backend: 'Backend Developer', data: 'Data Analyst', fullstack: 'Full-Stack Developer' };
+      const ST = { IN_REVIEW: 'review', SHORTLISTED: 'short', CLOSED: 'closed', HIRED: 'short' };
+      const ICON = { updates: 'swap_horiz', rank: 'trending_up', jobs: 'work' };
+      const ago = (iso) => { const m = Math.max(1, Math.round((Date.now() - new Date(iso)) / 60000)); return m < 60 ? m + ' min ago' : m < 1440 ? Math.round(m / 60) + ' hours ago' : Math.round(m / 1440) + ' days ago'; };
+      Promise.all([ApplyRankAPI.applications(), ApplyRankAPI.notifications()]).then(([apps, notes]) => {
+        APPS = apps.map(a => ({
+          id: 'a' + a.id, role: a.job.title, track: TRACK[a.job.track] || 'Developer', ctc: a.job.ctc || '', company: a.job.company,
+          applied: new Date(a.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+          status: ST[a.outcome] || 'review', stage: a.stage, interviewOn: a.interviewOn || undefined,
+          needs: a.job.requirements, rankBar: a.job.minRank || 40,
+          cutoff: { mcq: Math.round(40 * (a.job.minRank || 40) / 100), code: Math.round(35 * (a.job.minRank || 40) / 100), iv: Math.round(25 * (a.job.minRank || 40) / 100) }
+        }));
+        FEED = notes.map(n => ({
+          id: 'n' + n.id, type: n.category, tone: n.category, icon: ICON[n.category] || 'notifications', title: n.title,
+          desc: n.description || '', time: ago(n.at), cta: n.cta ? { label: n.cta.label + ' ›', kind: n.cta.kind, arg: n.cta.arg } : null
+        }));
+        lsSet('applyrank_read', notes.filter(n => n.read).map(n => 'n' + n.id));
+        if (APPS.length) sel = APPS[0].id;
+        renderStats(); renderLedger(); renderSilly(); renderJourney(); renderFeed();
+      }).catch(() => {});
+      const _ro = readOne; readOne = function (id) { _ro(id); if (/^n\d+$/.test(id)) ApplyRankAPI.markRead(id.slice(1)).catch(() => {}); };
+      const _ma = markAllRead; markAllRead = function () { _ma(); ApplyRankAPI.markAllRead().catch(() => {}); };
+    })();
+    showReality(0); startReality();
+    $('ntRealityCard').addEventListener('mouseenter', () => clearInterval(rTimer));
+    $('ntRealityCard').addEventListener('mouseleave', startReality);
+  </script>
+  <script>window.__sbErr=[];window.addEventListener("error",function(e){window.__sbErr.push((e.message||"error")+" ["+String(e.filename||"").split("/").pop()+":"+e.lineno+"]");});</script>
+  <script src="silly-robot.js" onerror="window.__sbMissing=1"></script>
+  <script>
+  /* If silly-robot.js did not load, keep the page working and show WHY (instead of crashing). */
+  if (typeof SillyBot === "undefined") {
+    (function () {
+      var why = window.__sbMissing ? "silly-robot.js was NOT FOUND. Put silly-robot.js in the same folder as this page and check the file name (no spaces or (1))." : "silly-robot.js loaded but has an error: " + (window.__sbErr && window.__sbErr[0] || "unknown") + ". Re-download the latest silly-robot.js.";
+      console.warn("[Silly] " + why);
+      var noop = function () {}, P = function () { return Promise.resolve(); };
+      function bot() { return { el: document.createElement("div"), set: noop, sit: noop, stand: noop, say: P, hush: noop, walkTo: P, hearts: noop, destroy: noop, nextTip: noop }; }
+      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["Silly is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
+      document.addEventListener("DOMContentLoaded", function () {
+        var i = document.getElementById("sbIntro"); if (i) i.remove();
+        var b = document.createElement("div"); b.style.cssText = "position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;background:#7f1d1d;color:#fff;font:600 13px sans-serif;padding:12px 16px;border-radius:12px;box-shadow:0 0 24px rgba(0,0,0,.5)";
+        b.textContent = "Silly could not start. " + why; document.body.appendChild(b);
+      });
+    })();
+  }
+  </script>
+<script>
+(function () {
+  var f = SillyBot.face(document.getElementById('sillyAnchor'));
+  SillyBot.greet('Hi, I am Silly. Here is your application status. If any door closes, I will help you understand why.');
+  SillyBot.idleTalk(['Remember, a rejection is data, not a verdict on you.', 'Try the rejection email decoder. It shows what those template emails really mean.', 'AI is trending, but the jobs have not gone away.']);
+  var o = window.sillyReact;
+  window.sillyReact = function (s, m) { if (o) o(s, m); f.react(s, m); };
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1016 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApplyRank - Skill Test</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="silly-robot.css">
+</head>
+ <body class="dashboard-body-canvas">
+ 
+  <!-- 🏛️ MASTER GLOBAL NAVBAR (same as dashboard.html / jobs.html) -->
+  <nav class="dashboard-master-navbar">
+    <div class="nav-brand-logo-hub">
+      <span class="nav-logo-text">Apply<span class="purple-text">Rank</span></span>
+    </div>
+    <div class="nav-menu-links-center-row">
+      <a href="dashboard.html" class="nav-menu-btn">
+        <span class="material-symbols-outlined nav-icon">home</span>
+        <span class="btn-text">HOME</span>
+      </a>
+      <a href="jobs.html" class="nav-menu-btn">
+        <span class="material-symbols-outlined nav-icon">work</span>
+        <span class="btn-text">JOB CORNER</span>
+      </a>
+      <a href="skilltest.html" class="nav-menu-btn active-tab" onclick="location.href='skilltest.html'">
+        <span class="material-symbols-outlined nav-icon">quiz</span>
+        <span class="btn-text">SKILL TEST</span>
+      </a>
+      <a href="notifications.html" class="nav-menu-btn">
+        <span class="material-symbols-outlined nav-icon">notifications</span>
+        <span class="btn-text">NOTIFICATIONS</span>
+      </a>
+    </div>
+    <div class="nav-profile-right-zone" style="cursor:pointer" onclick="location.href='profile.html'">
+      <span class="material-symbols-outlined nav-icon">account_circle</span>
+      <span class="profile-name-string">YOUR PROFILE</span>
+    </div>
+  </nav>
+ 
+  <main class="st-workspace">
+ 
+    <!-- ============ SCREEN 1 · START GATEWAY ============ -->
+    <section id="stGateway" class="st-panel">
+      <div class="st-card">
+        <span class="canvas-micro-badge">🧪 SKILL VERIFICATION</span>
+        <h1 class="st-gate-title">Prove your craft. <span>Earn a verified rank.</span></h1>
+        <p class="st-gate-desc">
+          Three rounds, one score. Beat the Brain Check, survive the Code Lab, then face Silly in the Hot Seat —
+          your total becomes the verified rank recruiters see on your profile.
+        </p>
+ 
+        <div class="st-warning">
+          <span class="material-symbols-outlined">warning</span>
+          <div>
+            <div class="st-warning-title">15-Minute Verified Assessment Index</div>
+            <div class="st-warning-text">
+              This test evaluates core tech parameters and <strong>cannot be paused</strong> once started.
+              The 15:00 clock begins the moment you pick your track and keeps running even if you leave the page.
+            </div>
+          </div>
+        </div>
+ 
+        <div class="st-round-grid">
+          <div class="st-round" style="--rc:#6366f1">
+            <div class="st-round-no">ROUND 1</div>
+            <div class="st-round-name">🧠 Brain Check</div>
+            <div class="st-round-desc">5 MCQs: concepts, predict-the-output, spot-the-bug and real-world scenarios. Instant feedback with a streak bonus.</div>
+            <span class="st-round-pts">40 POINTS</span>
+          </div>
+          <div class="st-round" style="--rc:#10b981">
+            <div class="st-round-no">ROUND 2</div>
+            <div class="st-round-name">⚡ Code Lab</div>
+            <div class="st-round-desc">Fix a buggy function, then write one from scratch. Your code runs against real test cases.</div>
+            <span class="st-round-pts">35 POINTS</span>
+          </div>
+          <div class="st-round" style="--rc:#f59e0b">
+            <div class="st-round-no">ROUND 3</div>
+            <div class="st-round-name">🎤 Silly's Hot Seat</div>
+            <div class="st-round-desc">A mock interview with Silly. Type or speak your answers and get instant feedback on what you covered.</div>
+            <span class="st-round-pts">25 POINTS</span>
+          </div>
+        </div>
+ 
+        <button type="button" class="st-btn-primary" onclick="goToTracks()">
+          <span>Start Verified Test</span><span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+ 
+    <!-- ============ SCREEN 1B · TRACK PICKER ============ -->
+    <section id="stTracks" class="st-panel st-hidden">
+      <div class="st-card">
+        <button type="button" class="st-back" onclick="backToGateway()"><span class="material-symbols-outlined">chevron_left</span>Back</button>
+        <h2 class="st-track-title">Choose your track</h2>
+        <p class="st-track-sub">Questions, coding problems and interview rounds all match the track you pick. The 15:00 timer starts right after you choose.</p>
+        <div class="st-track-grid" id="stTrackGrid"></div>
+      </div>
+    </section>
+ 
+    <!-- ============ SCREEN 2 · LIVE TEST ============ -->
+    <section id="stTest" class="st-hidden">
+ 
+      <div class="st-header">
+        <div class="st-header-left">
+          <div class="st-header-top">
+            <button type="button" class="st-back" onclick="changeTrack()"><span class="material-symbols-outlined">chevron_left</span>Change track</button>
+            <span class="st-track-pill" id="stPill">🎨 TRACK</span>
+          </div>
+          <h1 class="st-title">Skill Test — <span id="stTitleTrack">Track</span></h1>
+        </div>
+        <div class="st-timer" id="stTimer">
+          <span class="material-symbols-outlined">schedule</span>
+          <span class="st-timer-num st-mono" id="stTimerNum">15:00</span>
+          <span class="st-timer-lbl">remaining</span>
+        </div>
+      </div>
+ 
+      <div class="st-tabbar">
+        <div class="st-tabs">
+          <button type="button" class="st-tab st-active" id="tabMcq" onclick="switchTab('mcq')">
+            <span class="material-symbols-outlined">checklist</span>MCQ Test<span class="st-tab-count" id="cntMcq">0/5</span>
+          </button>
+          <button type="button" class="st-tab" id="tabCode" onclick="switchTab('code')">
+            <span class="material-symbols-outlined">code</span>Core Coding Problem<span class="st-tab-count" id="cntCode">0/2</span>
+          </button>
+          <button type="button" class="st-tab" id="tabIv" onclick="switchTab('iv')">
+            <span class="material-symbols-outlined">record_voice_over</span>AI Interview<span class="st-tab-count" id="cntIv">0/3</span>
+          </button>
+        </div>
+        <div class="st-hud">
+          <span class="st-chip st-chip-streak" id="stStreak">🔥 <span id="stStreakNum">0</span> streak</span>
+          <span class="st-chip st-chip-xp">⚡ <span id="stXp">0</span> XP</span>
+          <button type="button" class="st-finish" id="stFinish" onclick="finishTest(false)">Finish test</button>
+        </div>
+      </div>
+ 
+      <!-- MCQ PANEL -->
+      <div id="panelMcq" class="st-panel"></div>
+      <!-- CODING PANEL -->
+      <div id="panelCode" class="st-panel st-hidden"></div>
+      <!-- INTERVIEW PANEL -->
+      <div id="panelIv" class="st-panel st-hidden"></div>
+    </section>
+ 
+    <!-- ============ SCREEN 3 · RESULT ============ -->
+    <section id="stResult" class="st-hidden">
+      <div class="st-result">
+        <span class="material-symbols-outlined st-result-icon">verified</span>
+        <h2 class="st-result-title">Assessment Complete — Verified Rank Generated!</h2>
+        <p class="st-result-sub" id="resSub">Your performance has been scored and added to your ApplyRank profile.</p>
+ 
+        <div class="st-ring">
+          <svg viewBox="0 0 160 160" aria-hidden="true">
+            <defs>
+              <linearGradient id="stGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#10b981"/>
+              </linearGradient>
+            </defs>
+            <circle class="st-ring-bg" cx="80" cy="80" r="70"/>
+            <circle class="st-ring-fg" id="stRingFg" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" transform="rotate(-90 80 80)"/>
+          </svg>
+          <div class="st-ring-in"><span class="st-ring-num" id="resScore">0</span><span class="st-ring-max">/ 100</span></div>
+        </div>
+        <div class="st-rank" id="resRank">🏆 RANK</div>
+ 
+        <div class="st-bars" id="resBars"></div>
+ 
+        <div class="st-stats">
+          <div class="st-stat"><div class="st-stat-v" id="resXp">0</div><div class="st-stat-l">XP EARNED</div></div>
+          <div class="st-stat"><div class="st-stat-v" id="resStreak">0</div><div class="st-stat-l">BEST STREAK</div></div>
+          <div class="st-stat"><div class="st-stat-v st-mono" id="resTime">00:00</div><div class="st-stat-l">TIME USED</div></div>
+        </div>
+ 
+        <div class="st-badges-title">BADGES</div>
+        <div class="st-badges" id="resBadges"></div>
+ 
+        <div class="st-result-actions">
+          <button type="button" class="st-btn-ghost" onclick="goToTracks()">Try another track</button>
+          <button type="button" class="st-btn-green" onclick="location.href='dashboard.html'">Return to Dashboard</button>
+        </div>
+        <p class="st-result-note">Interview answers are scored locally for now. When the Java backend is connected, Silly's AI scoring replaces it automatically.</p>
+      </div>
+    </section>
+  </main>
+ 
+  <!-- 🤖 SILLY ROBOT ANCHOR — floating, visible on every screen -->
+  <div class="st-silly-dock">
+    <div class="st-silly-say" id="stSillySay"></div>
+    <div class="silly-face-circle" id="sillyAnchor"></div>
+  </div>
+ 
+  <script>
+    /* =====================================================================
+       CONFIG
+       ===================================================================== */
+    const TOTAL_SECONDS = 15 * 60;
+    const MCQ_EACH = 8;                 // 5 x 8  = 40
+    const CODE_PTS = [15, 20];          // 15 + 20 = 35
+    const IV_TOTAL = 25;                // 3 questions share 25
+ 
+    /* =====================================================================
+       QUESTION BANK
+       mcq:  { type, q, code?, options[], a, why }
+       code: { kind:'fix'|'write', title, fn, desc, example, starter, hint, tests:[{a:[args], e:expected}] }
+       interview: { tag, q, rubric:[{label, w:[keywords]}] }
+       ===================================================================== */
+    const DOMAINS = {
+      frontend: {
+        name: "Frontend Developer", short: "Frontend", icon: "palette", emoji: "🎨", color: "#ec4899",
+        desc: "React, JavaScript, CSS and pixel-perfect UI craft.",
+        titles: ["Pixel Rookie", "Component Crafter", "UI Architect", "Pixel Wizard"],
+        mcq: [
+          { type: "Concept", q: "Which hook gives a function component state that triggers a re-render when it changes?",
+            options: ["useMemo", "useState", "useRef", "useEffect"], a: 1,
+            why: "useState stores a value and re-renders the component whenever its setter is called. useRef also persists values, but changing it does NOT re-render." },
+          { type: "Predict the output", q: "What does this print?", code: "console.log(typeof null, typeof undefined);",
+            options: ["null undefined", "object undefined", "object object", "undefined undefined"], a: 1,
+            why: "A famous JavaScript quirk: typeof null is \"object\" (a legacy bug), while typeof undefined is \"undefined\"." },
+          { type: "Spot the bug", q: "The number on this button never changes when clicked. Why?",
+            code: "function Counter() {\n  let count = 0;\n  return (\n    <button onClick={() => count++}>\n      {count}\n    </button>\n  );\n}",
+            options: ["count++ is not valid inside JSX", "Changing a plain variable doesn't trigger a re-render — it needs useState", "onClick must receive a string", "Buttons cannot display numbers"], a: 1,
+            why: "React only re-renders when state or props change. Use const [count, setCount] = useState(0) and call setCount(count + 1)." },
+          { type: "Scenario", q: "Your landing page scores badly because a 3 MB hero image blocks loading. What's the best FIRST fix?",
+            options: ["Serve a compressed, responsive image (WebP + srcset) and lazy-load the rest", "Rewrite the page as a class component", "Add more useEffect hooks", "Inline the image as base64 inside the CSS"], a: 0,
+            why: "Oversized images are the #1 cause of slow loading. Compress, serve the right size and lazy-load what isn't visible yet. Base64 inlining makes the CSS even heavier." },
+          { type: "Predict the output", q: "With the default box-sizing, how wide does this box render on screen?",
+            code: ".box {\n  width: 200px;\n  padding: 20px;\n  border: 5px solid;\n}",
+            options: ["200px", "250px", "225px", "240px"], a: 1,
+            why: "content-box adds padding and border on top of width: 200 + 20×2 + 5×2 = 250px. With box-sizing: border-box it would stay 200px." }
+        ],
+        code: [
+          { kind: "fix", title: "Fix the Bug: sumEven", fn: "sumEven",
+            desc: "This function should return the sum of all EVEN numbers in an array — but it has 2 bugs. Find them and fix the code.",
+            example: "sumEven([1, 2, 3, 4])  // 6\nsumEven([5, 7])        // 0",
+            starter: "function sumEven(arr) {\n  let total = 0;\n  for (let i = 0; i <= arr.length; i++) {\n    if (arr[i] % 2 === 1) total += arr[i];\n  }\n  return total;\n}\n",
+            hint: "Check the loop condition (<= vs <) and which remainder identifies an EVEN number.",
+            tests: [ { a: [[1,2,3,4]], e: 6 }, { a: [[]], e: 0 }, { a: [[5,7]], e: 0 }, { a: [[2,2,2]], e: 6 }, { a: [[-2,3,8]], e: 6 } ] },
+          { kind: "write", title: "Write It: capitalizeWords", fn: "capitalizeWords",
+            desc: "Write a function capitalizeWords(str) that returns the string with the first letter of every word in uppercase. Words are separated by single spaces.",
+            example: "capitalizeWords(\"hello world\")  // \"Hello World\"",
+            starter: "function capitalizeWords(str) {\n  // your code here\n}\n",
+            hint: "Split the string on spaces, uppercase the first character of each word, then join back with spaces.",
+            tests: [ { a: ["hello world"], e: "Hello World" }, { a: ["react is fun"], e: "React Is Fun" }, { a: ["a"], e: "A" }, { a: [""], e: "" }, { a: ["already Fine"], e: "Already Fine" } ] }
+        ],
+        interview: [
+          { tag: "Concept", q: "Imagine I'm a new teammate. Explain the difference between props and state in React.",
+            rubric: [
+              { label: "props come from the parent and are read-only", w: ["parent","read-only","readonly","read only","immutable","passed down","passed in","pass data","pass the data"] },
+              { label: "state is owned by the component and changes", w: ["own state","local","internal","owned","changes over time","mutable","usestate","setstate","private","manages its own"] },
+              { label: "state updates trigger a re-render", w: ["re-render","rerender","render again","re render","update the ui","updates the ui","refresh the ui"] } ] },
+          { tag: "Problem solving", q: "A page with a very long list feels laggy. Walk me through how you'd find the cause and fix it.",
+            rubric: [
+              { label: "measure first (Profiler / DevTools)", w: ["profil","devtools","dev tools","lighthouse","measure","performance tab"] },
+              { label: "avoid needless re-renders (memo / keys)", w: ["memo","usecallback","react.memo","re-render","rerender","key"] },
+              { label: "render less (virtualization / pagination)", w: ["virtual","window","paginat","lazy","infinite scroll","chunk","react-window"] } ] },
+          { tag: "Behavioural", q: "Tell me about a bug that really stumped you. How did you track it down and what did you learn?",
+            rubric: [
+              { label: "described the problem clearly", w: ["bug","issue","error","problem","crash","broke"] },
+              { label: "showed a debugging method", w: ["debug","console","log","breakpoint","reproduce","isolate","test","stack trace","devtools"] },
+              { label: "closed with a lesson learned", w: ["learn","lesson","next time","now i","improve","realized","realised","since then"] } ] }
+        ]
+      },
+ 
+      backend: {
+        name: "Backend Developer", short: "Backend", icon: "settings", emoji: "⚙️", color: "#3b82f6",
+        desc: "Java, Spring Boot, databases and secure, scalable APIs.",
+        titles: ["API Rookie", "Endpoint Builder", "Service Architect", "Backend Boss"],
+        mcq: [
+          { type: "Concept", q: "Which Spring annotation turns a class into a controller whose methods return JSON bodies?",
+            options: ["@Component", "@RestController", "@Repository", "@Configuration"], a: 1,
+            why: "@RestController = @Controller + @ResponseBody, so every method's return value is written straight to the HTTP response (as JSON by default)." },
+          { type: "Predict the output", q: "What does this Java code print?",
+            code: "String a = \"hi\";\nString b = new String(\"hi\");\nSystem.out.println(a == b);\nSystem.out.println(a.equals(b));",
+            options: ["true, true", "false, true", "true, false", "false, false"], a: 1,
+            why: "== compares object references (a is from the string pool, b is a new object) → false. equals() compares the characters → true." },
+          { type: "Spot the bug", q: "What is wrong with this endpoint's design?",
+            code: "@GetMapping(\"/users\")\npublic User createUser(@RequestBody User u) {\n  return repo.save(u);\n}",
+            options: ["Creating a resource should use @PostMapping, not GET", "repo.save cannot take a User", "@RequestBody is not allowed in controllers", "Controller methods must return void"], a: 0,
+            why: "GET must be safe and read-only. Creating data belongs to POST (returning 201 Created). GET requests can also be cached or retried by browsers and proxies." },
+          { type: "Scenario", q: "One client is hitting your API 1,000 times per second and the database is slowing down for everyone. What's the best first protection?",
+            options: ["Rate limiting per client (e.g. token bucket)", "Turn off all logging", "Switch every endpoint to GET", "Restart the server every minute"], a: 0,
+            why: "Rate limiting caps each client's requests so one noisy caller can't starve others. Caching and DB indexing help too, but limiting is the first guard." },
+          { type: "Concept", q: "Which HTTP status code best fits “the resource was created successfully”?",
+            options: ["200 OK", "201 Created", "204 No Content", "302 Found"], a: 1,
+            why: "201 Created tells the client a new resource now exists (usually with a Location header pointing to it)." }
+        ],
+        code: [
+          { kind: "fix", title: "Fix the Bug: isValidParentheses", fn: "isValidParentheses",
+            desc: "This should return true only if every bracket ( [ { is closed by the same type in the right order. It passes some cases but has 1 bug. Find it and fix it.",
+            example: "isValidParentheses(\"({[]})\")  // true\nisValidParentheses(\"(((\")     // false",
+            starter: "function isValidParentheses(s) {\n  const pairs = { ')': '(', ']': '[', '}': '{' };\n  const stack = [];\n  for (const ch of s) {\n    if (ch === '(' || ch === '[' || ch === '{') stack.push(ch);\n    else if (stack.pop() !== pairs[ch]) return false;\n  }\n  return true;\n}\n",
+            hint: "What should be true about the stack when the whole string has been read?",
+            tests: [ { a: ["({[]})"], e: true }, { a: ["(]"], e: false }, { a: [""], e: true }, { a: ["((("], e: false }, { a: ["{[()]}"], e: true }, { a: [")"], e: false } ] },
+          { kind: "write", title: "Write It: groupBy", fn: "groupBy",
+            desc: "Write groupBy(arr, key): take an array of objects and return an object whose keys are the values of the given property, each holding the array of matching objects.",
+            example: "groupBy([{t:'a',n:1},{t:'b',n:2},{t:'a',n:3}], 't')\n// { a: [{t:'a',n:1},{t:'a',n:3}], b: [{t:'b',n:2}] }",
+            starter: "function groupBy(arr, key) {\n  // your code here\n}\n",
+            hint: "Loop once. If result[item[key]] doesn't exist yet, create an empty array, then push the item.",
+            tests: [
+              { a: [[{t:'a',n:1},{t:'b',n:2},{t:'a',n:3}], 't'], e: { a: [{t:'a',n:1},{t:'a',n:3}], b: [{t:'b',n:2}] } },
+              { a: [[], 'x'], e: {} },
+              { a: [[{k:1},{k:1}], 'k'], e: { "1": [{k:1},{k:1}] } } ] }
+        ],
+        interview: [
+          { tag: "Concept", q: "A client sends a POST request to your Spring Boot API. Walk me through what happens until the response goes back.",
+            rubric: [
+              { label: "routing to the controller (DispatcherServlet / @PostMapping)", w: ["dispatcher","controller","postmapping","mapping","route","routing"] },
+              { label: "JSON converted into an object (@RequestBody)", w: ["requestbody","request body","json","deserial","parse","convert"] },
+              { label: "service → repository → database", w: ["service","repository","database","db","save","jpa"] },
+              { label: "status code and response body", w: ["status","201","200","response","responseentity","return"] } ] },
+          { tag: "Security", q: "How would you make sure only logged-in users can call a protected endpoint?",
+            rubric: [
+              { label: "token or session (JWT / OAuth)", w: ["jwt","token","session","oauth","cookie"] },
+              { label: "Spring Security filter / authentication", w: ["spring security","filter","authenticat","login"] },
+              { label: "roles and authorization", w: ["authoriz","role","permission","admin","scope"] },
+              { label: "secure basics (HTTPS, hashed passwords)", w: ["https","tls","hash","bcrypt","encrypt","salt"] } ] },
+          { tag: "Behavioural", q: "Describe a time something broke in production (or a project went wrong). What did you do first, and what changed afterwards?",
+            rubric: [
+              { label: "described what broke", w: ["broke","down","crash","bug","outage","fail","error","issue","incident"] },
+              { label: "took action methodically", w: ["rollback","roll back","logs","monitor","investigat","fix","hotfix","debug","root cause","reproduce"] },
+              { label: "added prevention / lesson", w: ["test","alert","prevent","lesson","learn","next time","process","review","monitoring"] } ] }
+        ]
+      },
+ 
+      data: {
+        name: "Data & SQL", short: "Data", icon: "database", emoji: "🗄️", color: "#10b981",
+        desc: "SQL, databases and data-handling logic.",
+        titles: ["Query Rookie", "Table Tamer", "Data Architect", "Query Legend"],
+        mcq: [
+          { type: "Concept", q: "Which SQL clause filters groups AFTER a GROUP BY has been applied?",
+            options: ["WHERE", "HAVING", "ORDER BY", "LIMIT"], a: 1,
+            why: "WHERE filters individual rows before grouping. HAVING filters the groups created by GROUP BY, so it can use aggregates like COUNT(*)." },
+          { type: "Predict the output", q: "The orders table has amounts 100, NULL and 250. What does this query return?",
+            code: "SELECT COUNT(*), COUNT(amount)\nFROM orders;",
+            options: ["3, 2", "3, 3", "2, 2", "2, 3"], a: 0,
+            why: "COUNT(*) counts rows (3). COUNT(column) skips NULL values, so COUNT(amount) is 2." },
+          { type: "Spot the bug", q: "Why does this query fail in strict SQL mode?",
+            code: "SELECT name, COUNT(*)\nFROM users;",
+            options: ["name is neither aggregated nor in a GROUP BY — it needs GROUP BY name", "COUNT(*) requires a WHERE clause", "users is a reserved word", "SELECT cannot return two columns"], a: 0,
+            why: "Mixing a plain column with an aggregate requires GROUP BY on that column, otherwise the database doesn't know which name to show." },
+          { type: "Scenario", q: "A report query on a 10-million-row table filters by email and takes 12 seconds. What's the best first fix?",
+            options: ["Add an index on the email column", "Use SELECT * instead", "Remove the primary key", "Split it into 10 million small queries"], a: 0,
+            why: "An index on email lets the database jump straight to matching rows instead of scanning the whole table." },
+          { type: "Concept", q: "Which JOIN keeps ALL rows from the left table, even when there's no match on the right?",
+            options: ["INNER JOIN", "LEFT JOIN", "CROSS JOIN", "SELF JOIN"], a: 1,
+            why: "LEFT JOIN returns every left-table row and fills right-table columns with NULL when nothing matches." }
+        ],
+        code: [
+          { kind: "fix", title: "Fix the Bug: secondLargest", fn: "secondLargest",
+            desc: "This should return the second largest DISTINCT number, or null if there isn't one. It has 2 bugs. Find and fix them.",
+            example: "secondLargest([4, 9, 2, 9, 7])  // 7\nsecondLargest([10, 3, 8])        // 8",
+            starter: "function secondLargest(arr) {\n  const sorted = [...arr].sort();\n  return sorted.length >= 2 ? sorted[sorted.length - 2] : null;\n}\n",
+            hint: "Default .sort() compares values as text. And duplicates of the maximum shouldn't count as the second largest.",
+            tests: [ { a: [[4,9,2,9,7]], e: 7 }, { a: [[5,5]], e: null }, { a: [[1,2]], e: 1 }, { a: [[]], e: null }, { a: [[10,3,8]], e: 8 } ] },
+          { kind: "write", title: "Write It: countFrequency", fn: "countFrequency",
+            desc: "Write countFrequency(arr) that returns an object mapping each element of the array to the number of times it appears.",
+            example: "countFrequency(['a','b','a'])  // { a: 2, b: 1 }",
+            starter: "function countFrequency(arr) {\n  // your code here\n}\n",
+            hint: "Loop through arr. Start the count at 0 if the key is missing, then add 1.",
+            tests: [ { a: [['a','b','a']], e: { a: 2, b: 1 } }, { a: [[]], e: {} }, { a: [[1,1,1]], e: { "1": 3 } }, { a: [['x','y','z']], e: { x: 1, y: 1, z: 1 } } ] }
+        ],
+        interview: [
+          { tag: "Concept", q: "What is a database index, and when could adding one actually hurt?",
+            rubric: [
+              { label: "speeds up lookups and searches", w: ["fast","speed","lookup","quick","search","find rows","retriev"] },
+              { label: "how it works (sorted structure / B-tree)", w: ["b-tree","btree","tree","sorted","pointer","structure"] },
+              { label: "costs: slower writes and extra storage", w: ["write","insert","update","slower","overhead","maintain","storage","space","disk","memory"] } ] },
+          { tag: "Hands-on", q: "Explain INNER JOIN vs LEFT JOIN using an example with users and orders.",
+            rubric: [
+              { label: "INNER JOIN returns only matching rows", w: ["inner","only match","both tables","matching","match in both"] },
+              { label: "LEFT JOIN keeps all left rows (NULL when no match)", w: ["left","all rows","null","unmatched","no match","every user"] },
+              { label: "used a concrete example", w: ["users","orders","customer","example","for instance","e.g"] } ] },
+          { tag: "Behavioural", q: "Tell me about a time your data (or a query) gave a surprising result. How did you check it?",
+            rubric: [
+              { label: "described the surprise", w: ["surpris","wrong","unexpected","duplicate","mismatch","strange","weird","incorrect"] },
+              { label: "explained how they verified it", w: ["check","validate","compare","count","sample","explain","query","debug","verify","log"] },
+              { label: "closed with a fix or lesson", w: ["fix","lesson","learn","next time","constraint","test","prevent","clean"] } ] }
+        ]
+      }
+    };
+ 
+    /* =====================================================================
+       HELPERS
+       ===================================================================== */
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    const fmt = (t) => String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0');
+    const emit = (name, detail) => { try { window.dispatchEvent(new CustomEvent(name, { detail })); } catch (e) {} };
+    const TYPE_CLASS = { "Concept": "st-qt-concept", "Predict the output": "st-qt-predict", "Spot the bug": "st-qt-bug", "Scenario": "st-qt-scn" };
+ 
+    let S = null;           // current attempt
+    let voiceOn = false;    // Silly speaks questions
+    let rec = null, micOn = false;
+    let sayTimer = null;
+ 
+    function showScreen(id) {
+      ['stGateway', 'stTracks', 'stTest', 'stResult'].forEach(s => $(s).classList.add('st-hidden'));
+      $(id).classList.remove('st-hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+ 
+    /* =====================================================================
+       🤖 SILLY ROBOT HOOKS  (Meher: call these from the Java backend signals)
+         window.sillyReact('happy' | 'sad' | 'jump' | 'talk' | 'reset', 'optional speech-bubble text')
+       ===================================================================== */
+    window.sillyReact = function (state, msg) {
+      const el = $('sillyAnchor'); if (!el) return;
+      el.classList.remove('silly-happy', 'silly-sad', 'silly-jump', 'silly-talk');
+      if (state && state !== 'reset') {
+        void el.offsetWidth;
+        el.classList.add('silly-' + state);
+        if (state === 'jump') setTimeout(() => el.classList.remove('silly-jump'), 700);
+        if (state === 'happy' || state === 'sad') setTimeout(() => el.classList.remove('silly-' + state), 2400);
+      }
+      if (msg) {
+        const bub = $('stSillySay');
+        bub.textContent = msg; bub.classList.add('st-show');
+        clearTimeout(sayTimer);
+        sayTimer = setTimeout(() => bub.classList.remove('st-show'), 3200);
+      }
+    };
+ 
+    function speak(text) {
+      if (!voiceOn || !('speechSynthesis' in window)) return;
+      try {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        var bv = window.SillyBot && SillyBot.voice && SillyBot.voice(); u.lang = (bv && bv.lang) || 'en-US'; if (bv) u.voice = bv; u.rate = 0.97;
+        u.onstart = () => $('sillyAnchor').classList.add('silly-talk');
+        u.onend = u.onerror = () => $('sillyAnchor').classList.remove('silly-talk');
+        window.speechSynthesis.speak(u);
+      } catch (e) {}
+    }
+ 
+    /* =====================================================================
+       SCREEN FLOW: gateway → tracks → test → result
+       ===================================================================== */
+    function backToGateway() { showScreen('stGateway'); }
+ 
+    function goToTracks() {
+      const grid = $('stTrackGrid');
+      grid.innerHTML = '';
+      Object.keys(DOMAINS).forEach(key => {
+        const d = DOMAINS[key];
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'st-track'; b.style.setProperty('--tc', d.color);
+        b.innerHTML =
+          '<div class="st-track-ic"><span class="material-symbols-outlined">' + d.icon + '</span></div>' +
+          '<div class="st-track-name">' + esc(d.name) + '</div>' +
+          '<div class="st-track-desc">' + esc(d.desc) + '</div>' +
+          '<div class="st-track-meta">5 MCQ · 2 CODING · 3 INTERVIEW · 15 MIN</div>' +
+          '<div class="st-track-go">Select track ➔</div>';
+        b.onclick = () => startTest(key);
+        grid.appendChild(b);
+      });
+      showScreen('stTracks');
+    }
+ 
+    function newAttempt(key) {
+      const D = DOMAINS[key];
+      return {
+        key, D, active: true, tab: 'mcq', endAt: 0, timer: null, startedAt: Date.now(), secondsLeft: TOTAL_SECONDS,
+        mcqIdx: 0, mcqAns: D.mcq.map(() => null), streak: 0, bestStreak: 0,
+        codeIdx: 0, drafts: D.code.map(p => p.starter), lastRun: D.code.map(() => null),
+        bestFrac: D.code.map(() => 0), hinted: D.code.map(() => false), xpGiven: D.code.map(() => false), running: false,
+        iv: { idx: 0, log: [], results: [], started: false, typing: false, busy: false, awaitingNext: false, finished: false, draft: '' },
+        xp: 0
+      };
+    }
+ 
+    function startTest(key) {
+      stopTimer();
+      S = newAttempt(key);
+      $('stPill').textContent = S.D.emoji + ' ' + S.D.name.toUpperCase();
+      $('stTitleTrack').textContent = S.D.name;
+      S.endAt = Date.now() + TOTAL_SECONDS * 1000;
+      tick();
+      S.timer = setInterval(tick, 500);
+      showScreen('stTest');
+      switchTab('mcq');
+      updateHud();
+      window.sillyReact('jump', "Let's go! Good luck, " + S.D.short + " pro 🚀");
+      emit('silly:test-start', { domain: key });
+    }
+ 
+    function stopTimer() { if (S && S.timer) { clearInterval(S.timer); S.timer = null; } }
+ 
+    function tick() {
+      if (!S || !S.active) return;
+      S.secondsLeft = Math.max(0, Math.ceil((S.endAt - Date.now()) / 1000));
+      $('stTimerNum').textContent = fmt(S.secondsLeft);
+      $('stTimer').classList.toggle('st-warn', S.secondsLeft <= 60);
+      if (S.secondsLeft <= 0) finishTest(true);
+    }
+ 
+    function changeTrack() {
+      if (S && S.active && !confirm("Change track? Your progress in this attempt will be lost and the timer will reset.")) return;
+      stopTimer(); if (S) S.active = false;
+      stopMic(); if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      S = null;
+      goToTracks();
+    }
+ 
+    function updateHud() {
+      if (!S) return;
+      const mcqDone = S.mcqAns.filter(x => x !== null).length;
+      const codeDone = S.lastRun.filter(x => x).length;
+      const ivDone = S.iv.results.length;
+      $('cntMcq').textContent = mcqDone + '/' + S.D.mcq.length;
+      $('cntCode').textContent = codeDone + '/' + S.D.code.length;
+      $('cntIv').textContent = ivDone + '/' + S.D.interview.length;
+      $('tabMcq').classList.toggle('st-done', mcqDone === S.D.mcq.length);
+      $('tabCode').classList.toggle('st-done', codeDone === S.D.code.length);
+      $('tabIv').classList.toggle('st-done', ivDone === S.D.interview.length);
+      $('stStreakNum').textContent = S.streak;
+      $('stStreak').classList.toggle('st-on', S.streak >= 2);
+      $('stXp').textContent = S.xp;
+      const all = mcqDone === S.D.mcq.length && codeDone === S.D.code.length && ivDone === S.D.interview.length;
+      $('stFinish').classList.toggle('st-ready', all);
+      $('stFinish').textContent = all ? 'Finish & get rank ➔' : 'Finish test';
+    }
+ 
+    function switchTab(t) {
+      if (!S) return;
+      S.tab = t;
+      [['mcq', 'tabMcq', 'panelMcq'], ['code', 'tabCode', 'panelCode'], ['iv', 'tabIv', 'panelIv']].forEach(([k, tb, pn]) => {
+        $(tb).classList.toggle('st-active', k === t);
+        $(pn).classList.toggle('st-hidden', k !== t);
+      });
+      if (t === 'mcq') renderMcq();
+      if (t === 'code') renderCode();
+      if (t === 'iv') { renderInterview(); startInterview(); }
+    }
+ 
+    /* =====================================================================
+       ROUND 1 · MCQ
+       ===================================================================== */
+    function renderMcq() {
+      const D = S.D, i = S.mcqIdx, q = D.mcq[i], ans = S.mcqAns[i];
+      const answered = S.mcqAns.filter(x => x !== null).length;
+      const last = i === D.mcq.length - 1;
+ 
+      const dots = D.mcq.map((m, k) => {
+        let c = 'st-dot';
+        if (S.mcqAns[k] !== null) c += S.mcqAns[k] === m.a ? ' st-ok' : ' st-bad';
+        if (k === i) c += ' st-cur';
+        return '<button type="button" class="' + c + '" onclick="gotoMcq(' + k + ')">' + (k + 1) + '</button>';
+      }).join('');
+ 
+      const opts = q.options.map((o, k) => {
+        let c = 'st-opt';
+        if (ans !== null) {
+          c += ' st-locked';
+          if (k === q.a) c += ' st-correct';
+          else if (k === ans) c += ' st-wrong';
+          else c += ' st-dim';
+        }
+        return '<li class="' + c + '" onclick="pickMcq(' + k + ')"><span class="st-opt-letter">' + String.fromCharCode(65 + k) + '</span><span>' + esc(o) + '</span></li>';
+      }).join('');
+ 
+      let why = '';
+      if (ans !== null) {
+        const ok = ans === q.a;
+        why = '<div class="st-why ' + (ok ? 'st-why-ok' : 'st-why-bad') + '"><strong>' + (ok ? '✔ Correct!' : '✘ Not quite — the answer is ' + String.fromCharCode(65 + q.a)) + '</strong>' + esc(q.why) + '</div>';
+      }
+ 
+      $('panelMcq').innerHTML =
+        '<div class="st-qhead"><span class="st-qhead-l">Question ' + (i + 1) + ' of ' + D.mcq.length + '</span><span class="st-qhead-r">' + answered + '/' + D.mcq.length + ' answered</span></div>' +
+        '<div class="st-progress"><div style="width:' + Math.round(((i + 1) / D.mcq.length) * 100) + '%"></div></div>' +
+        '<div class="st-card">' +
+          '<div class="st-qmeta"><span class="st-qtype ' + (TYPE_CLASS[q.type] || 'st-qt-concept') + '">' + esc(q.type) + '</span><div class="st-dots">' + dots + '</div></div>' +
+          '<h2 class="st-qtext">' + esc(q.q) + '</h2>' +
+          (q.code ? '<pre class="st-code">' + esc(q.code) + '</pre>' : '') +
+          '<ul class="st-options">' + opts + '</ul>' + why +
+          '<div class="st-actions">' +
+            (i > 0 ? '<button type="button" class="st-btn-ghost" onclick="gotoMcq(' + (i - 1) + ')">‹ Previous</button>' : '<span></span>') +
+            '<button type="button" class="st-btn-blue" ' + (ans === null ? 'disabled' : '') + ' onclick="nextMcq()">' + (last ? 'Continue to Coding ➔' : 'Next Question ➔') + '</button>' +
+          '</div>' +
+        '</div>';
+    }
+ 
+    function gotoMcq(k) { S.mcqIdx = k; renderMcq(); }
+ 
+    function nextMcq() {
+      if (S.mcqAns[S.mcqIdx] === null) return;
+      if (S.mcqIdx < S.D.mcq.length - 1) { S.mcqIdx++; renderMcq(); }
+      else switchTab('code');
+    }
+ 
+    function pickMcq(k) {
+      if (!S || !S.active || S.mcqAns[S.mcqIdx] !== null) return;
+      const q = S.D.mcq[S.mcqIdx];
+      S.mcqAns[S.mcqIdx] = k;
+      const ok = k === q.a;
+      if (ok) {
+        S.streak++; S.bestStreak = Math.max(S.bestStreak, S.streak);
+        S.xp += 10 + Math.min(S.streak - 1, 3) * 5;
+        window.sillyReact('happy', S.streak >= 2 ? '🔥 ' + S.streak + ' in a row!' : 'Correct! 🎉');
+      } else {
+        S.streak = 0;
+        window.sillyReact('sad', 'Oops! Read the explanation 👇');
+      }
+      emit('silly:answer', { domain: S.key, round: 'mcq', index: S.mcqIdx, correct: ok });
+      renderMcq(); updateHud();
+    }
+ 
+    /* =====================================================================
+       ROUND 2 · CODE LAB  (runs inside a Web Worker with a 2s timeout)
+       ===================================================================== */
+    // NOTE: evalTests is stringified into the worker, so it must stay self-contained.
+    function evalTests(code, fn, tests) {
+      var out = { error: null, lines: [], passed: 0, total: tests.length };
+      var f;
+      try {
+        f = new Function(code + '\n;return (typeof ' + fn + ' === "function") ? ' + fn + ' : null;')();
+        if (!f) throw new Error('Function "' + fn + '" was not found. Keep the function name unchanged.');
+      } catch (e) { out.error = e.message; return out; }
+      tests.forEach(function (t) {
+        var args = JSON.parse(JSON.stringify(t.a));
+        var shown = JSON.stringify(t.a).slice(1, -1);
+        try {
+          var got = f.apply(null, args);
+          var ok = JSON.stringify(got) === JSON.stringify(t.e);
+          if (ok) out.passed++;
+          out.lines.push({ ok: ok, text: fn + '(' + shown + ')  →  ' + (ok ? JSON.stringify(t.e) : 'expected ' + JSON.stringify(t.e) + ', got ' + String(JSON.stringify(got))) });
+        } catch (e) { out.lines.push({ ok: false, text: fn + '(' + shown + ') threw: ' + e.message }); }
+      });
+      return out;
+    }
+ 
+    function runTests(problem, code) {
+      return new Promise(function (resolve) {
+        var timeoutRes = { error: 'Time limit exceeded (2s) — check for an infinite loop.', lines: [], passed: 0, total: problem.tests.length };
+        var w, url;
+        try {
+          var src = 'var evalTests = ' + evalTests.toString() + ';\nself.onmessage = function (e) { self.postMessage(evalTests(e.data.code, e.data.fn, e.data.tests)); };';
+          url = URL.createObjectURL(new Blob([src], { type: 'text/javascript' }));
+          w = new Worker(url);
+        } catch (err) {
+          resolve(evalTests(code, problem.fn, problem.tests));   // fallback (no timeout protection)
+          return;
+        }
+        var finished = false;
+        function done(res) {
+          if (finished) return; finished = true;
+          clearTimeout(t); w.terminate(); URL.revokeObjectURL(url); resolve(res);
+        }
+        var t = setTimeout(function () { done(timeoutRes); }, 2000);
+        w.onmessage = function (e) { done(e.data); };
+        w.onerror = function (e) { done({ error: e.message || 'Runtime error', lines: [], passed: 0, total: problem.tests.length }); };
+        w.postMessage({ code: code, fn: problem.fn, tests: problem.tests });
+      });
+    }
+ 
+    function outHtml(res) {
+      if (!res) return '';
+      if (res.error) return '<div class="st-out"><div class="st-out-line st-fail">Error: ' + esc(res.error) + '</div></div>';
+      return '<div class="st-out">' + res.lines.map(l => '<div class="st-out-line ' + (l.ok ? 'st-pass' : 'st-fail') + '">' + (l.ok ? '✔ ' : '✘ ') + esc(l.text) + '</div>').join('') + '</div>';
+    }
+ 
+    function renderCode() {
+      const D = S.D, i = S.codeIdx, p = D.code[i];
+      const last = i === D.code.length - 1;
+      const chips = D.code.map((c, k) => {
+        let cls = 'st-prob';
+        if (k === i) cls += ' st-active';
+        if (S.bestFrac[k] === 1) cls += ' st-ok';
+        return '<button type="button" class="' + cls + '" onclick="gotoCode(' + k + ')"><span class="material-symbols-outlined">' + (S.bestFrac[k] === 1 ? 'check_circle' : (c.kind === 'fix' ? 'bug_report' : 'edit_note')) + '</span>Problem ' + (k + 1) + ' · ' + (c.kind === 'fix' ? 'Fix the bug' : 'Write it') + '<span class="st-prob-pts">' + CODE_PTS[k] + ' pts</span></button>';
+      }).join('');
+ 
+      const run = S.lastRun[i];
+      $('panelCode').innerHTML =
+        '<div class="st-qhead"><span class="st-qhead-l">Problem ' + (i + 1) + ' of ' + D.code.length + '</span><span class="st-qhead-r">' + S.lastRun.filter(x => x).length + '/' + D.code.length + ' attempted</span></div>' +
+        '<div class="st-progress"><div style="width:' + Math.round(((i + 1) / D.code.length) * 100) + '%"></div></div>' +
+        '<div class="st-chips">' + chips + '</div>' +
+        '<div class="st-card">' +
+          '<span class="st-code-kind ' + (p.kind === 'fix' ? 'st-kind-fix' : 'st-kind-write') + '">' + (p.kind === 'fix' ? '🐞 Bug hunt' : '✍️ Build it') + '</span>' +
+          '<h2 class="st-code-title">' + esc(p.title) + '</h2>' +
+          '<p class="st-code-desc">' + esc(p.desc) + '</p>' +
+          '<div class="st-example">' + esc(p.example) + '</div>' +
+          '<textarea class="st-editor" id="stEditor" spellcheck="false" oninput="saveDraft(this.value)">' + esc(S.drafts[i]) + '</textarea>' +
+          '<p class="st-code-note">Write your solution in JavaScript and keep the function name unchanged. Press Tab to indent. Hints cost 5 XP.</p>' +
+          '<div class="st-code-actions">' +
+            '<button type="button" class="st-btn-run" id="stRunBtn" onclick="runCurrent()"><span class="material-symbols-outlined">play_arrow</span>Run Tests</button>' +
+            '<button type="button" class="st-btn-ghost" onclick="useHint()"><span class="material-symbols-outlined">lightbulb</span>Hint</button>' +
+            '<button type="button" class="st-btn-ghost" onclick="resetCode()"><span class="material-symbols-outlined">restart_alt</span>Reset</button>' +
+            '<span class="st-code-sum" id="stCodeSum">' + (run && !run.error ? run.passed + '/' + run.total + ' tests passed' : '') + '</span>' +
+          '</div>' +
+          (S.hinted[i] ? '<div class="st-hint">💡 ' + esc(p.hint) + '</div>' : '') +
+          '<div id="stOut">' + outHtml(run) + '</div>' +
+          '<div class="st-actions st-actions-right"><button type="button" class="st-btn-blue" onclick="nextCode()">' + (last ? 'Continue to Interview ➔' : 'Next Problem ➔') + '</button></div>' +
+        '</div>';
+ 
+      const ed = $('stEditor');
+      ed.addEventListener('keydown', function (e) {
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          const s = this.selectionStart, en = this.selectionEnd;
+          this.value = this.value.substring(0, s) + '  ' + this.value.substring(en);
+          this.selectionStart = this.selectionEnd = s + 2;
+          saveDraft(this.value);
+        }
+      });
+    }
+ 
+    function saveDraft(v) { if (S) S.drafts[S.codeIdx] = v; }
+    function gotoCode(k) { S.codeIdx = k; renderCode(); }
+    function nextCode() { if (S.codeIdx < S.D.code.length - 1) { S.codeIdx++; renderCode(); } else switchTab('iv'); }
+    function resetCode() { S.drafts[S.codeIdx] = S.D.code[S.codeIdx].starter; S.lastRun[S.codeIdx] = null; renderCode(); updateHud(); }
+ 
+    function useHint() {
+      if (!S.hinted[S.codeIdx]) { S.hinted[S.codeIdx] = true; S.xp = Math.max(0, S.xp - 5); updateHud(); }
+      const v = S.drafts[S.codeIdx]; renderCode(); $('stEditor').value = v;
+    }
+ 
+    async function runCurrent() {
+      if (!S || !S.active || S.running) return;
+      const mine = S, i = S.codeIdx, p = S.D.code[i];
+      S.running = true;
+      const btn = $('stRunBtn'); btn.disabled = true; btn.lastChild.textContent = 'Running…';
+      const res = await runTests(p, S.drafts[i]);
+      mine.running = false;
+      if (S !== mine) return;
+      mine.lastRun[i] = res;
+      const frac = res.error ? 0 : res.passed / res.total;
+      mine.bestFrac[i] = Math.max(mine.bestFrac[i], frac);
+      if (frac === 1 && !mine.xpGiven[i]) { mine.xpGiven[i] = true; mine.xp += 30; window.sillyReact('happy', '✅ All tests passed! +30 XP'); }
+      else window.sillyReact(frac >= 0.5 ? 'jump' : 'sad', res.error ? 'Hmm, there is an error 🤔' : res.passed + '/' + res.total + ' tests passed');
+      emit('silly:code-run', { domain: mine.key, problem: i, passed: res.passed, total: res.total });
+      if (mine.tab === 'code' && mine.codeIdx === i) {
+        $('stOut').innerHTML = outHtml(res);
+        $('stCodeSum').textContent = res.error ? '' : res.passed + '/' + res.total + ' tests passed';
+        btn.disabled = false; btn.lastChild.textContent = 'Run Tests';
+        renderCodeChipsOnly();
+      }
+      updateHud();
+    }
+ 
+    function renderCodeChipsOnly() {
+      const v = S.drafts[S.codeIdx]; renderCode(); $('stEditor').value = v;
+    }
+ 
+    /* =====================================================================
+       ROUND 3 · AI INTERVIEW (Silly's Hot Seat)
+       Backend hook: define window.ApplyRankScoring = { interview: async ({domain, question, answer}) =>
+                     ({ score: 0..1, covered: [..], missed: [..], feedback: '...' }) }
+       ===================================================================== */
+    function localScore(q, text) {
+      const t = text.toLowerCase(), covered = [], missed = [];
+      // keywords must start at a word boundary (stems like "profil" or "authenticat" still match)
+      const hit = (w) => new RegExp('\\b' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).test(t);
+      q.rubric.forEach(g => { (g.w.some(hit) ? covered : missed).push(g.label); });
+      let frac = covered.length / q.rubric.length;
+      const words = text.split(/\s+/).filter(Boolean).length;
+      let note = '';
+      if (words < 8) { frac = Math.min(frac, 0.25); note = 'That was very short — try 2–3 full sentences with a concrete example.'; }
+      return { frac, covered, missed, note };
+    }
+ 
+    async function scoreAnswer(q, text) {
+      const payload = { domain: S.key, question: q.q, answer: text };
+      emit('silly:interview-answer', payload);
+      if (window.ApplyRankScoring && typeof window.ApplyRankScoring.interview === 'function') {
+        try {
+          const r = await window.ApplyRankScoring.interview(payload);
+          if (r && typeof r.score === 'number') return { frac: Math.max(0, Math.min(1, r.score)), covered: r.covered || [], missed: r.missed || [], note: r.feedback || '' };
+        } catch (e) { /* fall back to local scoring */ }
+      }
+      return localScore(q, text);
+    }
+ 
+    function ivPush(msg, delay) {
+      const mine = S, iv = S.iv;
+      iv.typing = true; renderInterview();
+      return new Promise(res => setTimeout(() => {
+        if (S !== mine) return res();
+        iv.typing = false; iv.log.push(msg); renderInterview();
+        if (msg.speak) speak(msg.speak);
+        res();
+      }, delay || 700));
+    }
+ 
+    async function startInterview() {
+      const iv = S.iv; if (iv.started) return; iv.started = true;
+      const intro = "Hi! I'm Silly 🤖, your interviewer for the " + S.D.name + " track. I'll ask 3 questions. Answer like you're talking to a real hiring manager: short, specific, with an example. You can type, or tap the mic and speak.";
+      await ivPush({ who: 'silly', text: intro, speak: "Hi! I'm Silly, your interviewer. I'll ask three questions. Answer like you're talking to a real hiring manager." }, 600);
+      await askCurrent();
+    }
+ 
+    async function askCurrent() {
+      const iv = S.iv, q = S.D.interview[iv.idx];
+      await ivPush({ who: 'silly', label: 'Question ' + (iv.idx + 1) + ' of ' + S.D.interview.length + ' · ' + q.tag, text: q.q, speak: q.q }, 800);
+      window.sillyReact('jump');
+    }
+ 
+    async function ivSubmit() {
+      const iv = S.iv, ta = $('stAnswer');
+      const text = ta ? ta.value.trim() : '';
+      if (!text || iv.busy || iv.typing || iv.awaitingNext || iv.finished) return;
+      stopMic();
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      const mine = S; iv.busy = true; iv.draft = '';
+      iv.log.push({ who: 'me', text });
+      renderInterview();
+      const q = S.D.interview[iv.idx];
+      const r = await scoreAnswer(q, text);
+      if (S !== mine) return;
+      iv.results.push(r);
+      S.xp += r.covered.length * 6;
+      const opener = r.frac >= 0.75 ? 'Strong answer! 🔥' : r.frac >= 0.4 ? 'Good start — a few gaps to fill.' : 'Hmm, that was a bit thin.';
+      iv.busy = false;
+      await ivPush({ who: 'silly', text: opener + (r.note ? ' ' + r.note : ''), covered: r.covered, missed: r.missed, speak: opener }, 900);
+      window.sillyReact(r.frac >= 0.75 ? 'happy' : r.frac >= 0.4 ? 'jump' : 'sad', r.frac >= 0.75 ? 'Nailed it! 🎤' : r.frac >= 0.4 ? 'Not bad!' : "Let's tighten that up");
+      iv.awaitingNext = true;
+      renderInterview(); updateHud();
+    }
+ 
+    async function ivNext() {
+      const iv = S.iv; if (!iv.awaitingNext) return;
+      iv.awaitingNext = false; iv.idx++;
+      if (iv.idx < S.D.interview.length) { await askCurrent(); }
+      else {
+        iv.finished = true;
+        await ivPush({ who: 'silly', text: "That's a wrap! 🎉 You've completed all three rounds. Hit “Finish & get rank” to see your verified score.", speak: "That's a wrap! You've completed all three rounds." }, 700);
+        window.sillyReact('happy', 'Great job! 🏆');
+        updateHud();
+      }
+    }
+ 
+    function renderInterview() {
+      const iv = S.iv, panel = $('panelIv');
+      const prevTop = panel.querySelector('.st-chat') ? panel.querySelector('.st-chat').scrollTop : 0;
+      let msgs = iv.log.map(m => {
+        if (m.who === 'me') return '<div class="st-msg st-msg-me"><div class="st-bubble">' + esc(m.text) + '</div></div>';
+        let h = '<div class="st-msg st-msg-silly"><div class="st-avatar"><span class="material-symbols-outlined">smart_toy</span></div><div class="st-bubble">';
+        if (m.label) h += '<span class="st-bubble-label">' + esc(m.label) + '</span>';
+        h += esc(m.text);
+        if (m.covered || m.missed) {
+          h += '<div class="st-fb">';
+          if (m.covered && m.covered.length) h += '<span class="st-fb-tag">You covered</span>' + m.covered.map(c => '<span class="st-pill-ok">✔ ' + esc(c) + '</span>').join('');
+          if (m.missed && m.missed.length) h += '<span class="st-fb-tag">Worth adding</span>' + m.missed.map(c => '<span class="st-pill-miss">+ ' + esc(c) + '</span>').join('');
+          h += '</div>';
+        }
+        return h + '</div></div>';
+      }).join('');
+      if (iv.typing) msgs += '<div class="st-msg st-msg-silly"><div class="st-avatar"><span class="material-symbols-outlined">smart_toy</span></div><div class="st-bubble"><span class="st-typing"><i></i><i></i><i></i></span></div></div>';
+ 
+      let foot;
+      if (iv.finished) foot = '<div class="st-iv-foot"><button type="button" class="st-btn-green" onclick="finishTest(false)">Finish &amp; get rank ➔</button></div>';
+      else if (iv.awaitingNext) foot = '<div class="st-iv-foot"><button type="button" class="st-btn-blue" onclick="ivNext()">' + (iv.idx >= S.D.interview.length - 1 ? 'Wrap up ➔' : 'Next question ➔') + '</button></div>';
+      else {
+        const locked = iv.typing || iv.busy || !iv.started || iv.log.length < 2;
+        const hasSR = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+        foot = '<div class="st-composer">' +
+          '<textarea id="stAnswer" placeholder="' + (locked ? 'Silly is getting ready…' : 'Type your answer here, or tap the mic and speak…') + '" ' + (locked ? 'disabled' : '') + ' oninput="S.iv.draft=this.value" onkeydown="if((event.ctrlKey||event.metaKey)&&event.key===\'Enter\'){ivSubmit();}">' + esc(iv.draft) + '</textarea>' +
+          (hasSR ? '<button type="button" class="st-mic' + (micOn ? ' st-rec' : '') + '" id="stMic" title="Speak your answer" onclick="toggleMic()" ' + (locked ? 'disabled' : '') + '><span class="material-symbols-outlined">' + (micOn ? 'stop' : 'mic') + '</span></button>' : '') +
+          '<button type="button" class="st-btn-blue" onclick="ivSubmit()" ' + (locked ? 'disabled' : '') + '>Send ➔</button>' +
+        '</div><p class="st-iv-note">Tip: Ctrl + Enter sends. Mention specific tools, steps and examples — Silly looks for them.</p>';
+      }
+ 
+      panel.innerHTML =
+        '<div class="st-iv-head"><div class="st-iv-title">🎤 Silly\'s Hot Seat <span class="st-live">LIVE</span></div>' +
+        '<button type="button" class="st-voice-btn' + (voiceOn ? ' st-on' : '') + '" onclick="toggleVoice()"><span class="material-symbols-outlined">' + (voiceOn ? 'volume_up' : 'volume_off') + '</span>Silly speaks: ' + (voiceOn ? 'On' : 'Off') + '</button></div>' +
+        '<div class="st-card"><div class="st-chat" id="stChat">' + msgs + '</div>' + foot + '</div>';
+ 
+      const chat = $('stChat');
+      chat.style.scrollBehavior = 'auto';
+      chat.scrollTop = chat.scrollHeight;
+    }
+ 
+    function toggleVoice() {
+      voiceOn = !voiceOn;
+      if (!voiceOn && 'speechSynthesis' in window) window.speechSynthesis.cancel();
+      const d = S.iv.draft; renderInterview();
+      if (voiceOn) {
+        const last = [...S.iv.log].reverse().find(m => m.who === 'silly' && m.label);
+        if (last) speak(last.text);
+      }
+    }
+ 
+    function stopMic() { if (rec && micOn) { try { rec.stop(); } catch (e) {} } micOn = false; }
+ 
+    function toggleMic() {
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) { window.sillyReact('sad', 'Voice input is not supported in this browser'); return; }
+      if (micOn) { stopMic(); renderInterview(); return; }
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      const ta = $('stAnswer'); const base = ta.value ? ta.value.trim() + ' ' : '';
+      rec = new SR(); rec.lang = 'en-IN'; rec.interimResults = true; rec.continuous = true;
+      rec.onresult = (e) => {
+        let t = ''; for (let k = 0; k < e.results.length; k++) t += e.results[k][0].transcript;
+        const box = $('stAnswer'); if (box) { box.value = base + t; S.iv.draft = box.value; }
+      };
+      rec.onend = rec.onerror = () => { if (micOn) { micOn = false; if (S && S.tab === 'iv') renderInterview(); } };
+      try { rec.start(); micOn = true; renderInterview(); } catch (e) { micOn = false; }
+    }
+ 
+    /* =====================================================================
+       FINISH + RESULT
+       ===================================================================== */
+    async function finishTest(force) {
+      if (!S || !S.active) return;
+      if (!force) {
+        const left = [];
+        const m = S.mcqAns.filter(x => x === null).length, c = S.lastRun.filter(x => !x).length, v = S.D.interview.length - S.iv.results.length;
+        if (m) left.push(m + ' MCQ' + (m > 1 ? 's' : ''));
+        if (c) left.push(c + ' coding problem' + (c > 1 ? 's' : ''));
+        if (v) left.push(v + ' interview question' + (v > 1 ? 's' : ''));
+        if (left.length && !confirm('You still have ' + left.join(', ') + ' unattempted. Submit anyway? This cannot be undone.')) return;
+      }
+      S.active = false; stopTimer(); stopMic();
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      const D = S.D;
+ 
+      // grade code (untouched starter code earns nothing)
+      const fracs = [];
+      for (let i = 0; i < D.code.length; i++) {
+        if (S.drafts[i].trim() === D.code[i].starter.trim()) { fracs.push(0); continue; }
+        const r = await runTests(D.code[i], S.drafts[i]);
+        fracs.push(r.error ? 0 : r.passed / r.total);
+      }
+      const mcqCorrect = S.mcqAns.filter((a, i) => a === D.mcq[i].a).length;
+      const mcqS = mcqCorrect * MCQ_EACH;
+      const codeS = Math.round(fracs.reduce((s, f, i) => s + f * CODE_PTS[i], 0));
+      const ivAvg = S.iv.results.reduce((s, r) => s + r.frac, 0) / D.interview.length;
+      const ivS = Math.round(ivAvg * IV_TOTAL);
+      const total = mcqS + codeS + ivS;
+      const used = Math.min(TOTAL_SECONDS, Math.round((Date.now() - S.startedAt) / 1000));
+      const tier = total >= 80 ? 3 : total >= 60 ? 2 : total >= 40 ? 1 : 0;
+      const rankTitle = D.titles[tier];
+ 
+      const badges = [];
+      if (S.bestStreak >= 3) badges.push('🔥 Streak Master');
+      if (fracs[0] === 1) badges.push('🐞 Bug Squasher');
+      if (fracs.every(f => f === 1)) badges.push('🧪 Test Champion');
+      if (S.iv.results.length === D.interview.length && ivAvg >= 0.75) badges.push('🎤 Interview Ace');
+      if (S.iv.results.length === D.interview.length && S.lastRun.every(x => x) && S.mcqAns.every(x => x !== null) && used <= 600) badges.push('⚡ Speed Runner');
+ 
+      // fill result UI
+      $('resSub').textContent = S.secondsLeft <= 0 ? "Time's up! Your answers so far were auto-submitted and scored." : 'Your performance has been scored and added to your ApplyRank profile.';
+      $('resRank').textContent = '🏆 ' + rankTitle.toUpperCase() + ' · ' + D.name.toUpperCase();
+      $('resXp').textContent = S.xp;
+      $('resStreak').textContent = S.bestStreak;
+      $('resTime').textContent = fmt(used);
+      $('resBars').innerHTML = [
+        ['🧠 Brain Check (MCQ)', mcqS, 40, '#6366f1'],
+        ['⚡ Code Lab', codeS, 35, '#10b981'],
+        ["🎤 Silly's Hot Seat", ivS, 25, '#f59e0b']
+      ].map(b => '<div class="st-bar-row"><div class="st-bar-top"><span>' + b[0] + '</span><span>' + b[1] + ' / ' + b[2] + '</span></div><div class="st-bar-track"><div class="st-bar-fill" data-w="' + Math.round(b[1] / b[2] * 100) + '" style="background:' + b[3] + '"></div></div></div>').join('');
+      $('resBadges').innerHTML = badges.length
+        ? badges.map(b => '<span class="st-badge">' + b + '</span>').join('')
+        : '<span class="st-badge st-badge-off">No badges this time — try a streak of 3, a perfect code run, or a strong interview</span>';
+ 
+      showScreen('stResult');
+      $('stRingFg').style.strokeDashoffset = 439.82;
+      $('resScore').textContent = 0;
+      requestAnimationFrame(() => setTimeout(() => {
+        $('stRingFg').style.strokeDashoffset = 439.82 * (1 - total / 100);
+        document.querySelectorAll('.st-bar-fill').forEach(el => el.style.width = el.dataset.w + '%');
+        const t0 = performance.now();
+        (function count(now) {
+          const p = Math.min(1, (now - t0) / 1400);
+          $('resScore').textContent = Math.round(total * (1 - Math.pow(1 - p, 3)));
+          if (p < 1) requestAnimationFrame(count);
+        })(t0);
+      }, 80));
+ 
+      window.sillyReact(total >= 60 ? 'happy' : 'sad', total >= 60 ? 'Verified! You crushed it 🏆' : 'Good try — retake to climb higher 💪');
+ 
+      const summary = { domain: S.key, total, mcq: mcqS, code: codeS, interview: ivS, rank: rankTitle, xp: S.xp, timeUsed: used, badges, at: new Date().toISOString() };
+      try { localStorage.setItem('applyrank_last_result', JSON.stringify(summary)); } catch (e) {}
+      emit('silly:test-complete', summary);
+    }
+ 
+    window.addEventListener('beforeunload', function (e) {
+      if (S && S.active) { e.preventDefault(); e.returnValue = ''; }
+    });
+  </script>
+ 
+  <script>window.__sbErr=[];window.addEventListener("error",function(e){window.__sbErr.push((e.message||"error")+" ["+String(e.filename||"").split("/").pop()+":"+e.lineno+"]");});</script>
+  <script src="silly-robot.js" onerror="window.__sbMissing=1"></script>
+  <script>
+  /* If silly-robot.js did not load, keep the page working and show WHY (instead of crashing). */
+  if (typeof SillyBot === "undefined") {
+    (function () {
+      var why = window.__sbMissing ? "silly-robot.js was NOT FOUND. Put silly-robot.js in the same folder as this page and check the file name (no spaces or (1))." : "silly-robot.js loaded but has an error: " + (window.__sbErr && window.__sbErr[0] || "unknown") + ". Re-download the latest silly-robot.js.";
+      console.warn("[Silly] " + why);
+      var noop = function () {}, P = function () { return Promise.resolve(); };
+      function bot() { return { el: document.createElement("div"), set: noop, sit: noop, stand: noop, say: P, hush: noop, walkTo: P, hearts: noop, destroy: noop, nextTip: noop }; }
+      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["Silly is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
+      document.addEventListener("DOMContentLoaded", function () {
+        var i = document.getElementById("sbIntro"); if (i) i.remove();
+        var b = document.createElement("div"); b.style.cssText = "position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;background:#7f1d1d;color:#fff;font:600 13px sans-serif;padding:12px 16px;border-radius:12px;box-shadow:0 0 24px rgba(0,0,0,.5)";
+        b.textContent = "Silly could not start. " + why; document.body.appendChild(b);
+      });
+    })();
+  }
+  </script>
+<script>
+(function () {
+  var f = SillyBot.face(document.getElementById('sillyAnchor'));
+  var o = window.sillyReact;
+  window.sillyReact = function (s, m) { if (o) o(s, m); f.react(s); };
+})();
+</script>
+</body>
+</html>

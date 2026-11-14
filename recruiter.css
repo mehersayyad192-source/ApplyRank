@@ -1,0 +1,28 @@
+/* Recruiter desk - same neon look as the rest of ApplyRank */
+.rc-top{display:flex;justify-content:space-between;align-items:center;padding:16px 28px;border-bottom:1px solid rgba(99,102,241,.3);position:relative;z-index:2}
+.rc-logo{font:800 22px 'Plus Jakarta Sans',sans-serif}.rc-logo span{color:#6366f1}.rc-logo small{font-size:12px;color:#10b981;margin-left:10px;letter-spacing:.08em}
+.rc-top a,.rc-top button{color:#9fb0ff;background:none;border:1px solid rgba(99,102,241,.5);border-radius:10px;padding:8px 14px;font:700 13px 'Plus Jakarta Sans',sans-serif;cursor:pointer;text-decoration:none}
+.rc-wrap{max-width:1050px;margin:0 auto;padding:26px 20px 60px;position:relative;z-index:2;font-family:'Plus Jakarta Sans',sans-serif}
+.rc-wrap h1{font-size:28px;margin:6px 0 4px}.rc-wrap h1 span{color:#6366f1}
+.rc-sub{color:#b8c0e6;font-size:14px;margin:0 0 22px}
+.rc-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:20px}
+@media(max-width:860px){.rc-grid{grid-template-columns:1fr}}
+.rc-card{background:rgba(17,24,52,.92);border:1px solid rgba(99,102,241,.4);border-radius:18px;padding:22px}
+.rc-card h2{font-size:16px;margin:0 0 14px;letter-spacing:.04em}
+.rc-card label{display:block;font-size:11px;font-weight:700;letter-spacing:.07em;color:#9fb0ff;margin:12px 0 5px}
+.rc-card input,.rc-card select,.rc-card textarea{width:100%;padding:11px 12px;border-radius:10px;border:1px solid rgba(99,102,241,.5);background:#0b1020;color:#fff;font:600 14px 'Plus Jakarta Sans',sans-serif;outline:none}
+.rc-card textarea{min-height:90px;resize:vertical}
+.rc-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rc-btn{margin-top:16px;padding:12px 18px;border:0;border-radius:12px;cursor:pointer;color:#fff;font:800 14px 'Plus Jakarta Sans',sans-serif;background:linear-gradient(135deg,#6366f1,#4f46e5);box-shadow:0 0 18px rgba(99,102,241,.5)}
+.rc-btn.green{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 0 14px rgba(16,185,129,.4)}
+.rc-btn.red{background:linear-gradient(135deg,#ef4444,#b91c1c);box-shadow:none}
+.rc-btn.sm{margin:0;padding:7px 12px;font-size:12px;border-radius:9px}
+.rc-msg{min-height:18px;margin-top:10px;font-size:13px;font-weight:700}.rc-msg.ok{color:#10b981}.rc-msg.err{color:#f87171}
+.rc-job{border:1px solid rgba(99,102,241,.3);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+.rc-job b{font-size:15px}.rc-job .meta{color:#9fb0ff;font-size:12.5px;margin:3px 0 8px}
+.rc-tags span{display:inline-block;margin:0 6px 4px 0;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:700;background:rgba(99,102,241,.2);color:#c7d0ff}
+.rc-app{display:grid;grid-template-columns:1.3fr .7fr 1fr auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid rgba(99,102,241,.2);font-size:13px}
+.rc-app small{color:#8b93c4;display:block}
+.rc-app select{padding:7px;font-size:12px}
+.rc-empty{color:#8b93c4;font-size:14px}
+.rc-guard{max-width:520px;margin:90px auto;text-align:center}

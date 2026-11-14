@@ -1,0 +1,272 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="silly-robot.css">
+  <link rel="stylesheet" href="intro.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
+  <title>ApplyRank</title>
+  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_forward" /> -->
+  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=verified_user" /> -->
+  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_forward" /> -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=verified" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" integrity="sha512-ApSLB1Pd3/bZN8fWB/RG9YhN/7bd9Hkf3AGaE2mPfebjrxagjuBtx2GcgdqIlJkUzwylBo61r9Xa9NmgBI0swA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+ <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_forward" /> -->
+  <!-- 🔮 फॉन्ट ऑसम और गूगल आइकॉन्स की लाइव फ्री कंबाइंड लाइब्रेरी लिंक्स -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://googleapis.com" rel="stylesheet">
+  <link rel="stylesheet" href="https://googleapis.com" />
+  <link rel="stylesheet" href="https://cloudflare.com" />
+  <script src="api.js"></script>
+</head>
+<body>
+
+  <!-- 📦 MASTER SPLIT-SCREEN CONTAINER -->
+  <div class="master_container_box">
+
+    <!-- 🤖 LEFT SIDE PANEL (लोगो, सर्कल और स्लोगन का लेआउट) -->
+    <div class="login-left-robot-zone">
+      
+      <!-- टॉप-लेफ्ट अलाइन लोगो -->
+      <div class="applyrank-logo-wrapper">
+        <span class="logo-text-main">
+          <span class="logo-accent-white">Apply</span><span class="logo-accent-purple">Rank</span>
+        </span>
+      </div>
+       
+      <!-- तुम्हारा परफेक्टली सेंटर ग्लोइंग नियॉन सर्कल -->
+      <div class="robot-neaon-circle-canvas"></div>
+
+      <!-- स्लोगन टेक्स्ट का मुख्य ब्लॉक -->
+      <div class="robot-slogan-block">
+        <h2 class="slogan-maain-title">
+          Dont't just apply. <br>
+          <span class="text-accent-green">Learn, level up, and build </span> <br>
+          <span class="text-accent-blue">a verified rank.</span>
+        </h2>
+        <p class="slogan-sub-description">
+          ApplyRank pairs you with an AI mentor, scores your skill, and unlocks the doors your resume alone can't.
+        </p>
+      </div>
+
+      <!-- 🟢 FOOTER ROW: दोनों डिब्बे अब एक समान 'features-items' क्लास के साथ सिंक हैं -->
+      <div class="robot-footer-features">
+        <div class="features-items">
+          <span class="material-symbols-outlined icon-shield-green">verified</span>
+          <span class="feature-text">Verified ranking</span>
+        </div>
+        <div class="features-items">
+          <div class="star">
+            <i class="fa-regular fa-star"></i>
+          </div>
+          <span class="feature-text">AI rejection audits</span>
+        </div>
+      </div>
+
+    </div> <!-- End of Left Box -->
+   
+    <!-- 📑 RIGHT SIDE PANEL (लॉगिन फॉर्म और बैज का असली सिंगल राइट बॉक्स) -->
+    <div class="right_box">
+      
+      <!-- 🔐 हमारा सिक्योर कैप्सूल बैज (अब यह फॉर्म कार्ड के ठीक ऊपर परफेक्ट सेंटर रहेगा) -->
+      <div class="secure-badge-container">
+        <span class="secure-green-dot"></span>
+        <span class="secure-badge-text">SECURE SIGN-IN</span>
+      </div>
+
+      <!-- 📥 मुख्य लॉगिन फॉर्म बॉक्स कार्ड wrapper -->
+      <div class="login-interface-form-card">
+        
+        <form class="login-form-execution-block">
+          
+          <!-- हेडिंग और तुम्हारा सोचा हुआ एकदम परफेक्ट टेक्स्ट वाक्य -->
+          <h1 class="form-main-title">SIGN IN TO YOUR RANK</h1>
+          <p class="form-sub-text-line">Welcome to ApplyRank. Let's push your rank and skills higher today.</p>
+
+          <!-- ✉️ EMAIL ADDRESS FIELD ROW -->
+          <div class="form-input-wrapper-row">
+            <label for="userEmail" class="form-field-label">EMAIL ADDRESS</label>
+            <div class="input-with-icon-holder">
+              <span class="material-symbols-outlined input-icon-envelope"></span>
+              <input 
+                type="email" 
+                id="userEmail" 
+                class="form-text-input-field" 
+                placeholder="name@applyrank.ai" 
+                required 
+              />
+            </div>
+          </div>
+
+          <!-- 🔑 PASSWORD FIELD ROW WITH FORGOT LINK -->
+          <div class="form-input-wrapper-row" style="margin-top: 25px;">
+            <div class="field-label-header-row">
+              <label for="userPassword" class="form-field-label">PASSWORD</label>
+              <a href="#" class="forgot-password-trigger-link">Forgot?</a>
+            </div>
+            <div class="input-with-icon-holder">
+              <span class="material-symbols-outlined input-icon-lock"></span>
+              <input 
+                type="password" 
+                id="userPassword" 
+                class="form-text-input-field" 
+                placeholder="••••••••" 
+                required 
+              />
+            </div>
+          </div>
+  <!-- 🚀 CONTINUE BUTTON, PRIVACY POLICY & DEMO NOTIFICATION ALERT -->
+ 
+<!-- 🚀 CONTINUE BUTTON WITH DIRECT JAVASCRIPT LINKING MAGIC -->
+<div class="form-action-trigger-row" style="margin-top: 30px;">
+  
+  <!-- 🔥 फिक्स: बटन पर क्लिक करते ही जावास्क्रिप्ट सीधे dashboard.html पेज को खींचकर लोड कर देगी! -->
+  <button type="button" class="form-submit-continue-btn" onclick="sillyLogin()">
+    <span>CONTINUE</span>
+    <span class="material-symbols-outlined btn-arrow-icon">arrow_forward</span>
+  </button>
+
+  <p class="form-privacy-policy-note-line">
+    By continuing you agree to the <a href="#" class="policy-link-string">Terms</a> & <a href="#" class="policy-link-string">Privacy Policy</a>.
+  </p>
+
+  <div class="demo-build-alert-card-wrapper">
+    <span class="material-symbols-outlined alert-shield-check-icon">verified_user</span>
+    <p class="alert-card-message-string">
+      Demo build — any credentials will sign you in. Your data stays in this session.
+    </p>
+  </div>
+</div>
+
+
+        </form>
+        
+      </div> <!-- End of Form Card -->
+
+
+    </div> <!-- End of Right Box -->
+
+  </div>
+  <!-- 🤖 WELCOME INTRO: Silly walks in, says hi, then the login appears -->
+  <div id="sbIntro" aria-live="polite">
+    <div class="sbi-dots"></div>
+    <div class="sbi-brand">Apply<b>Rank</b></div>
+    <div class="sbi-skip"><button type="button" id="sbiVoice">🔊 Silly voice: off</button><button type="button" id="sbiSkip">Skip ›</button></div>
+    <div class="sbi-hero" id="sbiHero"><h1>Welcome to <span>ApplyRank</span></h1><p>Your verified rank is your edge.</p></div>
+    <div class="sbi-floor"></div>
+    <div class="sbi-gate" id="sbiGate"><button type="button" class="sbi-btn" id="sbiStart">&#9654; Meet Silly</button><p>Turn your sound on for the full welcome &#128266;</p></div>
+    <div class="sbi-cta" id="sbiCta"><button type="button" class="sbi-btn" id="sbiGo">LET'S LOGIN ➔</button></div>
+  </div>
+
+  <script>window.__sbErr=[];window.addEventListener("error",function(e){window.__sbErr.push((e.message||"error")+" ["+String(e.filename||"").split("/").pop()+":"+e.lineno+"]");});</script>
+  <script src="silly-robot.js" onerror="window.__sbMissing=1"></script>
+  <script>
+  /* If silly-robot.js did not load, keep the page working and show WHY (instead of crashing). */
+  if (typeof SillyBot === "undefined") {
+    (function () {
+      var why = window.__sbMissing ? "silly-robot.js was NOT FOUND. Put silly-robot.js in the same folder as this page and check the file name (no spaces or (1))." : "silly-robot.js loaded but has an error: " + (window.__sbErr && window.__sbErr[0] || "unknown") + ". Re-download the latest silly-robot.js.";
+      console.warn("[Silly] " + why);
+      var noop = function () {}, P = function () { return Promise.resolve(); };
+      function bot() { return { el: document.createElement("div"), set: noop, sit: noop, stand: noop, say: P, hush: noop, walkTo: P, hearts: noop, destroy: noop, nextTip: noop }; }
+      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["Silly is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
+      document.addEventListener("DOMContentLoaded", function () {
+        var i = document.getElementById("sbIntro"); if (i) i.remove();
+        var b = document.createElement("div"); b.style.cssText = "position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;background:#7f1d1d;color:#fff;font:600 13px sans-serif;padding:12px 16px;border-radius:12px;box-shadow:0 0 24px rgba(0,0,0,.5)";
+        b.textContent = "Silly could not start. " + why; document.body.appendChild(b);
+      });
+    })();
+  }
+  </script>
+  <script>
+  (function () {
+    var intro = document.getElementById('sbIntro'), hero = document.getElementById('sbiHero'), cta = document.getElementById('sbiCta');
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var skipped = false, home = null, big = null;
+
+    function vb() { var b = document.getElementById('sbiVoice'); b.textContent = SillyBot.voiceOn() ? '🔊 Silly voice: on' : '🔊 Silly voice: off'; }
+    vb();
+    document.getElementById('sbiVoice').onclick = function () { SillyBot.setVoice(!SillyBot.voiceOn()); vb(); if (SillyBot.voiceOn()) SillyBot.speakNow('Hi, I am Silly. How does my voice sound?'); };
+
+    /* ---- the login-page companion (lives inside the neon circle) ---- */
+    function spawnHome() {
+      if (home) return;
+      var circle = document.querySelector('.robot-neaon-circle-canvas');
+      home = SillyBot.create({ parent: circle, inline: true, size: 230, bubble: 'top' });
+      home.set('wave', 1800);
+      setTimeout(function () { home.say('Hi! I am Silly 💜 Enter your email and password, and I will take care of the rest!', { ms: 5200 }); }, 900);
+      var email = document.getElementById('userEmail'), pass = document.getElementById('userPassword');
+      email.addEventListener('focus', function () { home.set('idle'); home.say('Type your email 📧 Your journey starts right here.', { ms: 3000 }); });
+      pass.addEventListener('focus', function () { home.set('shy'); home.say('I am not looking 🙈 Take your time.', { ms: 3000, keepState: true }); });
+      pass.addEventListener('blur', function () { home.set('idle'); });
+      email.addEventListener('input', function () { if (email.value.indexOf('@') > 0) home.set('happy', 1300); });
+    }
+
+    function finishIntro() {
+      if (skipped) return; skipped = true;
+      if (big) big.el.classList.add('sbi-hide');
+      intro.classList.add('sbi-out');
+      setTimeout(function () { intro.remove(); if (big) big.destroy(); spawnHome(); }, 700);
+    }
+    document.getElementById('sbiSkip').onclick = finishIntro;
+    document.getElementById('sbiGo').onclick = finishIntro;
+    document.addEventListener('keydown', function (e) { if (intro.parentNode && e.key === 'Escape') finishIntro(); });
+
+    /* ---- the walk-in ---- */
+    var size = Math.max(170, Math.min(280, window.innerWidth * 0.3));
+    big = SillyBot.create({ size: size, left: -size - 20, bottom: Math.round(window.innerHeight * 0.08) + 2, bubble: 'top' });
+    big.el.style.zIndex = 8100;
+    var cx = window.innerWidth / 2 - size / 2;
+
+    function seq() {
+      return big.walkTo(cx, reduce ? 0 : 2300).then(function () {
+        if (skipped) return;
+        big.set('wave'); hero.classList.add('sbi-on');
+        return big.say('Welcome to ApplyRank! 👋', { keepState: true, speak: true });
+      }).then(function () { return new Promise(function (r) { setTimeout(r, 1100); }); })
+      .then(function () {
+        if (skipped) return; big.set('happy', 2200);
+        return big.say('You are just one login away. Your Verified Rank is waiting! Let us do something big today 🚀', { keepState: true, speak: true });
+      }).then(function () { if (skipped) return; cta.classList.add('sbi-on'); setTimeout(function () { if (!skipped) finishIntro(); }, 3000); });
+    }
+    document.getElementById('sbiStart').onclick = function () { document.getElementById('sbiGate').classList.add('sbi-gone'); if (!SillyBot.voiceOn()) SillyBot.setVoice(true); seq(); };
+    document.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !document.getElementById('sbiGate').classList.contains('sbi-gone') && intro.parentNode) document.getElementById('sbiStart').click(); });
+  })();
+
+  /* LOGIN: Silly celebrates, then wipes to dashboard */
+  function sillyLogin() {
+    var email = document.getElementById('userEmail').value.trim();
+    var pw = document.getElementById('userPassword').value;
+    var errEl = document.getElementById('loginErr');
+    if (!errEl) { errEl = document.createElement('p'); errEl.id = 'loginErr'; errEl.style.cssText = 'color:#ef4444;font-size:13px;margin-top:10px;min-height:16px'; document.querySelector('.form-submit-continue-btn').insertAdjacentElement('afterend', errEl); }
+    errEl.textContent = '';
+    function enter(real) {
+      try {
+        if (email) {
+          localStorage.setItem('applyrank_email', email);
+          var p = JSON.parse(localStorage.getItem('applyrank_profile') || '{}');
+          if (!p.name) { var n = email.split('@')[0].replace(/[._\-\d]+/g, ' ').trim(); p.name = n ? n.replace(/\b\w/g, function (c) { return c.toUpperCase(); }) : ''; p.email = email; localStorage.setItem('applyrank_profile', JSON.stringify(p)); }
+        }
+      } catch (e) {}
+      celebrate(real);
+    }
+    if (window.ApplyRankAPI && email && pw) {
+      ApplyRankAPI.loginOrRegister(email, pw).then(function () { enter(true); }, function (e) {
+        if (e.offline) { enter(false); }                 // backend not running -> demo mode, site still works
+        else errEl.textContent = e.message;
+      });
+    } else { enter(false); }
+  }
+  function celebrate(real) {
+    var b = document.querySelector('.robot-neaon-circle-canvas .sb-svg');
+    if (b) { b.classList.remove('sb-shy'); b.classList.add('sb-happy', 'sb-wave'); }
+    var bub = document.querySelector('.robot-neaon-circle-canvas .sb-bubble');
+    if (bub) { bub.textContent = 'Yes! Heading to your dashboard 🚀 You have got this!'; bub.classList.add('sb-show'); }
+    SillyBot.speak('Let us go! Opening your dashboard.');
+    setTimeout(function () { SillyBot.go('dashboard.html'); }, 900);
+  }
+  </script>
+ </body>
+ </html>

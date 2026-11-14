@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recruiter Desk - ApplyRank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="recruiter.css"><script src="api.js"></script></head>
+<body class="dashboard-body-canvas">
+<div class="rc-top"><div class="rc-logo">Apply<span>Rank</span><small>RECRUITER DESK</small></div>
+  <div><a href="jobs.html">Job corner</a> <button id="out">Log out</button></div></div>
+
+<div class="rc-wrap rc-guard rc-card" id="guard" style="display:none">
+  <h2>Recruiter login needed</h2>
+  <p class="rc-sub" id="guardMsg">Log in with a recruiter account to post jobs and see applicants.<br>Demo recruiter: <b>recruiter@applyrank.dev</b> / <b>Recruiter@123</b></p>
+  <a class="rc-btn" style="text-decoration:none;display:inline-block" href="index.html">Go to login</a>
+</div>
+
+<main class="rc-wrap" id="desk" style="display:none">
+  <h1>Recruiter <span>desk</span></h1>
+  <p class="rc-sub">Post a job, then open its applicants. Candidates are sorted by their <b>verified rank</b>. A candidate's email stays masked until you shortlist or hire them.</p>
+  <div class="rc-grid">
+    <section class="rc-card">
+      <h2>POST A NEW JOB</h2>
+      <label for="jt">JOB TITLE *</label><input id="jt" maxlength="120" placeholder="Java Backend Developer">
+      <label for="jc">COMPANY *</label><input id="jc" maxlength="120" placeholder="Your company">
+      <div class="rc-two">
+        <div><label for="jl">LOCATION</label><input id="jl" placeholder="Pune / Remote"></div>
+        <div><label for="jp">CTC</label><input id="jp" placeholder="6-9 LPA"></div>
+      </div>
+      <div class="rc-two">
+        <div><label for="jk">TRACK</label><select id="jk"><option value="fullstack">Full stack</option><option value="backend">Backend</option><option value="frontend">Frontend</option><option value="data">Data</option></select></div>
+        <div><label for="jm">MIN RANK SCORE (0-100)</label><input id="jm" type="number" min="0" max="100" value="40"></div>
+      </div>
+      <label for="jr">REQUIRED SKILLS (comma separated)</label><input id="jr" placeholder="Java, Spring Boot, SQL">
+      <label for="jd">DESCRIPTION</label><textarea id="jd" maxlength="4000" placeholder="What will this person do?"></textarea>
+      <button class="rc-btn" id="post">Post job</button>
+      <div class="rc-msg" id="postMsg"></div>
+    </section>
+    <section class="rc-card">
+      <h2>MY JOBS</h2><div id="jobs" class="rc-empty">Loading...</div>
+      <div id="appsBox" style="display:none;margin-top:18px"><h2 id="appsTitle">APPLICANTS</h2><div id="apps"></div><div class="rc-msg" id="appMsg"></div></div>
+    </section>
+  </div>
+</main>
+
+<script>
+var $ = function (id) { return document.getElementById(id); };
+function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function say(id, ok, t) { var m = $(id); m.className = 'rc-msg ' + (ok ? 'ok' : 'err'); m.textContent = t; }
+$('out').onclick = function () { ApplyRankAPI.logout(); try { localStorage.removeItem('applyrank_role'); } catch (e) {} location.href = 'index.html'; };
+
+function guard(msg) { $('guard').style.display = 'block'; if (msg) $('guardMsg').textContent = msg; }
+if (!ApplyRankAPI.isLoggedIn() || ApplyRankAPI.role() !== 'RECRUITER') guard();
+else { $('desk').style.display = 'block'; loadJobs(); }
+
+function loadJobs() {
+  ApplyRankAPI.myJobs().then(function (list) {
+    var box = $('jobs'); box.className = ''; box.textContent = '';
+    if (!list.length) { box.className = 'rc-empty'; box.textContent = 'You have not posted any job yet. Use the form to post your first one.'; return; }
+    list.forEach(function (j) {
+      var d = el('div', 'rc-job');
+      d.appendChild(el('b', '', j.title + ' - ' + j.company));
+      d.appendChild(el('div', 'meta', [j.location, j.ctc, 'min rank ' + j.minRank, j.track].filter(Boolean).join(' | ')));
+      var t = el('div', 'rc-tags'); (j.requirements || []).forEach(function (r) { t.appendChild(el('span', '', r)); }); d.appendChild(t);
+      var b = el('button', 'rc-btn sm', 'View applicants'); b.style.marginTop = '8px';
+      b.onclick = function () { loadApplicants(j); }; d.appendChild(b);
+      box.appendChild(d);
+    });
+  }, function (e) {
+    if (e.status === 401 || e.status === 403) guard('Your recruiter session ended. Please log in again.');
+    else { $('jobs').className = 'rc-empty'; $('jobs').textContent = e.offline ? 'Backend is not running. Start it (mvn spring-boot:run) and refresh.' : e.message; }
+  });
+}
+
+$('post').onclick = function () {
+  var title = $('jt').value.trim(), company = $('jc').value.trim();
+  if (!title || !company) { say('postMsg', false, 'Job title and company are required.'); return; }
+  var btn = this; btn.disabled = true;
+  ApplyRankAPI.postJob({
+    title: title, company: company, location: $('jl').value.trim(), ctc: $('jp').value.trim(), track: $('jk').value,
+    minRank: parseInt($('jm').value || '0', 10), description: $('jd').value.trim(),
+    requirements: $('jr').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean)
+  }).then(function () {
+    say('postMsg', true, 'Job posted. Candidates can see it in Job Corner now.');
+    ['jt', 'jl', 'jp', 'jr', 'jd'].forEach(function (i) { $(i).value = ''; }); loadJobs();
+  }, function (e) { say('postMsg', false, e.offline ? 'Backend is not running.' : e.message); }).then(function () { btn.disabled = false; });
+};
+
+var STAGES = ['Applied', 'Resume check', 'Rank check', 'Skill & interview', 'Final decision'];
+function loadApplicants(job) {
+  $('appsBox').style.display = 'block'; $('appsTitle').textContent = 'APPLICANTS: ' + job.title.toUpperCase();
+  var box = $('apps'); box.textContent = 'Loading...'; $('appMsg').textContent = '';
+  ApplyRankAPI.applicants(job.id).then(function (list) {
+    box.textContent = '';
+    if (!list.length) { box.appendChild(el('div', 'rc-empty', 'No applicants yet.')); return; }
+    list.forEach(function (a) {
+      var row = el('div', 'rc-app');
+      var who = el('div'); who.appendChild(el('b', '', a.name)); who.appendChild(el('small', '', a.email + (a.headline ? ' | ' + a.headline : ''))); row.appendChild(who);
+      row.appendChild(el('div', '', a.verifiedRank == null ? 'No test yet' : a.verifiedRank + '/100 ' + (a.rankTitle || '')));
+      var sel = el('select'); STAGES.forEach(function (s, i) { var o = el('option', '', s); o.value = i; if (i === a.stage) o.selected = true; sel.appendChild(o); });
+      sel.onchange = function () { update(a, { stage: parseInt(sel.value, 10) }, job); }; row.appendChild(sel);
+      var acts = el('div'); acts.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap';
+      var s1 = el('button', 'rc-btn sm green', a.outcome === 'SHORTLISTED' ? 'Shortlisted' : 'Shortlist'); s1.onclick = function () { update(a, { outcome: 'SHORTLISTED' }, job); };
+      var s2 = el('button', 'rc-btn sm green', 'Hire'); s2.onclick = function () { update(a, { outcome: 'HIRED' }, job); };
+      var s3 = el('button', 'rc-btn sm red', 'Close'); s3.onclick = function () { update(a, { outcome: 'CLOSED' }, job); };
+      acts.appendChild(s1); acts.appendChild(s2); acts.appendChild(s3); row.appendChild(acts);
+      box.appendChild(row);
+    });
+  }, function (e) { box.textContent = e.offline ? 'Backend is not running.' : e.message; });
+}
+function update(a, body, job) {
+  ApplyRankAPI.setApplication(a.applicationId, body).then(function () { say('appMsg', true, 'Updated. The candidate gets a notification.'); loadApplicants(job); },
+    function (e) { say('appMsg', false, e.message); });
+}
+</script></body></html>

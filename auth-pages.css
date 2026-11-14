@@ -1,0 +1,19 @@
+/* Shared look for forgot-password / reset-password / verify-email pages (same neon theme as the website) */
+*{box-sizing:border-box}
+body.auth-body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
+  font-family:'Plus Jakarta Sans',sans-serif;color:#fff;background:radial-gradient(circle at 20% 0%,#1b2145 0,#0b0f19 55%) fixed}
+.auth-card{width:100%;max-width:440px;background:rgba(17,24,52,.92);border:1px solid rgba(99,102,241,.45);border-radius:20px;
+  padding:32px 30px;box-shadow:0 0 60px rgba(99,102,241,.25)}
+.auth-logo{font-weight:800;font-size:24px;margin-bottom:6px}.auth-logo span{color:#6366f1}
+.auth-card h1{font-size:22px;margin:14px 0 6px}
+.auth-card p{color:#b8c0e6;font-size:14px;line-height:1.5;margin:0 0 16px}
+.auth-card label{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;color:#9fb0ff;margin:14px 0 6px}
+.auth-card input{width:100%;padding:13px 14px;border-radius:12px;border:1px solid rgba(99,102,241,.5);background:#0b1020;color:#fff;font:600 15px 'Plus Jakarta Sans',sans-serif;outline:none}
+.auth-card input:focus{border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.2)}
+.auth-btn{width:100%;margin-top:20px;padding:14px;border:0;border-radius:12px;cursor:pointer;color:#fff;font:800 15px 'Plus Jakarta Sans',sans-serif;
+  background:linear-gradient(135deg,#6366f1,#4f46e5);box-shadow:0 0 22px rgba(99,102,241,.55)}
+.auth-btn:disabled{opacity:.6;cursor:wait}
+.auth-msg{min-height:20px;margin-top:14px;font-size:14px;font-weight:600}
+.auth-msg.ok{color:#10b981}.auth-msg.err{color:#f87171}
+.auth-back{display:inline-block;margin-top:18px;color:#9fb0ff;font-size:13px;text-decoration:none}
+.auth-hint{font-size:12px;color:#8b93c4;margin-top:6px}

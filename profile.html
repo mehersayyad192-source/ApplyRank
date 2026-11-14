@@ -1,0 +1,475 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApplyRank - My Profile</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="profile.css">
+  <link rel="stylesheet" href="silly-robot.css">
+</head>
+<body class="dashboard-body-canvas">
+
+  <!-- 🏛️ MASTER GLOBAL NAVBAR -->
+  <nav class="dashboard-master-navbar">
+    <div class="nav-brand-logo-hub">
+      <span class="nav-logo-text">Apply<span class="purple-text">Rank</span></span>
+    </div>
+    <div class="nav-menu-links-center-row">
+      <a href="#" class="nav-menu-btn" onclick="location.href='dashboard.html'">
+        <span class="material-symbols-outlined nav-icon">home</span>
+        <span class="btn-text">HOME</span>
+      </a>
+      <a href="#" class="nav-menu-btn" onclick="location.href='jobs.html'">
+        <span class="material-symbols-outlined nav-icon">work</span>
+        <span class="btn-text">JOB CORNER</span>
+      </a>
+      <a href="#" class="nav-menu-btn" onclick="location.href='skilltest.html'">
+        <span class="material-symbols-outlined nav-icon">quiz</span>
+        <span class="btn-text">SKILL TEST</span>
+      </a>
+      <a href="#" class="nav-menu-btn" onclick="location.href='notifications.html'">
+        <span class="material-symbols-outlined nav-icon">notifications</span>
+        <span class="btn-text">NOTIFICATIONS</span>
+      </a>
+    </div>
+    <div class="nav-profile-right-zone" style="cursor:pointer" onclick="location.href='profile.html'">
+      <span class="material-symbols-outlined nav-icon">account_circle</span>
+      <span class="profile-name-string" id="navName">YOUR PROFILE</span>
+    </div>
+  </nav>
+
+  <main class="pf-wrap" id="pfRoot">
+
+    <div class="pf-top">
+      <div>
+        <span class="canvas-micro-badge">🧬 PROFILE CANVAS</span>
+        <h1 class="pf-title">Your verified <span>identity</span></h1>
+        <p class="pf-sub">Everything a recruiter sees, backed by proof &mdash; your Verified Rank, your real skill shape, and Silly-audited work.</p>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <div class="pf-toggle" role="group" aria-label="View mode">
+          <button type="button" id="vwEdit" class="pf-on" onclick="setView('edit')">✏️ My view</button>
+          <button type="button" id="vwRec" onclick="setView('recruiter')">👔 Recruiter view</button>
+        </div>
+        <button type="button" class="pf-btn pf-btn-main pf-edit-only" onclick="editProfile()">Edit profile</button>
+      </div>
+    </div>
+
+    <div class="pf-grid">
+      <!-- ============ LEFT ============ -->
+      <aside>
+        <section class="pf-card pf-id">
+          <div class="pf-avatar-wrap">
+            <svg class="pf-avatar-ring" viewBox="0 0 150 150" width="150" height="150" aria-hidden="true">
+              <defs><linearGradient id="pfG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#10b981"/></linearGradient></defs>
+              <circle cx="75" cy="75" r="70" fill="none" stroke="#18223d" stroke-width="6"/>
+              <circle id="pfRing" cx="75" cy="75" r="70" fill="none" stroke="url(#pfG)" stroke-width="6" stroke-linecap="round" stroke-dasharray="439.82" stroke-dashoffset="439.82" style="transition:stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 0 6px rgba(16,185,129,.7))"/>
+            </svg>
+            <div class="pf-avatar" id="pfAvatar">?</div>
+            <label class="pf-cam pf-edit-only" title="Change photo"><span class="material-symbols-outlined" style="font-size:17px">photo_camera</span>
+              <input type="file" id="pfPhoto" accept="image/*" style="display:none"></label>
+          </div>
+          <h2 class="pf-name" id="pfName">Your Name</h2>
+          <p class="pf-headline" id="pfHeadline">Add a headline</p>
+          <div class="pf-chips" id="pfChips"></div>
+
+          <div class="pf-rank">
+            <div class="pf-rank-l">VERIFIED RANK INDEX</div>
+            <div class="pf-rank-v"><span id="pfRankNum">--</span><small> / 100</small></div>
+            <div class="pf-rank-t" id="pfRankText">Take the skill test to unlock your verified rank.</div>
+            <a onclick="location.href='skilltest.html'" id="pfRankCta">Take skill test ›</a>
+          </div>
+          <div class="pf-contact" id="pfContact"></div>
+        </section>
+
+        <section class="pf-card pf-edit-only">
+          <h3>Profile strength <small id="pfStrPct">0%</small></h3>
+          <div class="pf-strength-bar"><i id="pfStrBar"></i></div>
+          <ul class="pf-tips" id="pfTips"></ul>
+        </section>
+
+        <section class="pf-card">
+          <h3>Silly badges <small>FROM SKILL TEST</small></h3>
+          <div class="pf-badges" id="pfBadges"></div>
+        </section>
+      </aside>
+
+      <!-- ============ RIGHT ============ -->
+      <div>
+        <section class="pf-card">
+          <h3>About</h3>
+          <p class="pf-about" id="pfAbout"></p>
+        </section>
+
+        <section class="pf-card">
+          <h3>Education &amp; skill shape</h3>
+          <div class="pf-two">
+            <div id="pfEdu"></div>
+            <div class="pf-radar-wrap">
+              <svg class="pf-radar-svg" id="pfRadar" viewBox="0 0 300 280" role="img" aria-label="Skill radar chart"></svg>
+              <div class="pf-radar-legend">
+                <span><i style="background:rgba(99,102,241,.5);border:1px dashed #818cf8"></i>You say</span>
+                <span><i style="background:#10b981"></i>Silly verified</span>
+              </div>
+            </div>
+          </div>
+          <div class="pf-gap" id="pfGap"></div>
+        </section>
+
+        <section class="pf-card">
+          <h3>Journey</h3>
+          <div class="pf-tl" id="pfJourney"></div>
+        </section>
+
+        <section class="pf-card">
+          <h3>Tech stack</h3>
+          <div class="pf-skills" id="pfSkills"></div>
+        </section>
+
+        <section class="pf-card">
+          <h3>Projects <button type="button" class="pf-btn pf-edit-only" onclick="addItem('projects')">+ Add project</button></h3>
+          <div class="pf-items" id="pfProjects"></div>
+        </section>
+
+        <section class="pf-card">
+          <h3>Certificates <button type="button" class="pf-btn pf-edit-only" onclick="addItem('certs')">+ Add certificate</button></h3>
+          <div class="pf-items" id="pfCerts"></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL -->
+  <div class="pf-modal" id="pfModal" onclick="if(event.target===this)closeModal()">
+    <div class="pf-modal-box">
+      <h2 id="pfMTitle"></h2>
+      <form id="pfForm" class="pf-form" onsubmit="return false"></form>
+      <div class="pf-modal-act">
+        <button type="button" class="pf-btn" onclick="closeModal()">Cancel</button>
+        <button type="button" class="pf-btn pf-btn-main" id="pfMSave">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SILLY ROBOT ANCHOR (same .silly-face-circle as the other pages) -->
+  <div class="pf-dock">
+    <div class="pf-say" id="pfSay"></div>
+    <div class="silly-face-circle" id="sillyAnchor"></div>
+  </div>
+
+<script>
+(function(){
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const KEY = 'applyrank_profile';
+  const AXES = ['Frontend', 'Backend', 'UI/UX', 'Databases', 'DSA'];
+  const DOMAIN_AXIS = { frontend: 0, backend: 1, data: 3 };
+  const DEFAULT = { name: '', headline: '', email: '', phone: '', location: '', photo: '', about: '',
+    status: 'fresher', expYears: 0, company: '', role: '', expDesc: '',
+    degree: '', university: '', gradYear: '', cgpa: '',
+    skills: '', github: '', linkedin: '', self: [50, 50, 40, 40, 30], projects: [], certs: [] };
+
+  function load(){ try { return Object.assign({}, DEFAULT, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) { return Object.assign({}, DEFAULT); } }
+  let P = load();
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) { say('Could not save — browser storage is full or blocked.'); } }
+  function result(){ try { return JSON.parse(localStorage.getItem('applyrank_last_result') || 'null'); } catch (e) { return null; } }
+
+  /* ---------- Silly robot ---------- */
+  let sayT;
+  function say(msg, ms){ const el = $('pfSay'); el.textContent = msg; el.classList.add('pf-show'); clearTimeout(sayT); sayT = setTimeout(() => el.classList.remove('pf-show'), ms || 4500); }
+  window.sillyReact = function(state, msg){
+    const a = $('sillyAnchor'); if (!a) return;
+    a.classList.remove('silly-happy','silly-talk','silly-jump');
+    if (state === 'happy') a.classList.add('silly-happy');
+    if (state === 'talk') a.classList.add('silly-talk');
+    if (state === 'jump') { void a.offsetWidth; a.classList.add('silly-jump'); }
+    if (msg) say(msg);
+    if (state !== 'reset') setTimeout(() => { a.classList.remove('silly-happy','silly-talk','silly-jump'); }, 1800);
+  };
+
+  /* ---------- completeness ---------- */
+  function strength(){
+    const checks = [
+      [!!P.photo, 'Add a profile photo', 10], [!!P.name, 'Add your name', 10], [!!P.headline, 'Write a one-line headline', 8],
+      [P.about.trim().length > 50, 'Write an About (50+ characters)', 12], [!!(P.degree && P.university), 'Add degree and university', 14],
+      [P.status === 'fresher' || !!(P.company && P.role), 'Add your company and role', 8], [P.skills.split(',').filter(s => s.trim()).length >= 4, 'List at least 4 tech skills', 10],
+      [!!P.github, 'Add your GitHub link', 8], [P.projects.length > 0, 'Add a project', 10], [P.certs.length > 0, 'Add a certificate', 5],
+      [!!result(), 'Take the skill test for a Verified Rank', 5]
+    ];
+    const pct = checks.reduce((s, c) => s + (c[0] ? c[2] : 0), 0);
+    return { pct: Math.min(100, pct), todo: checks.filter(c => !c[0]).map(c => c[1]) };
+  }
+
+  /* ---------- render ---------- */
+  function initials(n){ return (n || '?').trim().split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase() || '?'; }
+
+  function renderId(){
+    const r = result(), av = $('pfAvatar');
+    av.innerHTML = P.photo ? '<img alt="Profile photo" src="' + esc(P.photo) + '">' : esc(initials(P.name));
+    $('pfName').textContent = P.name || 'Your Name';
+    $('navName').textContent = P.name ? P.name.split(' ')[0].toUpperCase() : 'YOUR PROFILE';
+    $('pfHeadline').textContent = P.headline || 'Add a headline in Edit profile';
+    const chips = [];
+    chips.push(P.status === 'fresher' ? '<span class="pf-chip g">🎓 Fresher</span>' : '<span class="pf-chip a">💼 ' + esc(P.expYears) + ' yr experience</span>');
+    if (P.location) chips.push('<span class="pf-chip">📍 ' + esc(P.location) + '</span>');
+    if (r) chips.push('<span class="pf-chip g">✔ Verified</span>');
+    $('pfChips').innerHTML = chips.join('');
+
+    let target = 0;
+    if (r) {
+      target = Math.max(0, Math.min(100, +r.total || 0));
+      $('pfRankText').innerHTML = '<strong>' + esc(r.rank || 'Ranked') + '</strong> · ' + esc(r.domain || '') + ' track<br>Tested ' + new Date(r.at).toLocaleDateString();
+      $('pfRankCta').textContent = 'Retake to climb higher ›';
+    } else {
+      $('pfRankText').textContent = 'Take the skill test to unlock your verified rank.';
+      $('pfRankCta').textContent = 'Take skill test ›';
+    }
+    const num = $('pfRankNum'); num.textContent = r ? 0 : '--';
+    $('pfRing').style.strokeDashoffset = 439.82;
+    requestAnimationFrame(() => setTimeout(() => {
+      $('pfRing').style.strokeDashoffset = 439.82 * (1 - target / 100);
+      if (!r) return;
+      const t0 = performance.now();
+      (function tick(now){ const p = Math.min(1, (now - t0) / 1400); num.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(tick); })(t0);
+    }, 120));
+
+    const c = [];
+    if (P.email) c.push('<div><span class="material-symbols-outlined">mail</span><a href="mailto:' + esc(P.email) + '" class="pf-priv">' + esc(P.email) + '</a></div>');
+    if (P.phone) c.push('<div class="pf-priv"><span class="material-symbols-outlined">call</span>' + esc(P.phone) + '</div>');
+    if (P.github) c.push('<div><span class="material-symbols-outlined">code</span><a target="_blank" rel="noopener" href="' + esc(safeUrl(P.github)) + '">GitHub</a></div>');
+    if (P.linkedin) c.push('<div><span class="material-symbols-outlined">link</span><a target="_blank" rel="noopener" href="' + esc(safeUrl(P.linkedin)) + '">LinkedIn</a></div>');
+    $('pfContact').innerHTML = c.join('') || '<div class="pf-empty">No contact details yet.</div>';
+
+    const s = strength();
+    $('pfStrPct').textContent = s.pct + '%';
+    requestAnimationFrame(() => setTimeout(() => $('pfStrBar').style.width = s.pct + '%', 100));
+    $('pfTips').innerHTML = s.todo.length ? s.todo.slice(0, 4).map(t => '<li>' + esc(t) + '</li>').join('') : '<li>Profile complete — recruiters love this 🚀</li>';
+
+    $('pfBadges').innerHTML = r && r.badges && r.badges.length ? r.badges.map(b => '<span class="pf-badge">' + esc(b) + '</span>').join('') : '<span class="pf-empty">Earn badges in the skill test: streaks, perfect code runs, strong interviews.</span>';
+  }
+  function safeUrl(u){ u = String(u).trim(); return /^https?:\/\//i.test(u) ? u : 'https://' + u.replace(/^\/+/, ''); }
+
+  function renderText(){
+    $('pfAbout').innerHTML = P.about.trim() ? esc(P.about) : '<span class="pf-empty">Tell recruiters who you are, what you build and what you want next.</span>';
+    $('pfEdu').innerHTML = P.degree || P.university
+      ? '<p class="pf-edu-name">' + esc(P.degree || 'Degree') + '</p><p class="pf-edu-sub">' + esc(P.university || 'University') + (P.gradYear ? '<br>Class of ' + esc(P.gradYear) : '') + '</p><div class="pf-edu-meta">' + (P.cgpa ? '<span class="pf-chip g">CGPA ' + esc(P.cgpa) + '</span>' : '') + '</div>'
+      : '<span class="pf-empty">Add your education details.</span>';
+    const j = [];
+    if (P.status === 'experienced' && (P.company || P.role)) j.push('<div class="pf-tl-i"><div class="pf-tl-t">' + esc(P.role || 'Role') + ' · ' + esc(P.company || '') + '</div><div class="pf-tl-s">' + esc(P.expYears) + ' yr' + (P.expDesc ? ' — ' + esc(P.expDesc) : '') + '</div></div>');
+    if (P.degree || P.university) j.push('<div class="pf-tl-i"><div class="pf-tl-t">' + esc(P.degree || 'Studies') + '</div><div class="pf-tl-s">' + esc(P.university) + (P.gradYear ? ' · ' + esc(P.gradYear) : '') + '</div></div>');
+    const r = result();
+    if (r) j.unshift('<div class="pf-tl-i"><div class="pf-tl-t">Silly Verified · ' + esc(r.total) + '/100</div><div class="pf-tl-s">' + esc(r.domain) + ' track · ' + new Date(r.at).toLocaleDateString() + '</div></div>');
+    if (P.status === 'fresher') j.unshift('<div class="pf-tl-i"><div class="pf-tl-t">Fresher — ready to build</div><div class="pf-tl-s">Every expert started exactly here.</div></div>');
+    $('pfJourney').innerHTML = j.join('') || '<span class="pf-empty">Your journey will appear here.</span>';
+    const sk = P.skills.split(',').map(s => s.trim()).filter(Boolean);
+    $('pfSkills').innerHTML = sk.length ? sk.map(s => '<span class="pf-skill">' + esc(s) + '</span>').join('') : '<span class="pf-empty">Add skills like Java, Spring Boot, React…</span>';
+  }
+
+  /* ---------- radar ---------- */
+  function renderRadar(){
+    const cx = 150, cy = 140, R = 95, n = AXES.length;
+    const pt = (i, v) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n, r = R * v / 100; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; };
+    let g = '';
+    [25, 50, 75, 100].forEach(l => { g += '<polygon points="' + AXES.map((_, i) => pt(i, l).join(',')).join(' ') + '" fill="none" stroke="#1f2a44" stroke-width="1"/>'; });
+    AXES.forEach((a, i) => { const [x, y] = pt(i, 100), [lx, ly] = pt(i, 122); g += '<line x1="' + cx + '" y1="' + cy + '" x2="' + x + '" y2="' + y + '" stroke="#1f2a44"/><text x="' + lx + '" y="' + ly + '" fill="#a8b4cc" font-size="11" font-weight="700" text-anchor="middle" dominant-baseline="middle" font-family="Plus Jakarta Sans,sans-serif">' + esc(a) + '</text>'; });
+    const self = P.self.map(v => Math.max(0, Math.min(100, +v || 0)));
+    g += '<polygon id="pfSelfPoly" points="' + self.map((v, i) => pt(i, v).join(',')).join(' ') + '" fill="rgba(99,102,241,.28)" stroke="#818cf8" stroke-width="2" stroke-dasharray="5 4"/>';
+    const r = result(), idx = r ? DOMAIN_AXIS[r.domain] : undefined;
+    let gap = '<strong style="color:#e2e8f0">Claimed vs verified.</strong> Verified points appear after you take the skill test. Your radar is a goal until Silly proves it.';
+    if (r && idx !== undefined) {
+      const v = Math.max(0, Math.min(100, +r.total || 0)), [x, y] = pt(idx, v);
+      g += '<circle cx="' + x + '" cy="' + y + '" r="7" fill="#10b981" stroke="#04130d" stroke-width="2"><animate attributeName="r" values="5;9;5" dur="2s" repeatCount="indefinite"/></circle>';
+      const d = v - self[idx];
+      gap = '<strong style="color:#e2e8f0">' + AXES[idx] + ':</strong> you say ' + self[idx] + ', Silly verified ' + v + '. ' + (d >= 0 ? 'You are proving more than you claim — nice.' : 'Gap of ' + Math.abs(d) + ' — retake the test or adjust your claim honestly.');
+    }
+    $('pfRadar').innerHTML = g;
+    $('pfGap').innerHTML = gap;
+  }
+
+  /* ---------- projects / certs + Silly stamp ---------- */
+  function renderItems(){
+    $('pfProjects').innerHTML = P.projects.length ? P.projects.map((it, i) => itemHtml('projects', it, i)).join('') : '<span class="pf-empty">No projects yet — add one and let Silly audit it.</span>';
+    $('pfCerts').innerHTML = P.certs.length ? P.certs.map((it, i) => itemHtml('certs', it, i)).join('') : '<span class="pf-empty">No certificates yet.</span>';
+  }
+  function itemHtml(kind, it, i){
+    const tags = (it.tech || '').split(',').map(s => s.trim()).filter(Boolean).map(s => '<span>' + esc(s) + '</span>').join('');
+    const links = [it.repo && '<a target="_blank" rel="noopener" href="' + esc(safeUrl(it.repo)) + '">Repo ↗</a>', it.demo && '<a target="_blank" rel="noopener" href="' + esc(safeUrl(it.demo)) + '">' + (kind === 'certs' ? 'Credential' : 'Live demo') + ' ↗</a>'].filter(Boolean).join('');
+    const sub = kind === 'certs' ? esc(it.issuer || '') + (it.year ? ' · ' + esc(it.year) : '') : esc(it.desc || '');
+    return '<div class="pf-item" id="' + kind + i + '"><div class="pf-item-top"><div><h4 class="pf-item-t">' + esc(it.title) + '</h4><p class="pf-item-s">' + sub + '</p></div>' +
+      '<div class="pf-item-act pf-edit-only"><button class="pf-btn" data-a="edit" data-k="' + kind + '" data-i="' + i + '">Edit</button><button class="pf-btn pf-btn-del" data-a="del" data-k="' + kind + '" data-i="' + i + '">✕</button></div></div>' +
+      (tags ? '<div class="pf-item-tags">' + tags + '</div>' : '') + (links ? '<div class="pf-item-links">' + links + '</div>' : '') +
+      '<div class="pf-audit-row" id="aud-' + kind + i + '">' + auditHtml(kind, it, i) + '</div></div>';
+  }
+  function auditHtml(kind, it, i){
+    if (it.audit) return stampHtml(it.audit);
+    return '<button class="pf-btn pf-btn-green pf-edit-only" data-a="audit" data-k="' + kind + '" data-i="' + i + '">🤖 Ask Silly to audit</button><span class="pf-empty" style="margin:0">Not audited yet</span>';
+  }
+  function stampHtml(a){
+    const ok = a.score >= 70;
+    return '<div class="pf-stamp' + (ok ? '' : ' warn') + '"><span class="pf-face">' + (ok ? '✓' : '!') + '</span><span>' + (ok ? 'Silly Verified' : 'Silly Reviewed') + '<br>Quality audit<b>' + a.score + '%</b></span></div>' +
+      (a.tips && a.tips.length ? '<div class="pf-tips-mini pf-edit-only">' + a.tips.map(t => '• ' + esc(t)).join('<br>') + '</div>' : '');
+  }
+  /* Frontend heuristic audit. Java backend can replace window.ApplyRankAudit(item, kind) -> {score, tips} (or a Promise of it). */
+  function defaultAudit(it, kind){
+    let s = 40; const tips = [];
+    if (/github\.com\/[^\/]+\/[^\/]+/i.test(it.repo || '')) s += 20; else tips.push('Add a real GitHub repo link');
+    if ((it.desc || '').length >= 60 || kind === 'certs') s += 12; else tips.push('Describe what it does in 60+ characters');
+    if ((it.tech || '').split(',').filter(x => x.trim()).length >= 3 || kind === 'certs') s += 12; else tips.push('List at least 3 technologies');
+    if (it.demo) s += 16; else tips.push(kind === 'certs' ? 'Add a credential link' : 'Add a live demo link');
+    return { score: Math.min(100, s), tips };
+  }
+  function audit(kind, i){
+    const it = P[kind][i], row = $('aud-' + kind + i);
+    row.innerHTML = '<div class="pf-scan" id="pfScanTxt">Silly is reading your ' + (kind === 'certs' ? 'certificate' : 'repo') + '…</div>';
+    window.sillyReact('talk', 'Scanning… 🔍');
+    const steps = ['Checking structure…', 'Checking links…', 'Checking description…', 'Scoring…'];
+    let k = 0; const iv = setInterval(() => { const e = $('pfScanTxt'); if (e && k < steps.length) e.textContent = steps[k++]; }, 450);
+    const run = Promise.resolve((window.ApplyRankAudit || defaultAudit)(it, kind));
+    Promise.all([run, new Promise(r => setTimeout(r, 1900))]).then(res => {
+      clearInterval(iv);
+      const a = res[0] || defaultAudit(it, kind); a.at = new Date().toISOString();
+      it.audit = a; save();
+      row.innerHTML = stampHtml(a);
+      document.dispatchEvent(new CustomEvent('silly:audit-complete', { detail: { kind, item: it } }));
+      window.sillyReact(a.score >= 70 ? 'jump' : 'talk', a.score >= 70 ? 'Stamped! ' + a.score + '% quality 🟢' : 'Good start — fix the tips and re-audit 💪');
+      renderItems(); renderId();
+    }).catch(() => { clearInterval(iv); row.innerHTML = auditHtml(kind, it, i); say('Audit failed — try again.'); });
+  }
+
+  /* ---------- modal forms ---------- */
+  let onSave = null;
+  function openModal(title, fields, vals, cb){
+    $('pfMTitle').textContent = title;
+    $('pfForm').innerHTML = fields.map(f => {
+      const v = vals[f.k] == null ? '' : vals[f.k], id = 'f_' + f.k, cls = 'pf-f' + (f.full ? ' full' : '');
+      let inp;
+      if (f.t === 'textarea') inp = '<textarea id="' + id + '" placeholder="' + esc(f.ph || '') + '">' + esc(v) + '</textarea>';
+      else if (f.t === 'select') inp = '<select id="' + id + '">' + f.o.map(o => '<option value="' + o[0] + '"' + (o[0] == v ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select>';
+      else if (f.t === 'range') inp = '<input type="range" id="' + id + '" min="0" max="100" value="' + esc(v) + '" oninput="this.nextElementSibling.textContent=this.value"><span class="pf-rv">' + esc(v) + '</span>';
+      else inp = '<input id="' + id + '" type="' + (f.t || 'text') + '" value="' + esc(v) + '" placeholder="' + esc(f.ph || '') + '"' + (f.t === 'number' ? ' min="0" max="40" step="0.5"' : '') + '>';
+      return '<div class="' + cls + '"><label for="' + id + '">' + f.l + '</label>' + inp + '</div>';
+    }).join('');
+    onSave = () => { const o = {}; fields.forEach(f => { const e = $('f_' + f.k); o[f.k] = f.t === 'range' || f.t === 'number' ? +e.value : e.value.trim(); }); cb(o); };
+    $('pfModal').classList.add('pf-open');
+  }
+  window.closeModal = () => $('pfModal').classList.remove('pf-open');
+  $('pfMSave').onclick = () => { if (onSave) onSave(); };
+
+  window.editProfile = function(){
+    const F = [
+      { k: 'name', l: 'Full name', ph: 'Meher Sayyad' }, { k: 'headline', l: 'Headline', ph: 'Java Full Stack Developer' },
+      { k: 'email', l: 'Email', t: 'email' }, { k: 'phone', l: 'Phone', t: 'tel' }, { k: 'location', l: 'Location', ph: 'City, State' },
+      { k: 'status', l: 'Status', t: 'select', o: [['fresher', 'Fresher'], ['experienced', 'Experienced']] },
+      { k: 'expYears', l: 'Years of experience', t: 'number' }, { k: 'company', l: 'Current / last company' },
+      { k: 'role', l: 'Role', ph: 'Software Engineer' }, { k: 'expDesc', l: 'What did you work on?', full: true },
+      { k: 'degree', l: 'Degree', ph: 'B.Tech Computer Science' }, { k: 'university', l: 'University / college' },
+      { k: 'gradYear', l: 'Graduation year', ph: '2026' }, { k: 'cgpa', l: 'CGPA / %', ph: '8.2' },
+      { k: 'skills', l: 'Tech skills (comma separated)', full: true, ph: 'Java, Spring Boot, React, MySQL' },
+      { k: 'github', l: 'GitHub URL' }, { k: 'linkedin', l: 'LinkedIn URL' },
+      { k: 'about', l: 'About you', t: 'textarea', full: true },
+      { k: 's0', l: 'Self-rating · Frontend', t: 'range' }, { k: 's1', l: 'Self-rating · Backend', t: 'range' },
+      { k: 's2', l: 'Self-rating · UI/UX', t: 'range' }, { k: 's3', l: 'Self-rating · Databases', t: 'range' }, { k: 's4', l: 'Self-rating · DSA', t: 'range' }
+    ];
+    const v = Object.assign({}, P); P.self.forEach((x, i) => v['s' + i] = x);
+    openModal('Edit profile', F, v, o => {
+      ['s0','s1','s2','s3','s4'].forEach((k, i) => { P.self[i] = o[k]; delete o[k]; });
+      Object.assign(P, o); save(); closeModal(); renderAll();
+      window.sillyReact('happy', 'Looking sharp, ' + (P.name.split(' ')[0] || 'friend') + '! ✨');
+    });
+  };
+  window.addItem = function(kind, idx){
+    const isC = kind === 'certs', edit = idx != null, cur = edit ? P[kind][idx] : {};
+    const F = isC
+      ? [{ k: 'title', l: 'Certificate name', full: true }, { k: 'issuer', l: 'Issued by' }, { k: 'year', l: 'Year' }, { k: 'demo', l: 'Credential link', full: true }]
+      : [{ k: 'title', l: 'Project name', full: true }, { k: 'desc', l: 'What it does', t: 'textarea', full: true }, { k: 'tech', l: 'Tech used (comma separated)', full: true, ph: 'Spring Boot, React, MySQL' }, { k: 'repo', l: 'GitHub repo link' }, { k: 'demo', l: 'Live demo link' }];
+    openModal((edit ? 'Edit ' : 'Add ') + (isC ? 'certificate' : 'project'), F, cur, o => {
+      if (!o.title) { say('Please add a name first.'); return; }
+      if (edit) { const changed = JSON.stringify([cur.repo, cur.demo, cur.desc, cur.tech]) !== JSON.stringify([o.repo, o.demo, o.desc, o.tech]); Object.assign(cur, o); if (changed) delete cur.audit; }
+      else P[kind].push(o);
+      save(); closeModal(); renderItems(); renderId();
+      window.sillyReact('happy', (isC ? 'Certificate' : 'Project') + ' saved. Want me to audit it?');
+    });
+  };
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-a]'); if (!b) return;
+    const k = b.dataset.k, i = +b.dataset.i;
+    if (b.dataset.a === 'audit') audit(k, i);
+    if (b.dataset.a === 'edit') window.addItem(k, i);
+    if (b.dataset.a === 'del' && confirm('Delete this item?')) { P[k].splice(i, 1); save(); renderItems(); renderId(); }
+  });
+
+  /* ---------- photo ---------- */
+  $('pfPhoto').addEventListener('change', e => {
+    const f = e.target.files[0]; if (!f) return;
+    if (!/^image\//.test(f.type)) { say('Please choose an image file.'); return; }
+    const img = new Image(), url = URL.createObjectURL(f);
+    img.onload = () => {
+      const s = 256, c = document.createElement('canvas'); c.width = c.height = s;
+      const m = Math.min(img.width, img.height), ctx = c.getContext('2d');
+      ctx.drawImage(img, (img.width - m) / 2, (img.height - m) / 2, m, m, 0, 0, s, s);
+      P.photo = c.toDataURL('image/jpeg', .85); URL.revokeObjectURL(url); save(); renderId();
+      window.sillyReact('jump', 'Nice photo! 😎');
+    };
+    img.onerror = () => say('Could not read that image.');
+    img.src = url;
+  });
+
+  /* ---------- views ---------- */
+  window.setView = function(m){
+    const rec = m === 'recruiter';
+    $('pfRoot').classList.toggle('pf-recruiter', rec);
+    $('vwRec').classList.toggle('pf-on', rec); $('vwEdit').classList.toggle('pf-on', !rec);
+    say(rec ? 'This is exactly what a recruiter sees 👔' : 'Back to your editing view.');
+  };
+
+  function renderAll(){ renderId(); renderText(); renderRadar(); renderItems(); }
+  renderAll();
+  setTimeout(() => {
+    const r = result();
+    say(!P.name ? "Hi! I'm Silly 👋 Hit “Edit profile” and let's build your identity." : r ? 'Welcome back, ' + P.name.split(' ')[0] + '! Your rank is ' + r.total + '/100.' : 'Take the skill test to light up your Verified Rank ring ⚡', 5500);
+  }, 900);
+
+  /* Backend hooks:
+     localStorage 'applyrank_profile' holds the profile JSON — replace load()/save() with your Java API calls.
+     window.ApplyRankAudit = (item, kind) => fetch('/api/audit', ...).then(r => r.json())  // -> { score, tips }
+     Event 'silly:audit-complete' fires after each audit. */
+})();
+</script>
+  <script>window.__sbErr=[];window.addEventListener("error",function(e){window.__sbErr.push((e.message||"error")+" ["+String(e.filename||"").split("/").pop()+":"+e.lineno+"]");});</script>
+  <script src="silly-robot.js" onerror="window.__sbMissing=1"></script>
+  <script>
+  /* If silly-robot.js did not load, keep the page working and show WHY (instead of crashing). */
+  if (typeof SillyBot === "undefined") {
+    (function () {
+      var why = window.__sbMissing ? "silly-robot.js was NOT FOUND. Put silly-robot.js in the same folder as this page and check the file name (no spaces or (1))." : "silly-robot.js loaded but has an error: " + (window.__sbErr && window.__sbErr[0] || "unknown") + ". Re-download the latest silly-robot.js.";
+      console.warn("[Silly] " + why);
+      var noop = function () {}, P = function () { return Promise.resolve(); };
+      function bot() { return { el: document.createElement("div"), set: noop, sit: noop, stand: noop, say: P, hush: noop, walkTo: P, hearts: noop, destroy: noop, nextTip: noop }; }
+      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["Silly is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
+      document.addEventListener("DOMContentLoaded", function () {
+        var i = document.getElementById("sbIntro"); if (i) i.remove();
+        var b = document.createElement("div"); b.style.cssText = "position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;background:#7f1d1d;color:#fff;font:600 13px sans-serif;padding:12px 16px;border-radius:12px;box-shadow:0 0 24px rgba(0,0,0,.5)";
+        b.textContent = "Silly could not start. " + why; document.body.appendChild(b);
+      });
+    })();
+  }
+  </script>
+<script>
+(function () {
+  var f = SillyBot.face(document.getElementById('sillyAnchor'));
+  SillyBot.greet('This is your profile. A complete profile with a verified rank gets noticed faster.');
+  SillyBot.idleTalk(['Ask me to audit a project, and I will stamp it with a quality score.', 'Try recruiter view to see exactly what a recruiter sees.', 'Add a GitHub link. Recruiters love to see real code.'])
+  var o = window.sillyReact;
+  window.sillyReact = function (s, m) { if (o) o(s, m); f.react(s, m); };
+})();
+</script>
+</body>
+</html>

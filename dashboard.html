@@ -1,0 +1,193 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApplyRank-Dashboard</title>
+
+  <!-- 🟢 FIX: Yeh single link saare icons (description, electric_bolt, home) ko ek sath load karega -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+   <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <!-- 🟢 FIX: Yeh single link saare icons (description, electric_bolt, home) ko ek sath load karega -->
+   
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+  <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+   -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="silly-robot.css">
+</head>
+<body class="dashboard-body-canvas">
+
+  <!-- 🏛️ 1. THE TOP NAVIGATION BAR -->
+  <nav class="dashboard-master-navbar">
+    <div class="nav-brand-logo-hub">
+      <span class="nav-logo-text">Apply<span class="purple-text">Rank</span></span>
+    </div>
+
+    <div class="nav-menu-links-center-row">
+      <a href="#" class="nav-menu-btn active-tab">
+        <span class="material-symbols-outlined nav-icon">home</span>
+        <span class="btn-text">HOME</span>
+      </a>
+     <!-- 🔥 फिक्स: JOB CORNER पर क्लिक करते ही jobs.html खुलेगी -->
+      <a href="#" class="nav-menu-btn" onclick="location.href='jobs.html'">
+        <span class="material-symbols-outlined nav-icon">work</span>
+        <span class="btn-text">JOB CORNER</span>
+      </a>
+      <a href="#" class="nav-menu-btn" onclick="location.href='skilltest.html'">
+        <span class="material-symbols-outlined nav-icon">quiz</span>
+        <span class="btn-text">SKILL TEST</span>
+      </a>
+       <!-- <a href="#" class="nav-menu-btn" onclick="location.href='notifications.html'">
+        <i class="fa-solid fa-bell" style="font-size: 14px;"></i>
+        <span class="btn-text">NOTIFICATIONS</span>
+      </a> -->
+        <a href="#" class="nav-menu-btn" onclick="location.href='notifications.html'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="nav-svg-icon"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <span class="btn-text">NOTIFICATIONS</span>
+      </a>
+    <!-- </div> -->
+
+       <div class="nav-profile-right-zone" style="cursor:pointer" onclick="location.href='profile.html'">
+      <span class="material-symbols-outlined nav-icon">account_circle</span>
+      <span class="profile-name-string">YOUR PROFILE</span>
+    
+    </div>
+    </div>
+  </nav>
+
+  <!-- 🖥️ 2. THE MAIN CONTENT AREA -->
+  <main class="dashboard-main-content-workspace">
+    <div class="DASHBOARDS_CONTAINER">
+      <span class="material-symbols-outlined dash-logo">electric_bolt</span>
+      <span class="rank-text">RANK DASHBOARD</span>
+    </div>
+   
+    <h2 class="dashboard-welcome-heading">Master High-Demand Skills and Get Recruiter-Ready with ApplyRank!</h2>
+    <p class="sub-description">Your verified rank is your edge. Optimize your resume, improve your skill, and let AI audit every rejection — until you secure your dream job.</p>
+  
+    <!-- 🤖 SECTION A: MEET SILLY MASTER HERO CARD -->
+    <div class="silly-hero-card">
+      <div class="silly-avatar-placeholder-zone">
+        <div class="silly-face-circle" id="heroFace">
+          
+        </div>
+      </div>
+
+      <div class="silly-content-zone">
+        <div class="silly-header-badge-row">
+          <h2 class="silly-title-name">Meet Silly</h2>
+          <span class="silly-mentor-tag">AI MENTOR</span>
+        </div>
+        
+        <p class="silly-speech-bubble-text">
+          "Hi <span id="heroName">friend</span>! Welcome to ApplyRank, I'm Silly—your dedicated AI career specialist. Think of me as your insider coach. Let's fine-tune your resume, verify your rank, and push through every hurdle until you secure that role!"
+        </p>
+
+        <button type="button" class="silly-talk-action-btn" id="talkSilly">
+          <span class="material-symbols-outlined">volume_up</span>
+          <span>Talk to Silly</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 🏢 SECTION B: THE TWIN UTILITY CARDS GRID -->
+    <div class="dashboard-utility-grid-hub">
+      
+      <!-- 📄 CARD 1: Upload & Optimize Resume -->
+      <div class="utility-action-card blue-theme-card" id="cardResume">
+        <div class="card-icon-badge blue-badge">
+          <span class="material-symbols-outlined">description</span>
+        </div>
+        <div class="card-body-content">
+          <h3 class="card-main-heading">Upload & Optimize Resume</h3>
+          <p class="card-sub-description">Drop your resume and let Silly's AI tune it for the roles you want.</p>
+          <a href="resume.html" id="goResume" class="card-action-trigger-link blue-link">Open AI Resume ➔</a>
+        </div>
+      </div>
+
+      <!-- ⏱️ CARD 2: Take a 15-Min Skill Test -->
+      <div class="utility-action-card green-theme-card" id="cardSkill" onclick="navigateToSkillsTab(event)">
+        <div class="card-icon-badge green-badge">
+          <span class="material-symbols-outlined">timer</span>
+        </div>
+        <div class="card-body-content">
+          <h3 class="card-main-heading">Take a 15-Min Skill Test</h3>
+          <p class="card-sub-description">Prove your craft with a verified rank that recruiters trust.</p>
+          <a href="skilltest.html" class="card-action-trigger-link green-link">Start Skill Test ➔</a>
+        </div>
+      </div>
+
+    </div>
+
+    
+  </main>
+  <script>window.__sbErr=[];window.addEventListener("error",function(e){window.__sbErr.push((e.message||"error")+" ["+String(e.filename||"").split("/").pop()+":"+e.lineno+"]");});</script>
+  <script src="silly-robot.js" onerror="window.__sbMissing=1"></script>
+  <script>
+  /* If silly-robot.js did not load, keep the page working and show WHY (instead of crashing). */
+  if (typeof SillyBot === "undefined") {
+    (function () {
+      var why = window.__sbMissing ? "silly-robot.js was NOT FOUND. Put silly-robot.js in the same folder as this page and check the file name (no spaces or (1))." : "silly-robot.js loaded but has an error: " + (window.__sbErr && window.__sbErr[0] || "unknown") + ". Re-download the latest silly-robot.js.";
+      console.warn("[Silly] " + why);
+      var noop = function () {}, P = function () { return Promise.resolve(); };
+      function bot() { return { el: document.createElement("div"), set: noop, sit: noop, stand: noop, say: P, hush: noop, walkTo: P, hearts: noop, destroy: noop, nextTip: noop }; }
+      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["Silly is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
+      document.addEventListener("DOMContentLoaded", function () {
+        var i = document.getElementById("sbIntro"); if (i) i.remove();
+        var b = document.createElement("div"); b.style.cssText = "position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;background:#7f1d1d;color:#fff;font:600 13px sans-serif;padding:12px 16px;border-radius:12px;box-shadow:0 0 24px rgba(0,0,0,.5)";
+        b.textContent = "Silly could not start. " + why; document.body.appendChild(b);
+      });
+    })();
+  }
+  </script>
+<script>
+(function () {
+  var N = SillyBot.name() || 'friend', r = SillyBot.lastResult();
+  document.getElementById('heroName').textContent = N;
+  var face = SillyBot.face(document.getElementById('heroFace'));
+  var busy = false;
+
+  var greet = r ? ('Welcome back, ' + N + '! Your rank is ' + r.total + ' out of 100. Shall we climb higher? 🚀')
+                : ('Hi ' + N + '! I am Silly, and I am right here with you. Resume or Skill Test, which one first? 💜');
+  var bot = SillyBot.dock({
+    greet: greet,
+    tips: [
+      'Tip: optimize your resume first, then take the skill test. Your rank grows faster that way ⚡',
+      'Recruiters scan a resume in about six seconds. Make your first line strong 📄',
+      'AI is trending, but the jobs have not gone away. People with verified skills are still in demand 💚',
+      'Take just one small step today. Future you will say thank you 🌱'
+    ],
+    hovers: {
+      '#cardResume': 'Let me polish your resume. I will catch the missing keywords and weak bullet points 📄',
+      '#cardSkill': 'Fifteen minutes, and your Verified Rank is ready. Do not worry, I am with you ⚡'
+    }
+  });
+
+  function leave(msg, url, ms) {
+    if (busy) return; busy = true;
+    bot.set('sit watch'); bot.say(msg, { keepState: true, ms: 0, speak: true });
+    face.react('talk');
+    var card = document.getElementById(url === 'resume.html' ? 'cardResume' : 'cardSkill'); card.classList.add('sb-scanning');
+    setTimeout(function () { SillyBot.go(url); }, ms || 1500);
+  }
+  document.getElementById('goResume').addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); leave('Wait! Getting your resume lab ready... just a second ⏳', 'resume.html'); });
+  document.getElementById('cardResume').addEventListener('click', function (e) { if (!e.target.closest('#goResume')) { e.preventDefault(); leave('Wait! Getting your resume lab ready... just a second ⏳', 'resume.html'); } });
+  window.navigateToSkillsTab = function (e) {
+    e.preventDefault();
+    var btns = document.querySelectorAll('.nav-menu-btn'); btns.forEach(function (b) { b.classList.remove('active-tab'); }); if (btns[2]) btns[2].classList.add('active-tab');
+    leave('Take a deep breath. Setting your fifteen minute timer ⏱️ All the best!', 'skilltest.html', 1700);
+  };
+  document.getElementById('talkSilly').addEventListener('click', function () {
+    SillyBot.setVoice(true);
+    var q = SillyBot.quotes[Math.floor(Math.random() * SillyBot.quotes.length)];
+    bot.set('sit happy', 1600); bot.say(q); face.react('talk');
+  });
+})();
+</script>
+</body>
+</html>

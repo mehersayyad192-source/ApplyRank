@@ -242,7 +242,6 @@
 
 
 .master_container_box{
-    border: 1px solid red;
     display: flex;
     width: 100vw;
     height: 100vh;

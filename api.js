@@ -74,6 +74,20 @@
     resendVerification: function () { return request('POST', '/auth/resend-verification'); },
     me: function () { return request('GET', '/auth/me'); },
     /* paging: returns {data, total, pages} */
+    /* Job Corner search: {q, track, locations:[..], remote, maxRank, sort, page, size} -> {data, total, pages} */
+    searchJobs: function (p) {
+      var q = [];
+      function add(k, v) { if (v !== undefined && v !== null && v !== '') q.push(k + '=' + encodeURIComponent(v)); }
+      add('q', p.q); add('track', p.track);
+      (p.locations || []).forEach(function (l) { add('location', l); });
+      if (p.remote) add('remote', 'true');
+      add('maxRank', p.maxRank); add('sort', p.sort); add('page', p.page || 0); add('size', p.size || 8);
+      return request('GET', '/jobs?' + q.join('&'), null, false, true);
+    },
+    jobLocations: function () { return request('GET', '/jobs/locations'); },
+    savedJobs: function () { return request('GET', '/saved-jobs'); },
+    saveJob: function (id) { return request('PUT', '/saved-jobs/' + id); },
+    unsaveJob: function (id) { return request('DELETE', '/saved-jobs/' + id); },
     jobsPage: function (track, page, size) { return request('GET', '/jobs?page=' + (page || 0) + '&size=' + (size || 10) + (track ? '&track=' + encodeURIComponent(track) : ''), null, false, true); },
     notificationsPage: function (page, size) { return request('GET', '/notifications?page=' + (page || 0) + '&size=' + (size || 20), null, false, true); },
     /* recruiter */
@@ -95,6 +109,7 @@
     submitTest: function (payload) { return request('POST', '/tests/submit', payload); },
     exportMyData: function () { return request('GET', '/privacy/export'); },
     deleteMyAccount: function (password) { return request('DELETE', '/privacy/account', { password: password }).then(function (r) { setToken(''); return r; }); },
+    testHistory: function () { return request('GET', '/tests/history'); },
     latestTest: function () { return request('GET', '/tests/latest'); },
     uploadResume: function (file, track) {
       var fd = new FormData(); fd.append('file', file); fd.append('track', track || 'fullstack');

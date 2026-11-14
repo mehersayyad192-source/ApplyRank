@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Recruiter Desk - ApplyRank</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="recruiter.css"><script src="api.js"></script></head>
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="recruiter.css"><script src="tracks.js"></script><script src="api.js"></script></head>
 <body class="dashboard-body-canvas">
 <div class="rc-top"><div class="rc-logo">Apply<span>Rank</span><small>RECRUITER DESK</small></div>
   <div><a href="jobs.html">Job corner</a> <button id="out">Log out</button></div></div>
@@ -26,7 +26,7 @@
         <div><label for="jp">CTC</label><input id="jp" placeholder="6-9 LPA"></div>
       </div>
       <div class="rc-two">
-        <div><label for="jk">TRACK</label><select id="jk"><option value="fullstack">Full stack</option><option value="backend">Backend</option><option value="frontend">Frontend</option><option value="data">Data</option></select></div>
+        <div><label for="jk">TRACK</label><select id="jk"></select></div>
         <div><label for="jm">MIN RANK SCORE (0-100)</label><input id="jm" type="number" min="0" max="100" value="40"></div>
       </div>
       <label for="jr">REQUIRED SKILLS (comma separated)</label><input id="jr" placeholder="Java, Spring Boot, SQL">
@@ -43,6 +43,7 @@
 
 <script>
 var $ = function (id) { return document.getElementById(id); };
+(window.APPLYRANK_TRACKS || []).forEach(function (t) { var o = document.createElement('option'); o.value = t.key; o.textContent = t.name; $('jk').appendChild(o); });
 function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 function say(id, ok, t) { var m = $(id); m.className = 'rc-msg ' + (ok ? 'ok' : 'err'); m.textContent = t; }
 $('out').onclick = function () { ApplyRankAPI.logout(); try { localStorage.removeItem('applyrank_role'); } catch (e) {} location.href = 'index.html'; };
@@ -70,16 +71,25 @@ function loadJobs() {
   });
 }
 
+/* tidy what the recruiter typed: known typos, capital letters, skill names */
+var TITLE_TYPOS = { devloper: 'Developer', developr: 'Developer', develper: 'Developer', developper: 'Developer', enginer: 'Engineer', engineeer: 'Engineer', desginer: 'Designer', analist: 'Analyst', fullstak: 'Fullstack', jr: 'Junior' };
+var SKILL_CANON = { java: 'Java', javascript: 'JavaScript', 'java script': 'JavaScript', typescript: 'TypeScript', 'spring boot': 'Spring Boot', springboot: 'Spring Boot', spring: 'Spring', react: 'React', 'react js': 'React.js', reactjs: 'React.js', nodejs: 'Node.js', 'node js': 'Node.js',
+  html: 'HTML', css: 'CSS', sql: 'SQL', mysql: 'MySQL', postgresql: 'PostgreSQL', mongodb: 'MongoDB', python: 'Python', docker: 'Docker', kubernetes: 'Kubernetes', aws: 'AWS', git: 'Git', github: 'GitHub', rest: 'REST', 'rest api': 'REST API', api: 'API', jpa: 'JPA', junit: 'JUnit', excel: 'Excel', figma: 'Figma' };
+function fixTitle(t, notes) { return t.replace(/[A-Za-z]+/g, function (w) { var f = TITLE_TYPOS[w.toLowerCase()]; if (f && f !== w) { notes.push(w + ' -> ' + f); return f; } return w; }); }
+function fixSkill(k) { var c = SKILL_CANON[k.toLowerCase()]; if (c) return c; return k === k.toUpperCase() && k.length > 4 ? k.charAt(0) + k.slice(1).toLowerCase() : k; }
+function capWords(t) { return t.replace(/\b([a-z])([a-z]*)/g, function (m, a, b) { return a.toUpperCase() + b; }); }
+
 $('post').onclick = function () {
-  var title = $('jt').value.trim(), company = $('jc').value.trim();
+  var notes = [];
+  var title = fixTitle($('jt').value.trim().replace(/\s+/g, ' '), notes), company = $('jc').value.trim().replace(/\s+/g, ' ');
   if (!title || !company) { say('postMsg', false, 'Job title and company are required.'); return; }
   var btn = this; btn.disabled = true;
   ApplyRankAPI.postJob({
-    title: title, company: company, location: $('jl').value.trim(), ctc: $('jp').value.trim(), track: $('jk').value,
+    title: title, company: company, location: capWords($('jl').value.trim()), ctc: $('jp').value.trim().replace(/lpa/ig, 'LPA'), track: $('jk').value,
     minRank: parseInt($('jm').value || '0', 10), description: $('jd').value.trim(),
-    requirements: $('jr').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean)
+    requirements: $('jr').value.split(',').map(function (s) { return fixSkill(s.trim()); }).filter(Boolean).filter(function (k, i, a) { return a.indexOf(k) === i; })
   }).then(function () {
-    say('postMsg', true, 'Job posted. Candidates can see it in Job Corner now.');
+    say('postMsg', true, 'Job posted. Candidates can see it in Job Corner now.' + (notes.length ? ' Spelling fixed: ' + notes.join(', ') + '.' : ''));
     ['jt', 'jl', 'jp', 'jr', 'jd'].forEach(function (i) { $(i).value = ''; }); loadJobs();
   }, function (e) { say('postMsg', false, e.offline ? 'Backend is not running.' : e.message); }).then(function () { btn.disabled = false; });
 };

@@ -1,0 +1,452 @@
+{
+ "frontend": {
+  "name": "Frontend Developer",
+  "titles": [
+   "Pixel Rookie",
+   "Component Crafter",
+   "UI Architect",
+   "Pixel Wizard"
+  ],
+  "mcqKeys": [
+   1,
+   1,
+   1,
+   0,
+   1
+  ],
+  "interview": [
+   {
+    "q": "Imagine I'm a new teammate. Explain the difference between props and state in React.",
+    "rubric": [
+     {
+      "label": "props come from the parent and are read-only",
+      "words": [
+       "parent",
+       "read-only",
+       "readonly",
+       "read only",
+       "immutable",
+       "passed down",
+       "passed in",
+       "pass data",
+       "pass the data"
+      ]
+     },
+     {
+      "label": "state is owned by the component and changes",
+      "words": [
+       "own state",
+       "local",
+       "internal",
+       "owned",
+       "changes over time",
+       "mutable",
+       "usestate",
+       "setstate",
+       "private",
+       "manages its own"
+      ]
+     },
+     {
+      "label": "state updates trigger a re-render",
+      "words": [
+       "re-render",
+       "rerender",
+       "render again",
+       "re render",
+       "update the ui",
+       "updates the ui",
+       "refresh the ui"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "A page with a very long list feels laggy. Walk me through how you'd find the cause and fix it.",
+    "rubric": [
+     {
+      "label": "measure first (Profiler / DevTools)",
+      "words": [
+       "profil",
+       "devtools",
+       "dev tools",
+       "lighthouse",
+       "measure",
+       "performance tab"
+      ]
+     },
+     {
+      "label": "avoid needless re-renders (memo / keys)",
+      "words": [
+       "memo",
+       "usecallback",
+       "react.memo",
+       "re-render",
+       "rerender",
+       "key"
+      ]
+     },
+     {
+      "label": "render less (virtualization / pagination)",
+      "words": [
+       "virtual",
+       "window",
+       "paginat",
+       "lazy",
+       "infinite scroll",
+       "chunk",
+       "react-window"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "Tell me about a bug that really stumped you. How did you track it down and what did you learn?",
+    "rubric": [
+     {
+      "label": "described the problem clearly",
+      "words": [
+       "bug",
+       "issue",
+       "error",
+       "problem",
+       "crash",
+       "broke"
+      ]
+     },
+     {
+      "label": "showed a debugging method",
+      "words": [
+       "debug",
+       "console",
+       "log",
+       "breakpoint",
+       "reproduce",
+       "isolate",
+       "test",
+       "stack trace",
+       "devtools"
+      ]
+     },
+     {
+      "label": "closed with a lesson learned",
+      "words": [
+       "learn",
+       "lesson",
+       "next time",
+       "now i",
+       "improve",
+       "realized",
+       "realised",
+       "since then"
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "backend": {
+  "name": "Backend Developer",
+  "titles": [
+   "API Rookie",
+   "Endpoint Builder",
+   "Service Architect",
+   "Backend Boss"
+  ],
+  "mcqKeys": [
+   1,
+   1,
+   0,
+   0,
+   1
+  ],
+  "interview": [
+   {
+    "q": "A client sends a POST request to your Spring Boot API. Walk me through what happens until the response goes back.",
+    "rubric": [
+     {
+      "label": "routing to the controller (DispatcherServlet / @PostMapping)",
+      "words": [
+       "dispatcher",
+       "controller",
+       "postmapping",
+       "mapping",
+       "route",
+       "routing"
+      ]
+     },
+     {
+      "label": "JSON converted into an object (@RequestBody)",
+      "words": [
+       "requestbody",
+       "request body",
+       "json",
+       "deserial",
+       "parse",
+       "convert"
+      ]
+     },
+     {
+      "label": "service → repository → database",
+      "words": [
+       "service",
+       "repository",
+       "database",
+       "db",
+       "save",
+       "jpa"
+      ]
+     },
+     {
+      "label": "status code and response body",
+      "words": [
+       "status",
+       "201",
+       "200",
+       "response",
+       "responseentity",
+       "return"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "How would you make sure only logged-in users can call a protected endpoint?",
+    "rubric": [
+     {
+      "label": "token or session (JWT / OAuth)",
+      "words": [
+       "jwt",
+       "token",
+       "session",
+       "oauth",
+       "cookie"
+      ]
+     },
+     {
+      "label": "Spring Security filter / authentication",
+      "words": [
+       "spring security",
+       "filter",
+       "authenticat",
+       "login"
+      ]
+     },
+     {
+      "label": "roles and authorization",
+      "words": [
+       "authoriz",
+       "role",
+       "permission",
+       "admin",
+       "scope"
+      ]
+     },
+     {
+      "label": "secure basics (HTTPS, hashed passwords)",
+      "words": [
+       "https",
+       "tls",
+       "hash",
+       "bcrypt",
+       "encrypt",
+       "salt"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "Describe a time something broke in production (or a project went wrong). What did you do first, and what changed afterwards?",
+    "rubric": [
+     {
+      "label": "described what broke",
+      "words": [
+       "broke",
+       "down",
+       "crash",
+       "bug",
+       "outage",
+       "fail",
+       "error",
+       "issue",
+       "incident"
+      ]
+     },
+     {
+      "label": "took action methodically",
+      "words": [
+       "rollback",
+       "roll back",
+       "logs",
+       "monitor",
+       "investigat",
+       "fix",
+       "hotfix",
+       "debug",
+       "root cause",
+       "reproduce"
+      ]
+     },
+     {
+      "label": "added prevention / lesson",
+      "words": [
+       "test",
+       "alert",
+       "prevent",
+       "lesson",
+       "learn",
+       "next time",
+       "process",
+       "review",
+       "monitoring"
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "data": {
+  "name": "Data & SQL",
+  "titles": [
+   "Query Rookie",
+   "Table Tamer",
+   "Data Architect",
+   "Query Legend"
+  ],
+  "mcqKeys": [
+   1,
+   0,
+   0,
+   0,
+   1
+  ],
+  "interview": [
+   {
+    "q": "What is a database index, and when could adding one actually hurt?",
+    "rubric": [
+     {
+      "label": "speeds up lookups and searches",
+      "words": [
+       "fast",
+       "speed",
+       "lookup",
+       "quick",
+       "search",
+       "find rows",
+       "retriev"
+      ]
+     },
+     {
+      "label": "how it works (sorted structure / B-tree)",
+      "words": [
+       "b-tree",
+       "btree",
+       "tree",
+       "sorted",
+       "pointer",
+       "structure"
+      ]
+     },
+     {
+      "label": "costs: slower writes and extra storage",
+      "words": [
+       "write",
+       "insert",
+       "update",
+       "slower",
+       "overhead",
+       "maintain",
+       "storage",
+       "space",
+       "disk",
+       "memory"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "Explain INNER JOIN vs LEFT JOIN using an example with users and orders.",
+    "rubric": [
+     {
+      "label": "INNER JOIN returns only matching rows",
+      "words": [
+       "inner",
+       "only match",
+       "both tables",
+       "matching",
+       "match in both"
+      ]
+     },
+     {
+      "label": "LEFT JOIN keeps all left rows (NULL when no match)",
+      "words": [
+       "left",
+       "all rows",
+       "null",
+       "unmatched",
+       "no match",
+       "every user"
+      ]
+     },
+     {
+      "label": "used a concrete example",
+      "words": [
+       "users",
+       "orders",
+       "customer",
+       "example",
+       "for instance",
+       "e.g"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "Tell me about a time your data (or a query) gave a surprising result. How did you check it?",
+    "rubric": [
+     {
+      "label": "described the surprise",
+      "words": [
+       "surpris",
+       "wrong",
+       "unexpected",
+       "duplicate",
+       "mismatch",
+       "strange",
+       "weird",
+       "incorrect"
+      ]
+     },
+     {
+      "label": "explained how they verified it",
+      "words": [
+       "check",
+       "validate",
+       "compare",
+       "count",
+       "sample",
+       "explain",
+       "query",
+       "debug",
+       "verify",
+       "log"
+      ]
+     },
+     {
+      "label": "closed with a fix or lesson",
+      "words": [
+       "fix",
+       "lesson",
+       "learn",
+       "next time",
+       "constraint",
+       "test",
+       "prevent",
+       "clean"
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

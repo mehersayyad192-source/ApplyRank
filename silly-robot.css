@@ -1,4 +1,4 @@
- /* ApplyRank — silly-robot.css : Silly the robot (shared on every page). Prefix sb- */
+/* ApplyRank — silly-robot.css : Silly the robot (shared on every page). Prefix sb- */
 .sb-actor{position:fixed;z-index:400;pointer-events:none}
 .sb-actor.sb-inline{position:relative;z-index:2}
 .sb-actor .sb-svg{display:block;overflow:visible;pointer-events:auto;cursor:pointer}
@@ -136,3 +136,24 @@ button:active{transform:scale(.97)}
 .sb-voice.sb-hint .sb-vhint{display:inline}
 .sb-voice.sb-hint{border-color:#6366f1;animation:sbHintPulse 1.6s ease-in-out infinite}
 @keyframes sbHintPulse{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.5)}50%{box-shadow:0 0 0 7px rgba(99,102,241,0)}}
+
+
+/* ================= calm helper (replaces the robot) ================= */
+.hp-help{position:fixed;right:22px;bottom:22px;z-index:9000;font-family:'Plus Jakarta Sans',sans-serif}
+.hp-btn{width:44px;height:44px;border-radius:50%;border:1px solid rgba(99,102,241,.6);background:rgba(17,24,52,.95);color:#c7d0ff;font:800 20px 'Plus Jakarta Sans',sans-serif;cursor:pointer;box-shadow:0 0 18px rgba(99,102,241,.35);transition:transform .15s,box-shadow .15s}
+.hp-btn:hover{transform:translateY(-2px);box-shadow:0 0 24px rgba(16,185,129,.45);color:#fff}
+.hp-btn:focus-visible{outline:2px solid #10b981;outline-offset:3px}
+.hp-panel{position:absolute;right:0;bottom:56px;width:min(320px,calc(100vw - 44px));background:rgba(17,24,52,.97);border:1px solid rgba(99,102,241,.45);border-radius:16px;padding:16px 18px;color:#dfe3f8;box-shadow:0 12px 40px rgba(0,0,0,.45);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .18s,transform .18s}
+.hp-panel.hp-open{opacity:1;transform:none;pointer-events:auto}
+.hp-title{font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#10b981;margin-bottom:8px}
+.hp-greet{margin:0 0 8px;font-size:14px;line-height:1.5;color:#fff;font-weight:600}
+.hp-panel ul{margin:0;padding-left:18px;font-size:13px;line-height:1.55;color:#b8c0e6}
+.hp-panel li{margin-bottom:6px}
+.hp-toast{position:fixed;right:22px;bottom:80px;z-index:9001;max-width:min(340px,calc(100vw - 44px));background:rgba(17,24,52,.97);border:1px solid rgba(16,185,129,.5);border-left:4px solid #10b981;border-radius:12px;padding:11px 15px;color:#fff;font:600 13.5px/1.45 'Plus Jakarta Sans',sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s}
+.hp-toast.hp-on{opacity:1;transform:none}
+.hp-face{width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.hp-face .hp-emblem{width:58%;height:58%;filter:drop-shadow(0 0 10px rgba(99,102,241,.55))}
+.hp-face-big{min-height:230px}.hp-face-big .hp-emblem{width:46%;height:46%;filter:drop-shadow(0 0 18px rgba(99,102,241,.7))}
+.hp-pulse .hp-emblem{animation:hp-pulse .8s ease}
+@keyframes hp-pulse{0%{transform:scale(1)}40%{transform:scale(1.14)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.hp-pulse .hp-emblem{animation:none}.hp-panel,.hp-toast,.hp-btn{transition:none}}

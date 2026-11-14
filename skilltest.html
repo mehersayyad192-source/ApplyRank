@@ -14,6 +14,7 @@
 
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="silly-robot.css">
+  <script src="api.js"></script>
 </head>
  <body class="dashboard-body-canvas">
  
@@ -54,7 +55,7 @@
         <span class="canvas-micro-badge">🧪 SKILL VERIFICATION</span>
         <h1 class="st-gate-title">Prove your craft. <span>Earn a verified rank.</span></h1>
         <p class="st-gate-desc">
-          Three rounds, one score. Beat the Brain Check, survive the Code Lab, then face Silly in the Hot Seat —
+          Three rounds, one score. Beat the Brain Check, survive the Code Lab, then face ApplyRank Coach in the Hot Seat —
           your total becomes the verified rank recruiters see on your profile.
         </p>
  
@@ -84,8 +85,8 @@
           </div>
           <div class="st-round" style="--rc:#f59e0b">
             <div class="st-round-no">ROUND 3</div>
-            <div class="st-round-name">🎤 Silly's Hot Seat</div>
-            <div class="st-round-desc">A mock interview with Silly. Type or speak your answers and get instant feedback on what you covered.</div>
+            <div class="st-round-name">🎤 ApplyRank Coach's Hot Seat</div>
+            <div class="st-round-desc">A mock interview with ApplyRank Coach. Type or speak your answers and get instant feedback on what you covered.</div>
             <span class="st-round-pts">25 POINTS</span>
           </div>
         </div>
@@ -187,7 +188,7 @@
           <button type="button" class="st-btn-ghost" onclick="goToTracks()">Try another track</button>
           <button type="button" class="st-btn-green" onclick="location.href='dashboard.html'">Return to Dashboard</button>
         </div>
-        <p class="st-result-note">Interview answers are scored locally for now. When the Java backend is connected, Silly's AI scoring replaces it automatically.</p>
+        <p class="st-result-note">Interview answers are scored locally for now. When the Java backend is connected, ApplyRank Coach's AI scoring replaces it automatically.</p>
       </div>
     </section>
   </main>
@@ -398,7 +399,7 @@
     const TYPE_CLASS = { "Concept": "st-qt-concept", "Predict the output": "st-qt-predict", "Spot the bug": "st-qt-bug", "Scenario": "st-qt-scn" };
  
     let S = null;           // current attempt
-    let voiceOn = false;    // Silly speaks questions
+    let voiceOn = false;    // ApplyRank Coach speaks questions
     let rec = null, micOn = false;
     let sayTimer = null;
  
@@ -465,10 +466,10 @@
       showScreen('stTracks');
     }
  
-    function newAttempt(key) {
-      const D = DOMAINS[key];
+    function newAttempt(key, D2, session) {
+      const D = D2 || DOMAINS[key];
       return {
-        key, D, active: true, tab: 'mcq', endAt: 0, timer: null, startedAt: Date.now(), secondsLeft: TOTAL_SECONDS,
+        key, D, session: session || null, active: true, tab: 'mcq', endAt: 0, timer: null, startedAt: Date.now(), secondsLeft: TOTAL_SECONDS,
         mcqIdx: 0, mcqAns: D.mcq.map(() => null), streak: 0, bestStreak: 0,
         codeIdx: 0, drafts: D.code.map(p => p.starter), lastRun: D.code.map(() => null),
         bestFrac: D.code.map(() => 0), hinted: D.code.map(() => false), xpGiven: D.code.map(() => false), running: false,
@@ -477,9 +478,21 @@
       };
     }
  
-    function startTest(key) {
+    let startingTest = false;
+    async function startTest(key) {
+      if (startingTest) return; startingTest = true;
       stopTimer();
-      S = newAttempt(key);
+      let D2 = null, session = null;
+      // Online: the SERVER picks 5 random questions (without answers) and grades them. Offline: built-in questions, result stays "unverified".
+      if (window.ApplyRankAPI && ApplyRankAPI.isLoggedIn()) {
+        try {
+          const r = await ApplyRankAPI.questions(key);
+          session = r.sessionId;
+          D2 = Object.assign({}, DOMAINS[key], { mcq: r.questions.map(q => ({ id: q.id, type: q.type, q: q.q, code: q.code || undefined, options: q.options, a: null, why: '', pending: false })) });
+        } catch (e) { /* backend offline -> built-in questions */ }
+      }
+      startingTest = false;
+      S = newAttempt(key, D2, session);
       $('stPill').textContent = S.D.emoji + ' ' + S.D.name.toUpperCase();
       $('stTitleTrack').textContent = S.D.name;
       S.endAt = Date.now() + TOTAL_SECONDS * 1000;
@@ -551,7 +564,7 @@
  
       const dots = D.mcq.map((m, k) => {
         let c = 'st-dot';
-        if (S.mcqAns[k] !== null) c += S.mcqAns[k] === m.a ? ' st-ok' : ' st-bad';
+        if (S.mcqAns[k] !== null && !m.pending && m.a !== null) c += S.mcqAns[k] === m.a ? ' st-ok' : ' st-bad';
         if (k === i) c += ' st-cur';
         return '<button type="button" class="' + c + '" onclick="gotoMcq(' + k + ')">' + (k + 1) + '</button>';
       }).join('');
@@ -560,7 +573,8 @@
         let c = 'st-opt';
         if (ans !== null) {
           c += ' st-locked';
-          if (k === q.a) c += ' st-correct';
+          if (q.pending) c += (k === ans ? '' : ' st-dim');          // waiting for the server to reveal the answer
+          else if (k === q.a) c += ' st-correct';
           else if (k === ans) c += ' st-wrong';
           else c += ' st-dim';
         }
@@ -568,7 +582,7 @@
       }).join('');
  
       let why = '';
-      if (ans !== null) {
+      if (ans !== null && !q.pending) {
         const ok = ans === q.a;
         why = '<div class="st-why ' + (ok ? 'st-why-ok' : 'st-why-bad') + '"><strong>' + (ok ? '✔ Correct!' : '✘ Not quite — the answer is ' + String.fromCharCode(65 + q.a)) + '</strong>' + esc(q.why) + '</div>';
       }
@@ -598,19 +612,32 @@
  
     function pickMcq(k) {
       if (!S || !S.active || S.mcqAns[S.mcqIdx] !== null) return;
-      const q = S.D.mcq[S.mcqIdx];
-      S.mcqAns[S.mcqIdx] = k;
-      const ok = k === q.a;
-      if (ok) {
-        S.streak++; S.bestStreak = Math.max(S.bestStreak, S.streak);
-        S.xp += 10 + Math.min(S.streak - 1, 3) * 5;
-        window.sillyReact('happy', S.streak >= 2 ? '🔥 ' + S.streak + ' in a row!' : 'Correct! 🎉');
-      } else {
-        S.streak = 0;
-        window.sillyReact('sad', 'Oops! Read the explanation 👇');
+      const q = S.D.mcq[S.mcqIdx], idx = S.mcqIdx, mine = S;
+      S.mcqAns[idx] = k;
+      function reveal(ok) {
+        if (ok) {
+          S.streak++; S.bestStreak = Math.max(S.bestStreak, S.streak);
+          S.xp += 10 + Math.min(S.streak - 1, 3) * 5;
+          window.sillyReact('happy', S.streak >= 2 ? '🔥 ' + S.streak + ' in a row!' : 'Correct! 🎉');
+        } else {
+          S.streak = 0;
+          window.sillyReact('sad', 'Oops! Read the explanation 👇');
+        }
+        emit('silly:answer', { domain: S.key, round: 'mcq', index: idx, correct: ok });
+        renderMcq(); updateHud();
       }
-      emit('silly:answer', { domain: S.key, round: 'mcq', index: S.mcqIdx, correct: ok });
-      renderMcq(); updateHud();
+      if (S.session) {          // server mode: the correct answer is NOT in this page; the server reveals it after the choice is locked
+        q.pending = true; renderMcq(); updateHud();
+        ApplyRankAPI.answerMcq(S.session, q.id, k).then(r => {
+          if (S !== mine) return;
+          q.a = r.answer; q.why = r.why || ''; q.pending = false; reveal(r.correct);
+        }, e => {
+          if (S !== mine) return;
+          q.a = -1; q.why = 'Could not check this answer (' + e.message + ').'; q.pending = false; reveal(false);
+        });
+        return;
+      }
+      reveal(k === q.a);
     }
  
     /* =====================================================================
@@ -750,7 +777,7 @@
     }
  
     /* =====================================================================
-       ROUND 3 · AI INTERVIEW (Silly's Hot Seat)
+       ROUND 3 · AI INTERVIEW (ApplyRank Coach's Hot Seat)
        Backend hook: define window.ApplyRankScoring = { interview: async ({domain, question, answer}) =>
                      ({ score: 0..1, covered: [..], missed: [..], feedback: '...' }) }
        ===================================================================== */
@@ -791,8 +818,8 @@
  
     async function startInterview() {
       const iv = S.iv; if (iv.started) return; iv.started = true;
-      const intro = "Hi! I'm Silly 🤖, your interviewer for the " + S.D.name + " track. I'll ask 3 questions. Answer like you're talking to a real hiring manager: short, specific, with an example. You can type, or tap the mic and speak.";
-      await ivPush({ who: 'silly', text: intro, speak: "Hi! I'm Silly, your interviewer. I'll ask three questions. Answer like you're talking to a real hiring manager." }, 600);
+      const intro = "Hi! I'm ApplyRank Coach 🤖, your interviewer for the " + S.D.name + " track. I'll ask 3 questions. Answer like you're talking to a real hiring manager: short, specific, with an example. You can type, or tap the mic and speak.";
+      await ivPush({ who: 'silly', text: intro, speak: "Hi! I'm ApplyRank Coach, your interviewer. I'll ask three questions. Answer like you're talking to a real hiring manager." }, 600);
       await askCurrent();
     }
  
@@ -841,7 +868,7 @@
       const prevTop = panel.querySelector('.st-chat') ? panel.querySelector('.st-chat').scrollTop : 0;
       let msgs = iv.log.map(m => {
         if (m.who === 'me') return '<div class="st-msg st-msg-me"><div class="st-bubble">' + esc(m.text) + '</div></div>';
-        let h = '<div class="st-msg st-msg-silly"><div class="st-avatar"><span class="material-symbols-outlined">smart_toy</span></div><div class="st-bubble">';
+        let h = '<div class="st-msg st-msg-silly"><div class="st-avatar"><span class="material-symbols-outlined">auto_awesome</span></div><div class="st-bubble">';
         if (m.label) h += '<span class="st-bubble-label">' + esc(m.label) + '</span>';
         h += esc(m.text);
         if (m.covered || m.missed) {
@@ -852,7 +879,7 @@
         }
         return h + '</div></div>';
       }).join('');
-      if (iv.typing) msgs += '<div class="st-msg st-msg-silly"><div class="st-avatar"><span class="material-symbols-outlined">smart_toy</span></div><div class="st-bubble"><span class="st-typing"><i></i><i></i><i></i></span></div></div>';
+      if (iv.typing) msgs += '<div class="st-msg st-msg-silly"><div class="st-avatar"><span class="material-symbols-outlined">auto_awesome</span></div><div class="st-bubble"><span class="st-typing"><i></i><i></i><i></i></span></div></div>';
  
       let foot;
       if (iv.finished) foot = '<div class="st-iv-foot"><button type="button" class="st-btn-green" onclick="finishTest(false)">Finish &amp; get rank ➔</button></div>';
@@ -861,15 +888,15 @@
         const locked = iv.typing || iv.busy || !iv.started || iv.log.length < 2;
         const hasSR = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
         foot = '<div class="st-composer">' +
-          '<textarea id="stAnswer" placeholder="' + (locked ? 'Silly is getting ready…' : 'Type your answer here, or tap the mic and speak…') + '" ' + (locked ? 'disabled' : '') + ' oninput="S.iv.draft=this.value" onkeydown="if((event.ctrlKey||event.metaKey)&&event.key===\'Enter\'){ivSubmit();}">' + esc(iv.draft) + '</textarea>' +
+          '<textarea id="stAnswer" placeholder="' + (locked ? 'ApplyRank Coach is getting ready…' : 'Type your answer here, or tap the mic and speak…') + '" ' + (locked ? 'disabled' : '') + ' oninput="S.iv.draft=this.value" onkeydown="if((event.ctrlKey||event.metaKey)&&event.key===\'Enter\'){ivSubmit();}">' + esc(iv.draft) + '</textarea>' +
           (hasSR ? '<button type="button" class="st-mic' + (micOn ? ' st-rec' : '') + '" id="stMic" title="Speak your answer" onclick="toggleMic()" ' + (locked ? 'disabled' : '') + '><span class="material-symbols-outlined">' + (micOn ? 'stop' : 'mic') + '</span></button>' : '') +
           '<button type="button" class="st-btn-blue" onclick="ivSubmit()" ' + (locked ? 'disabled' : '') + '>Send ➔</button>' +
-        '</div><p class="st-iv-note">Tip: Ctrl + Enter sends. Mention specific tools, steps and examples — Silly looks for them.</p>';
+        '</div><p class="st-iv-note">Tip: Ctrl + Enter sends. Mention specific tools, steps and examples — ApplyRank Coach looks for them.</p>';
       }
  
       panel.innerHTML =
-        '<div class="st-iv-head"><div class="st-iv-title">🎤 Silly\'s Hot Seat <span class="st-live">LIVE</span></div>' +
-        '<button type="button" class="st-voice-btn' + (voiceOn ? ' st-on' : '') + '" onclick="toggleVoice()"><span class="material-symbols-outlined">' + (voiceOn ? 'volume_up' : 'volume_off') + '</span>Silly speaks: ' + (voiceOn ? 'On' : 'Off') + '</button></div>' +
+        '<div class="st-iv-head"><div class="st-iv-title">🎤 ApplyRank Coach\'s Hot Seat <span class="st-live">LIVE</span></div>' +
+        '<button type="button" class="st-voice-btn' + (voiceOn ? ' st-on' : '') + '" onclick="toggleVoice()"><span class="material-symbols-outlined">' + (voiceOn ? 'volume_up' : 'volume_off') + '</span>ApplyRank Coach speaks: ' + (voiceOn ? 'On' : 'Off') + '</button></div>' +
         '<div class="st-card"><div class="st-chat" id="stChat">' + msgs + '</div>' + foot + '</div>';
  
       const chat = $('stChat');
@@ -928,23 +955,36 @@
         const r = await runTests(D.code[i], S.drafts[i]);
         fracs.push(r.error ? 0 : r.passed / r.total);
       }
-      const mcqCorrect = S.mcqAns.filter((a, i) => a === D.mcq[i].a).length;
-      const mcqS = mcqCorrect * MCQ_EACH;
-      const codeS = Math.round(fracs.reduce((s, f, i) => s + f * CODE_PTS[i], 0));
+      const mcqCorrect = S.mcqAns.filter((a, i) => a !== null && a === D.mcq[i].a).length;
+      let mcqS = mcqCorrect * MCQ_EACH;
+      let codeS = Math.round(fracs.reduce((s, f, i) => s + f * CODE_PTS[i], 0));
       const ivAvg = S.iv.results.reduce((s, r) => s + r.frac, 0) / D.interview.length;
-      const ivS = Math.round(ivAvg * IV_TOTAL);
-      const total = mcqS + codeS + ivS;
+      let ivS = Math.round(ivAvg * IV_TOTAL);
+      let total = mcqS + codeS + ivS;
       const used = Math.min(TOTAL_SECONDS, Math.round((Date.now() - S.startedAt) / 1000));
       const tier = total >= 80 ? 3 : total >= 60 ? 2 : total >= 40 ? 1 : 0;
-      const rankTitle = D.titles[tier];
+      let rankTitle = D.titles[tier];
  
-      const badges = [];
+      let badges = [];
       if (S.bestStreak >= 3) badges.push('🔥 Streak Master');
       if (fracs[0] === 1) badges.push('🐞 Bug Squasher');
       if (fracs.every(f => f === 1)) badges.push('🧪 Test Champion');
       if (S.iv.results.length === D.interview.length && ivAvg >= 0.75) badges.push('🎤 Interview Ace');
       if (S.iv.results.length === D.interview.length && S.lastRun.every(x => x) && S.mcqAns.every(x => x !== null) && used <= 600) badges.push('⚡ Speed Runner');
  
+      // Ask the server to score it (it owns the answer key and the stored MCQ answers). Offline -> keep the local result as "unverified".
+      let verified = false;
+      if (window.ApplyRankAPI && ApplyRankAPI.isLoggedIn() && S.session) {
+        try {
+          const srv = await ApplyRankAPI.submitTest({
+            domain: S.key, sessionId: S.session, code: fracs,
+            interview: S.iv.log.filter(l => l.who === 'me').map(l => l.text),
+            timeUsed: used, bestStreak: S.bestStreak, xp: S.xp
+          });
+          mcqS = srv.mcq; codeS = srv.code; ivS = srv.interview; total = srv.total; rankTitle = srv.rank; badges = srv.badges; verified = true;
+        } catch (e) { /* offline or rejected: keep local numbers */ }
+      }
+
       // fill result UI
       $('resSub').textContent = S.secondsLeft <= 0 ? "Time's up! Your answers so far were auto-submitted and scored." : 'Your performance has been scored and added to your ApplyRank profile.';
       $('resRank').textContent = '🏆 ' + rankTitle.toUpperCase() + ' · ' + D.name.toUpperCase();
@@ -954,7 +994,7 @@
       $('resBars').innerHTML = [
         ['🧠 Brain Check (MCQ)', mcqS, 40, '#6366f1'],
         ['⚡ Code Lab', codeS, 35, '#10b981'],
-        ["🎤 Silly's Hot Seat", ivS, 25, '#f59e0b']
+        ["🎤 ApplyRank Coach's Hot Seat", ivS, 25, '#f59e0b']
       ].map(b => '<div class="st-bar-row"><div class="st-bar-top"><span>' + b[0] + '</span><span>' + b[1] + ' / ' + b[2] + '</span></div><div class="st-bar-track"><div class="st-bar-fill" data-w="' + Math.round(b[1] / b[2] * 100) + '" style="background:' + b[3] + '"></div></div></div>').join('');
       $('resBadges').innerHTML = badges.length
         ? badges.map(b => '<span class="st-badge">' + b + '</span>').join('')
@@ -976,7 +1016,7 @@
  
       window.sillyReact(total >= 60 ? 'happy' : 'sad', total >= 60 ? 'Verified! You crushed it 🏆' : 'Good try — retake to climb higher 💪');
  
-      const summary = { domain: S.key, total, mcq: mcqS, code: codeS, interview: ivS, rank: rankTitle, xp: S.xp, timeUsed: used, badges, at: new Date().toISOString() };
+      const summary = { domain: S.key, total, mcq: mcqS, code: codeS, interview: ivS, rank: rankTitle, xp: S.xp, timeUsed: used, badges, at: new Date().toISOString(), verified };
       try { localStorage.setItem('applyrank_last_result', JSON.stringify(summary)); } catch (e) {}
       emit('silly:test-complete', summary);
     }
@@ -993,14 +1033,14 @@
   if (typeof SillyBot === "undefined") {
     (function () {
       var why = window.__sbMissing ? "silly-robot.js was NOT FOUND. Put silly-robot.js in the same folder as this page and check the file name (no spaces or (1))." : "silly-robot.js loaded but has an error: " + (window.__sbErr && window.__sbErr[0] || "unknown") + ". Re-download the latest silly-robot.js.";
-      console.warn("[Silly] " + why);
+      console.warn("[ApplyRank Coach] " + why);
       var noop = function () {}, P = function () { return Promise.resolve(); };
       function bot() { return { el: document.createElement("div"), set: noop, sit: noop, stand: noop, say: P, hush: noop, walkTo: P, hearts: noop, destroy: noop, nextTip: noop }; }
-      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["Silly is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
+      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["ApplyRank Coach is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
       document.addEventListener("DOMContentLoaded", function () {
         var i = document.getElementById("sbIntro"); if (i) i.remove();
         var b = document.createElement("div"); b.style.cssText = "position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;background:#7f1d1d;color:#fff;font:600 13px sans-serif;padding:12px 16px;border-radius:12px;box-shadow:0 0 24px rgba(0,0,0,.5)";
-        b.textContent = "Silly could not start. " + why; document.body.appendChild(b);
+        b.textContent = "ApplyRank Coach could not start. " + why; document.body.appendChild(b);
       });
     })();
   }
@@ -1014,3 +1054,4 @@
 </script>
 </body>
 </html>
+ 

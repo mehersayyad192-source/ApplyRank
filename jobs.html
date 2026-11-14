@@ -1,5 +1,4 @@
- 
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
  <head>
   <meta charset="UTF-8">
@@ -16,6 +15,9 @@
   
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="silly-robot.css">
+  <link rel="stylesheet" href="jobs.css">
+  <script src="tracks.js"></script>
+  <script src="api.js"></script>
 </head>
 <body class="dashboard-body-canvas">
 
@@ -71,24 +73,42 @@
       <div class="state2-header-center" style="text-align: center; margin-bottom: 45px;">
         <div class="canvas-micro-badge" style="color: #10b981; border-color: rgba(16,185,129,0.2); margin-bottom: 16px;">🧬 SKILL VERIFICATION</div>
         <h1 class="state2-title-text" style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 38px; font-weight: 800; color: #ffffff; margin-bottom: 12px;">Choose your field track</h1>
-        <p class="state2-subtitle-text" style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; color: #64748b; max-width: 650px; line-height: 1.6; margin: 0 auto;">Each track is a 15-minute verified assessment with MCQ and coding rounds. Pick one to start the test — jobs unlock after.</p>
+        <p class="state2-subtitle-text" style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; color: #64748b; max-width: 650px; line-height: 1.6; margin: 0 auto;">Pick an IT track to see its open jobs. A verified skill test (15 minutes) gives you a rank that shows how well you match each job.</p>
       </div>
-      <div class="tracks-matrix-grid-system">
-        <div class="track-item-cyber-card">
-          <div class="track-header-row"><span class="material-symbols-outlined icon-pink">palette</span><span class="track-timer">⏱️ 15 MIN</span></div>
-          <h3 class="track-card-title">Frontend Developer</h3>
-          <p class="track-card-desc">React, performance, accessibility & pixel-perfect UI craft.</p>
-          <div class="track-tags-flex"><span class="mini-tag">React</span><span class="mini-tag">TypeScript</span></div>
-          <button type="button" class="select-path-action-btn" onclick="showRealJobLayout('Frontend React Developer')">[ Select Path ] ➔</button>
+      <div class="tracks-matrix-grid-system" id="trackGrid"></div>
+    </div>
+
+    <!-- JOB LIST (real jobs from the backend) -->
+    <div class="job-state-panel-card status-hidden" id="stateJobsList">
+      <div class="jl-head">
+        <div>
+          <div class="canvas-micro-badge" style="color:#10b981;border-color:rgba(16,185,129,0.2)">💼 OPEN JOBS</div>
+          <h1 class="jl-title" id="jlTitle">All IT jobs</h1>
+          <p class="jl-sub" id="jlSub"></p>
         </div>
-        <div class="track-item-cyber-card">
-          <div class="track-header-row"><span class="material-symbols-outlined icon-blue">settings</span><span class="track-timer">⏱️ 15 MIN</span></div>
-          <h3 class="track-card-title">Backend Developer</h3>
-          <p class="track-card-desc">Java, Spring Boot, databases, and secure scalable APIs.</p>
-          <div class="track-tags-flex"><span class="mini-tag">Java</span><span class="mini-tag">Spring Boot</span></div>
-          <button type="button" class="select-path-action-btn" onclick="showRealJobLayout('Backend API Engineer')">[ Select Path ] ➔</button>
+        <button type="button" class="gateway-improve-skills-btn" onclick="backToTracks()"><span class="material-symbols-outlined" style="margin-right:6px">arrow_back</span><span>All tracks</span></button>
+      </div>
+      <div class="jf-bar">
+        <div class="jf-row">
+          <label class="jf-search"><span aria-hidden="true">🔍</span><input id="jfQ" type="search" maxlength="80" placeholder="Search job title, company or skill (e.g. java pune)" autocomplete="off"></label>
+          <select class="jf-sel" id="jfTrack" aria-label="Track"></select>
+          <select class="jf-sel" id="jfSort" aria-label="Sort">
+            <option value="new">Newest first</option><option value="rank_low">Rank bar: low to high</option><option value="rank_high">Rank bar: high to low</option>
+          </select>
+        </div>
+        <div class="jf-label">LOCATION (pick one or more)</div>
+        <div class="jf-chips" id="jfCities"></div>
+        <div class="jf-label">QUICK FILTERS</div>
+        <div class="jf-row">
+          <button type="button" class="jf-chip" id="jfRemote">🏠 Work from home</button>
+          <button type="button" class="jf-chip green" id="jfQualify">✅ Only jobs I qualify for</button>
+          <button type="button" class="jf-chip" id="jfSaved">★ Saved jobs</button>
+          <button type="button" class="jf-clear" id="jfClear">Clear all</button>
         </div>
       </div>
+      <div class="jl-rank" id="jlRank"></div>
+      <div id="jlList"></div>
+      <div class="jl-pager" id="jlPager" style="display:none"><button type="button" class="jl-btn" id="jlPrev">&larr; Previous</button><span id="jlPageLbl"></span><button type="button" class="jl-btn" id="jlNext">Next &rarr;</button></div>
     </div>
 
     <!-- ========================================== -->
@@ -99,7 +119,7 @@
       <!-- Top Title Bar -->
       <div class="internshala-top-header-banner">
         <span id="selectedTrackHeading">Applying to Job</span>
-        <span class="material-symbols-outlined close-x-btn" onclick="window.location.reload()">close</span>
+        <span class="material-symbols-outlined close-x-btn" onclick="backToJobs()">close</span>
       </div>
 
       <!-- Main Job Details Layer -->
@@ -110,31 +130,22 @@
         </div>
 
         <div class="job-meta-icons-grid">
-          <div class="meta-icon-item"><span class="material-symbols-outlined">payments</span><span>₹ 4,50,000 - 7,00,000 /year</span></div>
-          <div class="meta-icon-item"><span class="material-symbols-outlined">location_on</span><span>Noida / Remote</span></div>
-          <div class="meta-icon-item"><span class="material-symbols-outlined">work_history</span><span>No experience required / Fresher Job</span></div>
-          <div class="meta-icon-item"><span class="material-symbols-outlined">group</span><span>20 vacancies</span></div>
+          <div class="meta-icon-item"><span class="material-symbols-outlined">payments</span><span id="metaPay">-</span></div>
+          <div class="meta-icon-item"><span class="material-symbols-outlined">location_on</span><span id="metaLoc">-</span></div>
+          <div class="meta-icon-item"><span class="material-symbols-outlined">military_tech</span><span id="metaRank">-</span></div>
+          <div class="meta-icon-item"><span class="material-symbols-outlined">category</span><span id="metaTrack">-</span></div>
         </div>
 
         <div class="applicants-count-blue-badge">
-          <span>150+ candidates have already applied. Increase your profile visibility to get noticed!</span>
-          <button type="button" class="pro-badge-btn">Get ApplyRank PRO ></button>
+          <span id="matchText"></span>
+          <button type="button" class="pro-badge-btn" onclick="location.href='skilltest.html'">Take skill test ></button>
         </div>
 
-        <!-- About the Job Content Block -->
         <div class="about-job-markdown-content">
-          <h3>About the job <span class="ai-summarized-tag">Summarized by AI ✨</span></h3>
-          <p class="overview-title">Role Overview:</p>
-          <ul>
-            <li>Drive business growth through outbound calls, virtual session booking, and closing sales in the education technology sector.</li>
-            <li>Manage the sales funnel from lead to conversion, engage customers, and maintain CRM-based sales processes.</li>
-            <li>Learn and upgrade product knowledge, handle objections, and work towards exceeding business targets in a fast-paced environment.</li>
-          </ul>
-          <p class="overview-title" style="margin-top: 20px;">Requirements:</p>
-          <ul>
-            <li>BE/B Tech, BSC, BCA, MSC, MCA graduates preferred.</li>
-            <li>Excellent objection handling, convincing, and communication skills.</li>
-          </ul>
+          <h3>About the job</h3>
+          <p id="jobDesc" style="white-space:pre-line"></p>
+          <p class="overview-title" style="margin-top: 20px;">Skills required:</p>
+          <ul id="jobReqs"></ul>
         </div>
       </div>
 
@@ -148,7 +159,7 @@
             <label class="form-field-label">EMAIL ADDRESS</label>
             <div class="input-with-icon-holder">
               <span class="material-symbols-outlined" style="color: #64748b;">mail</span>
-              <input type="email" class="form-text-input-field" placeholder="enter your email address" required />
+              <input type="email" id="applyEmail" class="form-text-input-field" placeholder="enter your email address" required />
             </div>
           </div>
 
@@ -179,7 +190,7 @@
 
           <!-- Section 5: Proficiency Selector Dropdown -->
           <div class="form-input-section-row">
-            <label class="custom-field-question-label">How would you rate your proficiency in Effective Communication, on a scale of 1 - 5?</label>
+            <label class="custom-field-question-label"><span id="profLabel">How would you rate your proficiency in this track, on a scale of 1 - 5?</span></label>
             <select class="internshala-select-dropdown" required>
               <option value="" disabled selected>Select Range</option>
               <option value="1">1 - Beginner</option>
@@ -227,38 +238,217 @@
 
   <!-- 🦾 JAVASCRIPT MASTER ROUTING CONTROLLER FUNCTIONS -->
   <script>
-    function showTrackSelectionScreen() {
-      document.getElementById('state1PickTrack').classList.add('status-hidden');
-      document.getElementById('state2TrackSelection').classList.remove('status-hidden');
+    var TRACKS = window.APPLYRANK_TRACKS || [], BYKEY = {};
+    TRACKS.forEach(function (t) { BYKEY[t.key] = t; });
+    var SIZE = 8, page = 0, curTrack = '', currentJob = null, myRanks = {};
+    function $(id) { return document.getElementById(id); }
+    function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+    function show(id) { ['state1PickTrack', 'state2TrackSelection', 'stateJobsList', 'state3CompaniesAndForm'].forEach(function (x) { $(x).classList.toggle('status-hidden', x !== id); }); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+    function showTrackSelectionScreen() { buildTrackGrid(); show('state2TrackSelection'); }
+    function backToTracks() { show('state2TrackSelection'); }
+    function backToJobs() { show('stateJobsList'); }
+
+    function buildTrackGrid() {
+      var g = $('trackGrid'); g.textContent = '';
+      var all = el('div', 'track-item-cyber-card');
+      var h = el('div', 'track-header-row'); var ic = el('span', 'material-symbols-outlined', 'apps'); ic.style.color = '#6366f1'; h.appendChild(ic); all.appendChild(h);
+      all.appendChild(el('h3', 'track-card-title', 'All IT jobs')); all.appendChild(el('p', 'track-card-desc', 'See every open job, newest first.'));
+      var b = el('button', 'select-path-action-btn', '[ View all jobs ] ➔'); b.type = 'button'; b.onclick = function () { openTrack(''); }; all.appendChild(b); g.appendChild(all);
+      TRACKS.forEach(function (t) {
+        var c = el('div', 'track-item-cyber-card');
+        var hr = el('div', 'track-header-row'); var i2 = el('span', 'material-symbols-outlined', t.icon); i2.style.color = t.color; hr.appendChild(i2);
+        if (t.test) hr.appendChild(el('span', 'track-timer', '⏱️ 15 MIN')); c.appendChild(hr);
+        c.appendChild(el('h3', 'track-card-title', t.name)); c.appendChild(el('p', 'track-card-desc', t.desc));
+        var tg = el('div', 'track-tags-flex'); t.tags.forEach(function (x) { tg.appendChild(el('span', 'mini-tag', x)); }); c.appendChild(tg);
+        c.appendChild(el('span', t.test ? 'track-ready-chip' : 'track-soon-chip', t.test ? 'VERIFIED TEST READY' : (t.uses ? 'USES YOUR FRONTEND / BACKEND RANK' : 'TEST COMING SOON')));
+        var bb = el('button', 'select-path-action-btn', '[ View jobs ] ➔'); bb.type = 'button'; bb.onclick = function () { openTrack(t.key); }; c.appendChild(bb);
+        g.appendChild(c);
+      });
     }
 
-    function showRealJobLayout(trackName) {
-      document.getElementById('state2TrackSelection').classList.add('status-hidden');
-      document.getElementById('selectedTrackHeading').innerText = "Applying to " + trackName + " job";
-      document.getElementById('dynamicJobTitle').innerText = trackName + " Executive Core";
-      document.getElementById('state3CompaniesAndForm').classList.remove('status-hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' }); // Smoothly scrolls window to top to view data details layer
+    /* ---- my verified ranks (per track) ---- */
+    function loadRanks() {
+      var out = {};
+      function add(k, v) { if (k && v != null && (out[k] == null || v > out[k])) out[k] = v; }
+      try { var r = JSON.parse(localStorage.getItem('applyrank_last_result') || 'null'); if (r && r.verified && r.domain) add(r.domain, r.total); } catch (e) {}
+      if (!ApplyRankAPI.isLoggedIn()) { myRanks = out; return Promise.resolve(); }
+      return ApplyRankAPI.testHistory().then(function (list) { (list || []).forEach(function (t) { if (t.verified) add(t.domain, t.total); }); myRanks = out; }, function () { myRanks = out; });
+    }
+    function rankFor(key) {
+      var t = BYKEY[key]; if (!t) return null;
+      if (t.uses) { var best = null; t.uses.forEach(function (k) { if (myRanks[k] != null && (best == null || myRanks[k] > best)) best = myRanks[k]; }); return best; }
+      return myRanks[key] != null ? myRanks[key] : null;
+    }
+    function mySkills() { try { return (JSON.parse(localStorage.getItem('applyrank_profile') || '{}').skills || '').split(',').map(function (x) { return x.trim().toLowerCase(); }).filter(Boolean); } catch (e) { return []; } }
+    function match(job) {          /* {cls, text} - how the user's verified rank compares with the job */
+      var t = BYKEY[job.track]; if (!t) return { cls: 'info', text: 'Track not listed' };
+      var rk = rankFor(job.track), need = job.minRank || 0;
+      if (!t.test && !t.uses) return { cls: 'info', text: 'Verified test for ' + t.name + ' is coming soon. You can still apply.' };
+      if (rk == null) return { cls: 'warn', text: 'No verified rank yet. Take the ' + (t.uses ? 'Frontend or Backend' : t.name) + ' test to see if you qualify (needs ' + need + '/100).' };
+      if (rk >= need) return { cls: 'ok', text: 'Your rank ' + rk + ' ≥ required ' + need + '. You qualify!' };
+      return { cls: 'warn', text: 'Your rank ' + rk + '. This job wants ' + need + ' (+' + (need - rk) + ' points). Retake the test to improve.' };
+    }
+    function ago(iso) { var d = (Date.now() - new Date(iso).getTime()) / 86400000; return d < 1 ? 'today' : d < 2 ? '1 day ago' : d < 30 ? Math.floor(d) + ' days ago' : Math.floor(d / 30) + ' month(s) ago'; }
+
+    /* ---- job list: search + filters ---- */
+    var F = { q: '', locs: [], remote: false, qualify: false, sort: 'new', saved: false }, pages = 1, reqId = 0, savedIds = {}, cities = [], typing = null;
+    function loggedIn() { return window.ApplyRankAPI && ApplyRankAPI.isLoggedIn(); }
+
+    function openTrack(key) {
+      curTrack = key; page = 0; F = { q: '', locs: [], remote: false, qualify: false, sort: 'new', saved: false };
+      $('jfQ').value = ''; $('jfSort').value = 'new'; $('jlList').textContent = ''; $('jlPager').style.display = 'none';
+      buildTrackSelect(); show('stateJobsList');
+      loadRanks().then(function () { updateHeader(); loadCities(); loadSavedIds(); runSearch(); });
+    }
+    function buildTrackSelect() {
+      var s = $('jfTrack'); s.textContent = '';
+      var o = el('option', '', 'All IT tracks'); o.value = ''; s.appendChild(o);
+      TRACKS.forEach(function (t) { var x = el('option', '', t.name); x.value = t.key; s.appendChild(x); });
+      s.value = curTrack;
+    }
+    function updateHeader() {
+      var t = BYKEY[curTrack], rk = t ? rankFor(curTrack) : null, box = $('jlRank'); box.textContent = '';
+      $('jlTitle').textContent = t ? t.name + ' jobs' : 'All IT jobs';
+      if (!t) box.appendChild(document.createTextNode('Each job shows how your verified rank matches it. '));
+      else if (rk != null) box.appendChild(document.createTextNode('Your verified rank for this track: ' + rk + '/100. '));
+      else box.appendChild(document.createTextNode(t.test || t.uses ? 'You have no verified rank for this track yet. ' : 'The verified test for this track is coming soon. '));
+      var a = el('a', '', 'Take / improve skill test'); a.href = 'skilltest.html'; box.appendChild(a);
+      var q = $('jfQualify'), can = t && rk != null;
+      q.disabled = !can; q.title = can ? '' : (t ? 'Take the skill test for this track first' : 'Pick one track to use this filter');
+      if (!can) F.qualify = false;
+      paintChips();
+    }
+    function paintChips() {
+      $('jfRemote').classList.toggle('on', F.remote); $('jfQualify').classList.toggle('on', F.qualify); $('jfSaved').classList.toggle('on', F.saved);
+      Array.prototype.forEach.call($('jfCities').children, function (b) { b.classList.toggle('on', F.locs.indexOf(b.textContent) >= 0); });
+    }
+    function loadCities() {
+      ApplyRankAPI.jobLocations().then(function (list) {
+        cities = (list || []).filter(function (c) { return c.toLowerCase().indexOf('remote') < 0; });
+        var box = $('jfCities'); box.textContent = '';
+        if (!cities.length) { box.appendChild(el('span', 'jl-co', 'No cities yet')); return; }
+        cities.forEach(function (c) { var b = el('button', 'jf-chip', c); b.type = 'button'; b.onclick = function () { var i = F.locs.indexOf(c); if (i >= 0) F.locs.splice(i, 1); else F.locs.push(c); F.saved = false; page = 0; paintChips(); runSearch(); }; box.appendChild(b); });
+        paintChips();
+      }, function () {});
+    }
+    function loadSavedIds() {
+      savedIds = {}; if (!loggedIn()) return;
+      ApplyRankAPI.savedJobs().then(function (l) { (l || []).forEach(function (j) { savedIds[j.id] = 1; }); }, function () {});
     }
 
-    function triggerJobFormFileExplorer() {
-      document.getElementById('jobFormFileInput').click();
+    function runSearch() {
+      var box = $('jlList'), my = ++reqId; box.textContent = ''; $('jlSub').textContent = 'Loading...';
+      if (F.saved) return showSaved(my);
+      ApplyRankAPI.searchJobs({ q: F.q, track: curTrack, locations: F.locs, remote: F.remote, maxRank: F.qualify ? rankFor(curTrack) : null, sort: F.sort, page: page, size: SIZE }).then(function (r) {
+        if (my !== reqId) return;
+        var list = r.data || []; pages = r.pages || 1;
+        if (!list.length) { emptyState(box); $('jlSub').textContent = '0 jobs match'; $('jlPager').style.display = 'none'; return; }
+        list.forEach(function (j) { box.appendChild(jobCard(j)); });
+        $('jlSub').textContent = r.total + ' job' + (r.total === 1 ? '' : 's') + ' found';
+        $('jlPageLbl').textContent = 'Page ' + (page + 1) + ' of ' + pages; $('jlPrev').disabled = page <= 0; $('jlNext').disabled = page + 1 >= pages;
+        $('jlPager').style.display = pages > 1 ? 'flex' : 'none';
+      }, function (e) {
+        if (my !== reqId) return;
+        box.appendChild(el('div', 'jl-empty', e.offline ? 'Backend is not running. Start it (mvn spring-boot:run) and open this page again.' : e.message));
+        $('jlSub').textContent = ''; $('jlPager').style.display = 'none';
+      });
+    }
+    function emptyState(box) {
+      var d = el('div', 'jl-empty', 'No jobs match these filters. Try fewer words or clear the filters. Recruiters can post jobs from the Recruiter desk.');
+      var b = el('button', 'jl-btn', 'Clear all filters'); b.type = 'button'; b.style.marginTop = '12px'; b.onclick = clearAll; d.appendChild(el('br')); d.appendChild(b); box.appendChild(d);
+    }
+    function showSaved(my) {
+      var box = $('jlList'); $('jlPager').style.display = 'none';
+      if (!loggedIn()) { box.appendChild(el('div', 'jl-empty', 'Log in on the home page to save jobs and see them here.')); $('jlSub').textContent = ''; return; }
+      ApplyRankAPI.savedJobs().then(function (list) {
+        if (my !== reqId) return;
+        savedIds = {}; (list || []).forEach(function (j) { savedIds[j.id] = 1; });
+        if (!list.length) { box.appendChild(el('div', 'jl-empty', 'You have not saved any job yet. Use the "Save" button on a job card.')); $('jlSub').textContent = '0 saved'; return; }
+        list.forEach(function (j) { box.appendChild(jobCard(j)); }); $('jlSub').textContent = list.length + ' saved job' + (list.length === 1 ? '' : 's');
+      }, function (e) { box.appendChild(el('div', 'jl-empty', e.offline ? 'Backend is not running.' : e.message)); });
+    }
+    function clearAll() {
+      F = { q: '', locs: [], remote: false, qualify: false, sort: 'new', saved: false }; $('jfQ').value = ''; $('jfSort').value = 'new'; page = 0; updateHeader(); runSearch();
     }
 
+    $('jfQ').addEventListener('input', function () { clearTimeout(typing); typing = setTimeout(function () { F.q = $('jfQ').value.trim(); F.saved = false; page = 0; paintChips(); runSearch(); }, 350); });
+    $('jfQ').addEventListener('keydown', function (e) { if (e.key === 'Enter') { clearTimeout(typing); F.q = $('jfQ').value.trim(); F.saved = false; page = 0; paintChips(); runSearch(); } });
+    $('jfTrack').addEventListener('change', function () { curTrack = this.value; page = 0; F.saved = false; updateHeader(); runSearch(); });
+    $('jfSort').addEventListener('change', function () { F.sort = this.value; page = 0; runSearch(); });
+    $('jfRemote').addEventListener('click', function () { F.remote = !F.remote; F.saved = false; page = 0; paintChips(); runSearch(); });
+    $('jfQualify').addEventListener('click', function () { if (this.disabled) return; F.qualify = !F.qualify; F.saved = false; page = 0; paintChips(); runSearch(); });
+    $('jfSaved').addEventListener('click', function () { F.saved = !F.saved; paintChips(); runSearch(); });
+    $('jfClear').addEventListener('click', clearAll);
+    $('jlPrev').addEventListener('click', function () { if (page > 0) { page--; runSearch(); window.scrollTo({ top: 0, behavior: 'smooth' }); } });
+    $('jlNext').addEventListener('click', function () { if (page + 1 < pages) { page++; runSearch(); window.scrollTo({ top: 0, behavior: 'smooth' }); } });
+
+    function jobCard(j) {
+      var c = el('div', 'jl-card'), top = el('div', 'jl-top'), l = el('div');
+      l.appendChild(el('h3', '', j.title)); l.appendChild(el('div', 'jl-co', j.company + ' · ' + ((BYKEY[j.track] || {}).name || j.track)));
+      top.appendChild(l);
+      var act = el('div'); act.style.whiteSpace = 'nowrap';
+      var sv = el('button', 'jl-save' + (savedIds[j.id] ? ' on' : ''), savedIds[j.id] ? '★ Saved' : '☆ Save'); sv.type = 'button';
+      sv.onclick = function () {
+        if (!loggedIn()) { alert('Please log in on the home page to save jobs.'); return; }
+        var was = !!savedIds[j.id]; sv.disabled = true;
+        (was ? ApplyRankAPI.unsaveJob(j.id) : ApplyRankAPI.saveJob(j.id)).then(function () {
+          if (was) delete savedIds[j.id]; else savedIds[j.id] = 1;
+          sv.className = 'jl-save' + (savedIds[j.id] ? ' on' : ''); sv.textContent = savedIds[j.id] ? '★ Saved' : '☆ Save';
+          if (was && F.saved) c.remove();
+        }, function (e) { alert(e.offline ? 'Backend is not running.' : e.message); }).then(function () { sv.disabled = false; });
+      };
+      var b = el('button', 'jl-btn', 'View & apply'); b.type = 'button'; b.onclick = function () { openJob(j); };
+      act.appendChild(sv); act.appendChild(b); top.appendChild(act); c.appendChild(top);
+      c.appendChild(el('div', 'jl-meta')).textContent = [j.location, j.ctc, 'Min rank ' + (j.minRank || 0), 'Posted ' + ago(j.postedAt)].filter(Boolean).join('   |   ');
+      var mine = mySkills(), tg = el('div', 'jl-tags'), hits = 0;
+      (j.requirements || []).forEach(function (r) { var hit = mine.indexOf(r.toLowerCase()) >= 0; if (hit) hits++; tg.appendChild(el('span', hit ? 'hit' : '', r)); });
+      c.appendChild(tg);
+      var m = match(j), bd = el('div', 'jl-badge ' + m.cls, m.text); c.appendChild(bd);
+      if ((j.requirements || []).length && mine.length) { var s = el('div', 'jl-co', 'Skill match: ' + hits + ' of ' + j.requirements.length + ' (' + Math.round(hits * 100 / j.requirements.length) + '%, green tags are in your profile)'); s.style.marginTop = '8px'; c.appendChild(s); }
+      return c;
+    }
+
+    /* ---- one job + apply form ---- */
+    function openJob(j) {
+      currentJob = j; var t = BYKEY[j.track] || { name: j.track }, m = match(j);
+      $('selectedTrackHeading').textContent = 'Applying to ' + t.name + ' job';
+      $('dynamicJobTitle').textContent = j.title;
+      var c = document.querySelector('.company-name-sub'); if (c && c.firstChild) c.firstChild.nodeValue = j.company + ' ';
+      $('metaPay').textContent = j.ctc || 'Salary not disclosed'; $('metaLoc').textContent = j.location || 'Location not given';
+      $('metaRank').textContent = 'Minimum verified rank: ' + (j.minRank || 0) + '/100'; $('metaTrack').textContent = t.name;
+      $('matchText').textContent = m.text; $('jobDesc').textContent = j.description || 'The recruiter has not added a description.';
+      var u = $('jobReqs'); u.textContent = ''; (j.requirements || []).forEach(function (r) { u.appendChild(el('li', '', r)); });
+      $('profLabel').textContent = 'How would you rate your proficiency in ' + t.name + ', on a scale of 1 - 5?';
+      try { var em = localStorage.getItem('applyrank_email'); if (em && !$('applyEmail').value) $('applyEmail').value = em; } catch (e) {}
+      show('state3CompaniesAndForm');
+    }
+
+    function triggerJobFormFileExplorer() { $('jobFormFileInput').click(); }
     function handleJobFormFileSelection(inputElement) {
       if (inputElement.files && inputElement.files[0]) {
-        const selectedFile = inputElement.files[0];
-        document.getElementById('formPdfNameDisplay').innerText = selectedFile.name + " (" + Math.round(selectedFile.size / 1024) + " KB)";
-        const iconNode = document.getElementById('pdfIconNode');
-        iconNode.innerText = 'picture_as_pdf';
-        iconNode.className = 'material-symbols-outlined pdf-icon-red';
-        document.getElementById('formPdfPill').style.borderColor = '#008bdc';
+        var f = inputElement.files[0];
+        $('formPdfNameDisplay').innerText = f.name + ' (' + Math.round(f.size / 1024) + ' KB)';
+        var ic = $('pdfIconNode'); ic.innerText = 'picture_as_pdf'; ic.className = 'material-symbols-outlined pdf-icon-red'; $('formPdfPill').style.borderColor = '#008bdc';
       }
     }
 
     function handleFormSubmission(event) {
       event.preventDefault();
-      alert("🎉 Success! Your job application form has been securely submitted along with your verified credentials!");
-      window.location.href = 'dashboard.html';
+      function done(msg) { alert(msg); window.location.href = 'dashboard.html'; }
+      if (currentJob && window.ApplyRankAPI && ApplyRankAPI.isLoggedIn()) {
+        var rk = rankFor(currentJob.track), need = currentJob.minRank || 0, t = BYKEY[currentJob.track];
+        if (t && (t.test || t.uses) && rk != null && rk < need && !confirm('Your verified rank (' + rk + ') is below the ' + need + ' this job asks for. Apply anyway?')) return;
+        ApplyRankAPI.apply(currentJob.id).then(function () {
+          done('🎉 Applied to ' + currentJob.title + ' at ' + currentJob.company + '! Track it on the Notifications page.');
+        }, function (e) {
+          if (e.status === 409) done('You already applied to this job. Check the Notifications page for its status.');
+          else if (e.offline) done('Backend is not running, so the application was NOT sent. Start the backend and try again.');
+          else alert(e.message);
+        });
+      } else {
+        alert('Please log in on the home page (with the backend running) to send real applications.');
+      }
     }
   </script>
 
@@ -269,14 +459,14 @@
   if (typeof SillyBot === "undefined") {
     (function () {
       var why = window.__sbMissing ? "silly-robot.js was NOT FOUND. Put silly-robot.js in the same folder as this page and check the file name (no spaces or (1))." : "silly-robot.js loaded but has an error: " + (window.__sbErr && window.__sbErr[0] || "unknown") + ". Re-download the latest silly-robot.js.";
-      console.warn("[Silly] " + why);
+      console.warn("[ApplyRank Coach] " + why);
       var noop = function () {}, P = function () { return Promise.resolve(); };
       function bot() { return { el: document.createElement("div"), set: noop, sit: noop, stand: noop, say: P, hush: noop, walkTo: P, hearts: noop, destroy: noop, nextTip: noop }; }
-      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["Silly is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
+      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["ApplyRank Coach is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
       document.addEventListener("DOMContentLoaded", function () {
         var i = document.getElementById("sbIntro"); if (i) i.remove();
         var b = document.createElement("div"); b.style.cssText = "position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;background:#7f1d1d;color:#fff;font:600 13px sans-serif;padding:12px 16px;border-radius:12px;box-shadow:0 0 24px rgba(0,0,0,.5)";
-        b.textContent = "Silly could not start. " + why; document.body.appendChild(b);
+        b.textContent = "ApplyRank Coach could not start. " + why; document.body.appendChild(b);
       });
     })();
   }

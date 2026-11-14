@@ -150,17 +150,6 @@
     </div> <!-- End of Right Box -->
 
   </div>
-  <!-- 🤖 WELCOME INTRO: Silly walks in, says hi, then the login appears -->
-  <div id="sbIntro" aria-live="polite">
-    <div class="sbi-dots"></div>
-    <div class="sbi-brand">Apply<b>Rank</b></div>
-    <div class="sbi-skip"><button type="button" id="sbiVoice">🔊 Silly voice: off</button><button type="button" id="sbiSkip">Skip ›</button></div>
-    <div class="sbi-hero" id="sbiHero"><h1>Welcome to <span>ApplyRank</span></h1><p>Your verified rank is your edge.</p></div>
-    <div class="sbi-floor"></div>
-    <div class="sbi-gate" id="sbiGate"><button type="button" class="sbi-btn" id="sbiStart">&#9654; Meet Silly</button><p>Turn your sound on for the full welcome &#128266;</p></div>
-    <div class="sbi-cta" id="sbiCta"><button type="button" class="sbi-btn" id="sbiGo">LET'S LOGIN ➔</button></div>
-  </div>
-
   <script>window.__sbErr=[];window.addEventListener("error",function(e){window.__sbErr.push((e.message||"error")+" ["+String(e.filename||"").split("/").pop()+":"+e.lineno+"]");});</script>
   <script src="silly-robot.js" onerror="window.__sbMissing=1"></script>
   <script>
@@ -168,74 +157,23 @@
   if (typeof SillyBot === "undefined") {
     (function () {
       var why = window.__sbMissing ? "silly-robot.js was NOT FOUND. Put silly-robot.js in the same folder as this page and check the file name (no spaces or (1))." : "silly-robot.js loaded but has an error: " + (window.__sbErr && window.__sbErr[0] || "unknown") + ". Re-download the latest silly-robot.js.";
-      console.warn("[Silly] " + why);
+      console.warn("[ApplyRank Coach] " + why);
       var noop = function () {}, P = function () { return Promise.resolve(); };
       function bot() { return { el: document.createElement("div"), set: noop, sit: noop, stand: noop, say: P, hush: noop, walkTo: P, hearts: noop, destroy: noop, nextTip: noop }; }
-      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["Silly is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
+      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["ApplyRank Coach is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
       document.addEventListener("DOMContentLoaded", function () {
         var i = document.getElementById("sbIntro"); if (i) i.remove();
         var b = document.createElement("div"); b.style.cssText = "position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;background:#7f1d1d;color:#fff;font:600 13px sans-serif;padding:12px 16px;border-radius:12px;box-shadow:0 0 24px rgba(0,0,0,.5)";
-        b.textContent = "Silly could not start. " + why; document.body.appendChild(b);
+        b.textContent = "ApplyRank Coach could not start. " + why; document.body.appendChild(b);
       });
     })();
   }
   </script>
   <script>
-  (function () {
-    var intro = document.getElementById('sbIntro'), hero = document.getElementById('sbiHero'), cta = document.getElementById('sbiCta');
-    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var skipped = false, home = null, big = null;
+  /* left panel: verified-rank emblem inside the neon circle */
+  (function () { var c = document.querySelector('.robot-neaon-circle-canvas'); if (c && window.SillyBot) SillyBot.create({ parent: c }); })();
 
-    function vb() { var b = document.getElementById('sbiVoice'); b.textContent = SillyBot.voiceOn() ? '🔊 Silly voice: on' : '🔊 Silly voice: off'; }
-    vb();
-    document.getElementById('sbiVoice').onclick = function () { SillyBot.setVoice(!SillyBot.voiceOn()); vb(); if (SillyBot.voiceOn()) SillyBot.speakNow('Hi, I am Silly. How does my voice sound?'); };
-
-    /* ---- the login-page companion (lives inside the neon circle) ---- */
-    function spawnHome() {
-      if (home) return;
-      var circle = document.querySelector('.robot-neaon-circle-canvas');
-      home = SillyBot.create({ parent: circle, inline: true, size: 230, bubble: 'top' });
-      home.set('wave', 1800);
-      setTimeout(function () { home.say('Hi! I am Silly 💜 Enter your email and password, and I will take care of the rest!', { ms: 5200 }); }, 900);
-      var email = document.getElementById('userEmail'), pass = document.getElementById('userPassword');
-      email.addEventListener('focus', function () { home.set('idle'); home.say('Type your email 📧 Your journey starts right here.', { ms: 3000 }); });
-      pass.addEventListener('focus', function () { home.set('shy'); home.say('I am not looking 🙈 Take your time.', { ms: 3000, keepState: true }); });
-      pass.addEventListener('blur', function () { home.set('idle'); });
-      email.addEventListener('input', function () { if (email.value.indexOf('@') > 0) home.set('happy', 1300); });
-    }
-
-    function finishIntro() {
-      if (skipped) return; skipped = true;
-      if (big) big.el.classList.add('sbi-hide');
-      intro.classList.add('sbi-out');
-      setTimeout(function () { intro.remove(); if (big) big.destroy(); spawnHome(); }, 700);
-    }
-    document.getElementById('sbiSkip').onclick = finishIntro;
-    document.getElementById('sbiGo').onclick = finishIntro;
-    document.addEventListener('keydown', function (e) { if (intro.parentNode && e.key === 'Escape') finishIntro(); });
-
-    /* ---- the walk-in ---- */
-    var size = Math.max(170, Math.min(280, window.innerWidth * 0.3));
-    big = SillyBot.create({ size: size, left: -size - 20, bottom: Math.round(window.innerHeight * 0.08) + 2, bubble: 'top' });
-    big.el.style.zIndex = 8100;
-    var cx = window.innerWidth / 2 - size / 2;
-
-    function seq() {
-      return big.walkTo(cx, reduce ? 0 : 2300).then(function () {
-        if (skipped) return;
-        big.set('wave'); hero.classList.add('sbi-on');
-        return big.say('Welcome to ApplyRank! 👋', { keepState: true, speak: true });
-      }).then(function () { return new Promise(function (r) { setTimeout(r, 1100); }); })
-      .then(function () {
-        if (skipped) return; big.set('happy', 2200);
-        return big.say('You are just one login away. Your Verified Rank is waiting! Let us do something big today 🚀', { keepState: true, speak: true });
-      }).then(function () { if (skipped) return; cta.classList.add('sbi-on'); setTimeout(function () { if (!skipped) finishIntro(); }, 3000); });
-    }
-    document.getElementById('sbiStart').onclick = function () { document.getElementById('sbiGate').classList.add('sbi-gone'); if (!SillyBot.voiceOn()) SillyBot.setVoice(true); seq(); };
-    document.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !document.getElementById('sbiGate').classList.contains('sbi-gone') && intro.parentNode) document.getElementById('sbiStart').click(); });
-  })();
-
-  /* LOGIN: Silly celebrates, then wipes to dashboard */
+  /* LOGIN: then go to the dashboard (or recruiter desk) */
   function sillyLogin() {
     var email = document.getElementById('userEmail').value.trim();
     var pw = document.getElementById('userPassword').value;
@@ -260,13 +198,8 @@
     } else { enter(false); }
   }
   function celebrate(real) {
-    var b = document.querySelector('.robot-neaon-circle-canvas .sb-svg');
-    if (b) { b.classList.remove('sb-shy'); b.classList.add('sb-happy', 'sb-wave'); }
-    var bub = document.querySelector('.robot-neaon-circle-canvas .sb-bubble');
-    if (bub) { bub.textContent = 'Yes! Heading to your dashboard 🚀 You have got this!'; bub.classList.add('sb-show'); }
-    SillyBot.speak('Let us go! Opening your dashboard.');
     var isRec = false; try { isRec = localStorage.getItem('applyrank_role') === 'RECRUITER'; } catch (e) {}
-    setTimeout(function () { SillyBot.go(isRec ? 'recruiter.html' : 'dashboard.html'); }, 900);
+    SillyBot.go(isRec ? 'recruiter.html' : 'dashboard.html');
   }
   </script>
  </body>

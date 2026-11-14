@@ -1,4 +1,9 @@
-# ApplyRank Backend (Spring Boot 3 + Java 17)
+ # ApplyRank — Full-Stack Job Readiness & Skill Verification Platform
+
+Full-stack web application built with **Java 17, Spring Boot 3, Spring Security (JWT), and Vanilla HTML5/CSS3/JS** — featuring server-side skill assessments, ATS-friendly PDF resume generation, notifications, and role-based recruiter workflows.
+
+
+## ApplyRank Backend (Spring Boot 3 + Java 17)
 
 REST API for the ApplyRank site: login (JWT), profile, jobs & applications, server-side skill-test scoring
 (the verified rank can't be faked from the browser), notifications, recruiter ranking, resume check.

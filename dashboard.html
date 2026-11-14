@@ -80,17 +80,17 @@
 
       <div class="silly-content-zone">
         <div class="silly-header-badge-row">
-          <h2 class="silly-title-name">Meet Silly</h2>
+          <h2 class="silly-title-name">Your ApplyRank Coach</h2>
           <span class="silly-mentor-tag">AI MENTOR</span>
         </div>
         
         <p class="silly-speech-bubble-text">
-          "Hi <span id="heroName">friend</span>! Welcome to ApplyRank, I'm Silly—your dedicated AI career specialist. Think of me as your insider coach. Let's fine-tune your resume, verify your rank, and push through every hurdle until you secure that role!"
+          "Hi <span id="heroName">friend</span>! Welcome to ApplyRank, I'm ApplyRank Coach—your dedicated AI career specialist. Think of me as your insider coach. Let's fine-tune your resume, verify your rank, and push through every hurdle until you secure that role!"
         </p>
 
         <button type="button" class="silly-talk-action-btn" id="talkSilly">
-          <span class="material-symbols-outlined">volume_up</span>
-          <span>Talk to Silly</span>
+          <span class="material-symbols-outlined">lightbulb</span>
+          <span>Get a tip</span>
         </button>
       </div>
     </div>
@@ -105,7 +105,7 @@
         </div>
         <div class="card-body-content">
           <h3 class="card-main-heading">Upload & Optimize Resume</h3>
-          <p class="card-sub-description">Drop your resume and let Silly's AI tune it for the roles you want.</p>
+          <p class="card-sub-description">Drop your resume and let ApplyRank Coach's AI tune it for the roles you want.</p>
           <a href="resume.html" id="goResume" class="card-action-trigger-link blue-link">Open AI Resume ➔</a>
         </div>
       </div>
@@ -133,14 +133,14 @@
   if (typeof SillyBot === "undefined") {
     (function () {
       var why = window.__sbMissing ? "silly-robot.js was NOT FOUND. Put silly-robot.js in the same folder as this page and check the file name (no spaces or (1))." : "silly-robot.js loaded but has an error: " + (window.__sbErr && window.__sbErr[0] || "unknown") + ". Re-download the latest silly-robot.js.";
-      console.warn("[Silly] " + why);
+      console.warn("[ApplyRank Coach] " + why);
       var noop = function () {}, P = function () { return Promise.resolve(); };
       function bot() { return { el: document.createElement("div"), set: noop, sit: noop, stand: noop, say: P, hush: noop, walkTo: P, hearts: noop, destroy: noop, nextTip: noop }; }
-      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["Silly is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
+      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["ApplyRank Coach is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
       document.addEventListener("DOMContentLoaded", function () {
         var i = document.getElementById("sbIntro"); if (i) i.remove();
         var b = document.createElement("div"); b.style.cssText = "position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;background:#7f1d1d;color:#fff;font:600 13px sans-serif;padding:12px 16px;border-radius:12px;box-shadow:0 0 24px rgba(0,0,0,.5)";
-        b.textContent = "Silly could not start. " + why; document.body.appendChild(b);
+        b.textContent = "ApplyRank Coach could not start. " + why; document.body.appendChild(b);
       });
     })();
   }
@@ -153,7 +153,7 @@
   var busy = false;
 
   var greet = r ? ('Welcome back, ' + N + '! Your rank is ' + r.total + ' out of 100. Shall we climb higher? 🚀')
-                : ('Hi ' + N + '! I am Silly, and I am right here with you. Resume or Skill Test, which one first? 💜');
+                : ('Hi ' + N + '! I am ApplyRank Coach, and I am right here with you. Resume or Skill Test, which one first? 💜');
   var bot = SillyBot.dock({
     greet: greet,
     tips: [

@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="profile.css">
   <link rel="stylesheet" href="silly-robot.css">
+  <script src="api.js"></script>
 </head>
 <body class="dashboard-body-canvas">
 
@@ -51,7 +52,7 @@
       <div>
         <span class="canvas-micro-badge">🧬 PROFILE CANVAS</span>
         <h1 class="pf-title">Your verified <span>identity</span></h1>
-        <p class="pf-sub">Everything a recruiter sees, backed by proof &mdash; your Verified Rank, your real skill shape, and Silly-audited work.</p>
+        <p class="pf-sub">Everything a recruiter sees, backed by proof &mdash; your Verified Rank, your real skill shape, and ApplyRank Coach-audited work.</p>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
         <div class="pf-toggle" role="group" aria-label="View mode">
@@ -96,7 +97,7 @@
         </section>
 
         <section class="pf-card">
-          <h3>Silly badges <small>FROM SKILL TEST</small></h3>
+          <h3>ApplyRank Coach badges <small>FROM SKILL TEST</small></h3>
           <div class="pf-badges" id="pfBadges"></div>
         </section>
       </aside>
@@ -116,7 +117,7 @@
               <svg class="pf-radar-svg" id="pfRadar" viewBox="0 0 300 280" role="img" aria-label="Skill radar chart"></svg>
               <div class="pf-radar-legend">
                 <span><i style="background:rgba(99,102,241,.5);border:1px dashed #818cf8"></i>You say</span>
-                <span><i style="background:#10b981"></i>Silly verified</span>
+                <span><i style="background:#10b981"></i>ApplyRank Coach verified</span>
               </div>
             </div>
           </div>
@@ -141,6 +142,14 @@
         <section class="pf-card">
           <h3>Certificates <button type="button" class="pf-btn pf-edit-only" onclick="addItem('certs')">+ Add certificate</button></h3>
           <div class="pf-items" id="pfCerts"></div>
+        </section>
+
+        <section class="pf-card" id="pfPrivacy">
+          <h3>Privacy &amp; data</h3>
+          <p style="font-size:13px;opacity:.8;margin:6px 0 12px">Your data belongs to you. Recruiters see your full e-mail only after they shortlist you. You can download everything we store, or delete your account for good.</p>
+          <button type="button" class="pf-btn" id="pfExport">Download my data</button>
+          <button type="button" class="pf-btn" id="pfDelete" style="margin-left:8px;color:#ef4444">Delete my account</button>
+          <p id="pfPrivMsg" style="font-size:13px;margin-top:10px;min-height:16px"></p>
         </section>
       </div>
     </div>
@@ -180,11 +189,41 @@
   function load(){ try { return Object.assign({}, DEFAULT, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) { return Object.assign({}, DEFAULT); } }
   let P = load();
   function save(){ try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) { say('Could not save — browser storage is full or blocked.'); } }
+  /* Backend sync: localStorage stays the instant copy; the server copy is saved (debounced) and loaded at start. */
+  let syncT;
+  const _save = save;
+  save = function(){ _save(); if (window.ApplyRankAPI && ApplyRankAPI.isLoggedIn()) { clearTimeout(syncT); syncT = setTimeout(() => ApplyRankAPI.saveProfile(P).catch(() => {}), 600); } };
+  if (window.ApplyRankAPI && ApplyRankAPI.isLoggedIn()) {
+    ApplyRankAPI.getProfile().then(sp => { Object.assign(P, sp); try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) {} if (typeof renderAll === 'function') renderAll(); }).catch(() => {});
+  }
   function result(){ try { return JSON.parse(localStorage.getItem('applyrank_last_result') || 'null'); } catch (e) { return null; } }
 
-  /* ---------- Silly robot ---------- */
+  /* ---------- ApplyRank Coach robot ---------- */
   let sayT;
   function say(msg, ms){ const el = $('pfSay'); el.textContent = msg; el.classList.add('pf-show'); clearTimeout(sayT); sayT = setTimeout(() => el.classList.remove('pf-show'), ms || 4500); }
+
+  /* ---------- privacy controls (need the backend + login) ---------- */
+  (function(){
+    const msg = t => { const m = $('pfPrivMsg'); if (m) m.textContent = t; };
+    const live = () => window.ApplyRankAPI && ApplyRankAPI.isLoggedIn();
+    $('pfExport').addEventListener('click', () => {
+      if (!live()) return msg('Log in with the backend running to download your data.');
+      ApplyRankAPI.exportMyData().then(d => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' }));
+        a.download = 'my-applyrank-data.json'; a.click(); msg('Downloaded.');
+      }, e => msg(e.message));
+    });
+    $('pfDelete').addEventListener('click', () => {
+      if (!live()) return msg('Log in with the backend running to delete your account.');
+      const pw = prompt('This permanently deletes your account, profile, test results, applications and resume files.\nType your password to confirm:');
+      if (!pw) return;
+      ApplyRankAPI.deleteMyAccount(pw).then(() => {
+        ['applyrank_profile','applyrank_last_result','applyrank_email','applyrank_read','applyrank_lessons'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
+        alert('Your account was deleted.'); location.href = 'index.html';
+      }, e => msg(e.message));
+    });
+  })();
   window.sillyReact = function(state, msg){
     const a = $('sillyAnchor'); if (!a) return;
     a.classList.remove('silly-happy','silly-talk','silly-jump');
@@ -266,7 +305,7 @@
     if (P.status === 'experienced' && (P.company || P.role)) j.push('<div class="pf-tl-i"><div class="pf-tl-t">' + esc(P.role || 'Role') + ' · ' + esc(P.company || '') + '</div><div class="pf-tl-s">' + esc(P.expYears) + ' yr' + (P.expDesc ? ' — ' + esc(P.expDesc) : '') + '</div></div>');
     if (P.degree || P.university) j.push('<div class="pf-tl-i"><div class="pf-tl-t">' + esc(P.degree || 'Studies') + '</div><div class="pf-tl-s">' + esc(P.university) + (P.gradYear ? ' · ' + esc(P.gradYear) : '') + '</div></div>');
     const r = result();
-    if (r) j.unshift('<div class="pf-tl-i"><div class="pf-tl-t">Silly Verified · ' + esc(r.total) + '/100</div><div class="pf-tl-s">' + esc(r.domain) + ' track · ' + new Date(r.at).toLocaleDateString() + '</div></div>');
+    if (r) j.unshift('<div class="pf-tl-i"><div class="pf-tl-t">ApplyRank Coach Verified · ' + esc(r.total) + '/100</div><div class="pf-tl-s">' + esc(r.domain) + ' track · ' + new Date(r.at).toLocaleDateString() + '</div></div>');
     if (P.status === 'fresher') j.unshift('<div class="pf-tl-i"><div class="pf-tl-t">Fresher — ready to build</div><div class="pf-tl-s">Every expert started exactly here.</div></div>');
     $('pfJourney').innerHTML = j.join('') || '<span class="pf-empty">Your journey will appear here.</span>';
     const sk = P.skills.split(',').map(s => s.trim()).filter(Boolean);
@@ -283,20 +322,20 @@
     const self = P.self.map(v => Math.max(0, Math.min(100, +v || 0)));
     g += '<polygon id="pfSelfPoly" points="' + self.map((v, i) => pt(i, v).join(',')).join(' ') + '" fill="rgba(99,102,241,.28)" stroke="#818cf8" stroke-width="2" stroke-dasharray="5 4"/>';
     const r = result(), idx = r ? DOMAIN_AXIS[r.domain] : undefined;
-    let gap = '<strong style="color:#e2e8f0">Claimed vs verified.</strong> Verified points appear after you take the skill test. Your radar is a goal until Silly proves it.';
+    let gap = '<strong style="color:#e2e8f0">Claimed vs verified.</strong> Verified points appear after you take the skill test. Your radar is a goal until ApplyRank Coach proves it.';
     if (r && idx !== undefined) {
       const v = Math.max(0, Math.min(100, +r.total || 0)), [x, y] = pt(idx, v);
       g += '<circle cx="' + x + '" cy="' + y + '" r="7" fill="#10b981" stroke="#04130d" stroke-width="2"><animate attributeName="r" values="5;9;5" dur="2s" repeatCount="indefinite"/></circle>';
       const d = v - self[idx];
-      gap = '<strong style="color:#e2e8f0">' + AXES[idx] + ':</strong> you say ' + self[idx] + ', Silly verified ' + v + '. ' + (d >= 0 ? 'You are proving more than you claim — nice.' : 'Gap of ' + Math.abs(d) + ' — retake the test or adjust your claim honestly.');
+      gap = '<strong style="color:#e2e8f0">' + AXES[idx] + ':</strong> you say ' + self[idx] + ', ApplyRank Coach verified ' + v + '. ' + (d >= 0 ? 'You are proving more than you claim — nice.' : 'Gap of ' + Math.abs(d) + ' — retake the test or adjust your claim honestly.');
     }
     $('pfRadar').innerHTML = g;
     $('pfGap').innerHTML = gap;
   }
 
-  /* ---------- projects / certs + Silly stamp ---------- */
+  /* ---------- projects / certs + ApplyRank Coach stamp ---------- */
   function renderItems(){
-    $('pfProjects').innerHTML = P.projects.length ? P.projects.map((it, i) => itemHtml('projects', it, i)).join('') : '<span class="pf-empty">No projects yet — add one and let Silly audit it.</span>';
+    $('pfProjects').innerHTML = P.projects.length ? P.projects.map((it, i) => itemHtml('projects', it, i)).join('') : '<span class="pf-empty">No projects yet — add one and let ApplyRank Coach audit it.</span>';
     $('pfCerts').innerHTML = P.certs.length ? P.certs.map((it, i) => itemHtml('certs', it, i)).join('') : '<span class="pf-empty">No certificates yet.</span>';
   }
   function itemHtml(kind, it, i){
@@ -310,11 +349,11 @@
   }
   function auditHtml(kind, it, i){
     if (it.audit) return stampHtml(it.audit);
-    return '<button class="pf-btn pf-btn-green pf-edit-only" data-a="audit" data-k="' + kind + '" data-i="' + i + '">🤖 Ask Silly to audit</button><span class="pf-empty" style="margin:0">Not audited yet</span>';
+    return '<button class="pf-btn pf-btn-green pf-edit-only" data-a="audit" data-k="' + kind + '" data-i="' + i + '">🤖 Ask ApplyRank Coach to audit</button><span class="pf-empty" style="margin:0">Not audited yet</span>';
   }
   function stampHtml(a){
     const ok = a.score >= 70;
-    return '<div class="pf-stamp' + (ok ? '' : ' warn') + '"><span class="pf-face">' + (ok ? '✓' : '!') + '</span><span>' + (ok ? 'Silly Verified' : 'Silly Reviewed') + '<br>Quality audit<b>' + a.score + '%</b></span></div>' +
+    return '<div class="pf-stamp' + (ok ? '' : ' warn') + '"><span class="pf-face">' + (ok ? '✓' : '!') + '</span><span>' + (ok ? 'ApplyRank Coach Verified' : 'ApplyRank Coach Reviewed') + '<br>Quality audit<b>' + a.score + '%</b></span></div>' +
       (a.tips && a.tips.length ? '<div class="pf-tips-mini pf-edit-only">' + a.tips.map(t => '• ' + esc(t)).join('<br>') + '</div>' : '');
   }
   /* Frontend heuristic audit. Java backend can replace window.ApplyRankAudit(item, kind) -> {score, tips} (or a Promise of it). */
@@ -328,7 +367,7 @@
   }
   function audit(kind, i){
     const it = P[kind][i], row = $('aud-' + kind + i);
-    row.innerHTML = '<div class="pf-scan" id="pfScanTxt">Silly is reading your ' + (kind === 'certs' ? 'certificate' : 'repo') + '…</div>';
+    row.innerHTML = '<div class="pf-scan" id="pfScanTxt">ApplyRank Coach is reading your ' + (kind === 'certs' ? 'certificate' : 'repo') + '…</div>';
     window.sillyReact('talk', 'Scanning… 🔍');
     const steps = ['Checking structure…', 'Checking links…', 'Checking description…', 'Scoring…'];
     let k = 0; const iv = setInterval(() => { const e = $('pfScanTxt'); if (e && k < steps.length) e.textContent = steps[k++]; }, 450);
@@ -434,7 +473,7 @@
   renderAll();
   setTimeout(() => {
     const r = result();
-    say(!P.name ? "Hi! I'm Silly 👋 Hit “Edit profile” and let's build your identity." : r ? 'Welcome back, ' + P.name.split(' ')[0] + '! Your rank is ' + r.total + '/100.' : 'Take the skill test to light up your Verified Rank ring ⚡', 5500);
+    say(!P.name ? "Hi! I'm ApplyRank Coach 👋 Hit “Edit profile” and let's build your identity." : r ? 'Welcome back, ' + P.name.split(' ')[0] + '! Your rank is ' + r.total + '/100.' : 'Take the skill test to light up your Verified Rank ring ⚡', 5500);
   }, 900);
 
   /* Backend hooks:
@@ -450,14 +489,14 @@
   if (typeof SillyBot === "undefined") {
     (function () {
       var why = window.__sbMissing ? "silly-robot.js was NOT FOUND. Put silly-robot.js in the same folder as this page and check the file name (no spaces or (1))." : "silly-robot.js loaded but has an error: " + (window.__sbErr && window.__sbErr[0] || "unknown") + ". Re-download the latest silly-robot.js.";
-      console.warn("[Silly] " + why);
+      console.warn("[ApplyRank Coach] " + why);
       var noop = function () {}, P = function () { return Promise.resolve(); };
       function bot() { return { el: document.createElement("div"), set: noop, sit: noop, stand: noop, say: P, hush: noop, walkTo: P, hearts: noop, destroy: noop, nextTip: noop }; }
-      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["Silly is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
+      window.SillyBot = { create: bot, dock: bot, face: function () { return { react: noop, set: noop }; }, go: function (u) { location.href = u; }, speak: noop, speakNow: noop, setVoice: noop, voiceOn: function () { return false; }, voice: function () { return null; }, quotes: ["ApplyRank Coach is offline"], name: function () { return ""; }, lastResult: function () { return null; } };
       document.addEventListener("DOMContentLoaded", function () {
         var i = document.getElementById("sbIntro"); if (i) i.remove();
         var b = document.createElement("div"); b.style.cssText = "position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;background:#7f1d1d;color:#fff;font:600 13px sans-serif;padding:12px 16px;border-radius:12px;box-shadow:0 0 24px rgba(0,0,0,.5)";
-        b.textContent = "Silly could not start. " + why; document.body.appendChild(b);
+        b.textContent = "ApplyRank Coach could not start. " + why; document.body.appendChild(b);
       });
     })();
   }

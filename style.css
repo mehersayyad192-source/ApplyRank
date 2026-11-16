@@ -4,151 +4,179 @@
   box-sizing: border-box;
 }
 .nav-menu-btn i {
-  color: inherit !important;  
+  color: inherit !important; /* picks up the grey or white colour of the parent button automatically */
   display: inline-flex;
   align-items: center;
 }
- 
- 
+/* ==========================================================================
+   🚀 Meher's special job gateway buttons design system (fixed version)
+   ========================================================================== */
+
+/* main row box that keeps both buttons side by side */
  
 
- 
+/* 🔮 Meher's universal navbar active tab controller */
+/* .dashboard-master-navbar .nav-menu-links-center-row a.nav-menu-btn.active-tab { */
+  /* background-color: rgba(99, 102, 241, 0.12) !important; /* bright see-through purple background */
+  /* color: #ffffff !important;                              /* pure white text */
+  /* border: 1px solid rgba(99, 102, 241, 0.35) !important;  /* thin purple neon border line */
+  /* box-shadow: 0 0 15px rgba(99, 102, 241, 0.25) !important; /* soft neon glow around it */
+  /* padding: 8px 16px !important;                           /* equal padding size */
+  /* border-radius: 6px !important;                          smooth corners */ */ */
 /* }  */
 
-
+/* the icon inside the active tab also glows white */
+/* .dashboard-master-navbar .nav-menu-links-center-row a.nav-menu-btn.active-tab .nav-icon {
+  color: #ffffff !important;
+} */
+/* ==========================================================================
+   🔮 Meher's universal navbar active tab controller (fixed version)
+   ========================================================================== */
 .nav-menu-btn.active-tab {
-  background-color: rgba(99, 102, 241, 0.12) !important;    
-  color: #ffffff !important;                                 
-  border: 1px solid rgba(99, 102, 241, 0.35) !important;     
-  box-shadow: 0 0 15px rgba(99, 102, 241, 0.25) !important;  
-  padding: 8px 16px !important;                              
-  border-radius: 6px !important;                             
-  display: flex !important;                                 
+  background-color: rgba(99, 102, 241, 0.12) !important;   /* nice see-through purple glass box */
+  color: #ffffff !important;                                /* white text so it is easy to read */
+  border: 1px solid rgba(99, 102, 241, 0.35) !important;    /* thin bright purple neon border */
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.25) !important;  /* light neon glow */
+  padding: 8px 16px !important;                             /* same padding on all sides */
+  border-radius: 6px !important;                            /* rounded corners */
+  display: flex !important;                                 /* keeps the flex layout on */
   align-items: center !important;
 }
 
- 
+/* the icon inside the active tab also glows white */
 .nav-menu-btn.active-tab .nav-icon {
   color: #ffffff !important;
 }
- 
+/* ==========================================================================
+   🚀 Meher's special job gateway buttons design system (fixed version)
+   ========================================================================== */
+
+/* main row box that keeps both buttons side by side */
 .dual-gateway-action-button-row {
   display: flex !important;
   flex-direction: row !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: 20px !important;            
+  gap: 20px !important;            /* gap between the two buttons */
   width: 100% !important;
   margin-top: 35px !important;
 }
- 
+
+/* 🟣 OPTION A: Choose a Job Track (purple button) */
 .state1-choose-track-btn {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 10px !important;
-  background-color: #6366f1 !important;  
+  background-color: #6366f1 !important; /* electric purple */
+  color: #ffffff !important;
   border: none !important;
   font-family: 'Plus Jakarta Sans', sans-serif !important;
   font-weight: 700 !important;
-  font-size: 14.5px !important;        
-  padding: 14px 32px !important;       
-  border-radius: 100px !important;    
+  font-size: 14.5px !important;        /* same text size */
+  padding: 14px 32px !important;       /* nice roomy padding */
+  border-radius: 100px !important;     /* round capsule shape */
   cursor: pointer !important;
   box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3) !important;
   transition: all 0.25s ease-in-out !important;
 }
 
- 
+/* purple button gets a little brighter on hover */
 .state1-choose-track-btn:hover {
   background-color: #4f46e5 !important;
   box-shadow: 0 0 25px rgba(99, 102, 241, 0.5) !important;
   transform: translateY(-1px) !important;
 }
- 
+
+/* 🟢 OPTION B: Verify and Improve Skills (bright green neon button) */
 .gateway-improve-skills-btn {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 10px !important;
-  background-color: transparent !important;  
-  color: #10b981 !important;               
-  border: 1px solid rgba(16, 185, 129, 0.4) !important;  
+  background-color: transparent !important; /* 🛑 fix: removed the white background and made it see-through */
+  color: #10b981 !important;               /* bright emerald green text */
+  border: 1px solid rgba(16, 185, 129, 0.4) !important; /* neon green border */
   font-family: 'Plus Jakarta Sans', sans-serif !important;
   font-weight: 700 !important;
-  font-size: 14.5px !important;        
-  padding: 14px 32px !important;      
-  border-radius: 100px !important;      
+  font-size: 14.5px !important;        /* same size as the purple button */
+  padding: 14px 32px !important;       /* same padding */
+  border-radius: 100px !important;     /* same capsule shape */
   cursor: pointer !important;
   box-shadow: 0 4px 15px rgba(16, 185, 129, 0.05) !important;
   transition: all 0.25s ease-in-out !important;
 }
 
- 
+/* 🔥 green button glows like a neon tube light on hover */
 .gateway-improve-skills-btn:hover {
   background-color: rgba(16, 185, 129, 0.06) !important;
   border-color: #10b981 !important;
-  color: #ffffff !important;           
+  color: #ffffff !important;           /* text turns white on hover */
   box-shadow: 0 0 25px rgba(16, 185, 129, 0.35) !important;
   transform: translateY(-1px) !important;
 }
 
-
+/* colour controller for small SVG or embedded icons inside the buttons */
 .state1-choose-track-btn svg,
 .gateway-improve-skills-btn svg {
   fill: none !important;
-  stroke: currentColor !important;      
+  stroke: currentColor !important;     /* syncs with the text colour automatically */
   flex-shrink: 0 !important;
 }
 
- 
+/*BUTTONS
+/* ==========================================================================
+   🚀 Meher's special job gateway twin see-through neon buttons (edited)
+   ========================================================================== */
+
+/* main row box that keeps both buttons side by side */
 .dual-gateway-action-button-row {
   display: flex !important;
   flex-direction: row !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: 20px !important;            
+  gap: 20px !important;            /* gap between the two buttons */
   width: 100% !important;
   margin-top: 35px !important;
 }
 
- 
+/* 🟣 OPTION A: Choose a Job Track (now also fully see-through with a neon border) */
 .state1-choose-track-btn {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 10px !important;
-  background-color: transparent !important;  
-  color: #6366f1 !important;              
-  border: 1px solid rgba(99, 102, 241, 0.4) !important;  
+  background-color: transparent !important; /* 🌟 edit: removed the solid colour so it is fully see-through */
+  color: #6366f1 !important;               /* electric purple text */
+  border: 1px solid rgba(99, 102, 241, 0.4) !important; /* purple neon border line */
   font-family: 'Plus Jakarta Sans', sans-serif !important;
   font-weight: 700 !important;
-  font-size: 14.5px !important;         
-  padding: 14px 32px !important;      
-  border-radius: 100px !important;      
+  font-size: 14.5px !important;        /* same text size */
+  padding: 14px 32px !important;       /* nice roomy padding */
+  border-radius: 100px !important;     /* round capsule shape */
   cursor: pointer !important;
   box-shadow: 0 4px 15px rgba(99, 102, 241, 0.05) !important;
   transition: all 0.25s ease-in-out !important;
 }
 
- 
+/* 🔥 purple button now glows like a purple neon tube light on hover */
 .state1-choose-track-btn:hover {
   background-color: rgba(99, 102, 241, 0.06) !important;
   border-color: #6366f1 !important;
-  color: #ffffff !important;            
-  box-shadow: 0 0 25px rgba(99, 102, 241, 0.35) !important; 
+  color: #ffffff !important;           /* text turns white on hover */
+  box-shadow: 0 0 25px rgba(99, 102, 241, 0.35) !important; /* strong purple neon glow */
   transform: translateY(-1px) !important;
 }
 
- 
+/* 🟢 OPTION B: Verify and Improve Skills (see-through neon, same as before) */
 .gateway-improve-skills-btn {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 10px !important;
   background-color: transparent !important; 
-  color: #10b981 !important;               
-  border: 1px solid rgba(16, 185, 129, 0.4) !important; 
+  color: #10b981 !important;               /* bright emerald green text */
+  border: 1px solid rgba(16, 185, 129, 0.4) !important; /* neon green border */
   font-family: 'Plus Jakarta Sans', sans-serif !important;
   font-weight: 700 !important;
   font-size: 14.5px !important;        
@@ -159,7 +187,7 @@
   transition: all 0.25s ease-in-out !important;
 }
 
- 
+/* 🔥 green button glows like a green neon tube light on hover */
 .gateway-improve-skills-btn:hover {
   background-color: rgba(16, 185, 129, 0.06) !important;
   border-color: #10b981 !important;
@@ -168,16 +196,16 @@
   transform: translateY(-1px) !important;
 }
 
- 
+/* colour controller for small spans and icons inside the buttons */
 .state1-choose-track-btn span,
 .gateway-improve-skills-btn span {
   font-size: 16px !important;
-  color: inherit !important;        
+  color: inherit !important;           /* syncs with the text colour automatically */
   flex-shrink: 0 !important;
 }
 
  
-/*  MASTER LOGO TEXT STYLING CONFIGURATION */
+/* 🔮 MASTER LOGO TEXT STYLING CONFIGURATION */
 .applyrank-logo-wrapper {
   font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; /* Tech brand fonts matrix */
   font-size: 26px;             /* Logo ka exact sharp size */
@@ -185,7 +213,7 @@
   letter-spacing: -0.5px;      /* Letter spacing tight karne se premium feel aata he */
   cursor: pointer;
   display:flex;
-  top: 40px;                 
+  top: 40px;                   /* exact distance from the top corner */
   left: 60px;  
   z-index: 10;
   position: absolute;
@@ -206,7 +234,7 @@
   transition: color 0.3s ease;
 }
 
-/* 🔥 MEHER'S INTERACTIVE HOVER ENGINE  */
+/* 🔥 MEHER'S INTERACTIVE HOVER ENGINE (colour changes on hover) */
 .applyrank-logo-wrapper:hover .logo-accent-purple {
   color: #10b981;              /* Smooth morphing parameters switch to emerald tech green! */
   filter: drop-shadow(0px 0px 10px rgba(16, 185, 129, 0.4)); /* Halki si glowing light */
@@ -231,7 +259,7 @@
  .login-left-robot-zone  {
      background-color: #0f172a;
   flex: 1;
-  width: 50%;                  
+  width: 50%;                  /* half of the screen */
   height: 100vh;               
    display: flex;
    position: relative;
@@ -266,13 +294,13 @@
   font-family:"Playfair Display", serif;
    font-size: 32px;
   font-weight: 800;
-  color: #ffffff;            
-  line-height: 1.4;             
+  color: #ffffff;              /* default white colour */
+  line-height: 1.4;            /* space between the lines */
   letter-spacing: -0.5px;
   margin-bottom: 20px;
 }
 .text-accent-green {
-  color: #10b981;               
+  color: #10b981;              /* bright emerald green colour */
 }
 .text-accent-blue{
    color: #3b82f6;
@@ -280,17 +308,17 @@
 .slogan-sub-description{
    font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 15px;
-  color: #94a3b8;             
+  color: #94a3b8;              /* light slate grey colour */
   line-height: 1.6;
   font-weight: 500;
 }
- 
+/* 🟢 main box that puts both features side by side in one line */
 .robot-footer-features {
   display: flex !important;
-  justify-content: center;     
+  justify-content: center;     /* keeps both items centred horizontally */
   gap: 35px;     
   flex-direction: row !important; 
-   align-items: center;              
+   align-items: center;             /* gap between the two features */
   margin-top: 40px; 
  /* border: 1px solid rgb(31, 9, 63);    */
 }
@@ -310,35 +338,35 @@
   /* border: 1px solid red;             Icon visual asset aur label text ke beech ki halki doori */
 }
 
- 
+/* 🏢 inner layout of each single feature item */
  
 
- 
+/* 🛡️ first icon: neon green shield */
 .icon-shield-green {
   color: #10b981;  
   /* display: inline-flex; */
-  align-items: center;            
-  font-size: 20px !important;   
-  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3)); 
+  align-items: center;            /* emerald neon green */
+  font-size: 20px !important;  /* icon size */
+  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3)); /* soft green light glow */
 }
 
- 
+/* ✨ second icon: bright neon purple sparkle */
 .star  {
   color:#6366f1;   
   align-items: center;  
   /* border: 1px solid red; */
-   display: inline-block;         
+   display: inline-block;        /* electric neon purple */
   font-size: 20px !important;  
-  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.3));   
+  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.3));  /* soft purple light glow */
 }
 .star i {
   color: inherit;
 }
- 
+/* ⚪ style of the text next to both features */
 .feature-text {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 14px;
-  color: #64748b;              
+  color: #64748b;              /* muted slate grey colour */
   font-weight: 500;
 }
 /* .local-star-icon {
@@ -391,7 +419,7 @@
   border-radius: 50%;          /* Forces the element to become perfectly circular */
   display: inline-block;
   
-  /* 🔥 GREEN GLOW FILTER: Is line se dot ek static point nahi lagega, aisa lagega ki bulb chal raha he */
+  /* Green glow: makes the dot look like a glowing bulb instead of a flat point */
   filter: drop-shadow(0 0 5px #10b981);
 }
 
@@ -404,10 +432,10 @@
   letter-spacing: 0.8px;       /* Spacing spaces out characters for high-end SaaS feel */
   line-height: 1;
 }
- 
+/* 🏢 width of the form card container */
 .login-interface-form-card {
   width: 100%;
-  max-width: 420px;            
+  max-width: 420px;            /* so the form does not stretch too wide */
 }
 
 .form-main-title {
@@ -422,10 +450,11 @@
 .form-sub-text-line {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 14px;
-  color: #94a3b8;              
-  margin-bottom: 35px;          
+  color: #94a3b8;              /* light slate grey colour */
+  margin-bottom: 35px;         /* space from the email label below */
 }
- 
+
+/* 🏷️ small label above the input box */
 .form-field-label {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 11px;
@@ -436,227 +465,241 @@
   margin-bottom: 8px;
 }
 
- 
+/* 📥 dark box that wraps the input and the icon */
 .input-with-icon-holder {
   display: flex;
   align-items: center;
-  background-color: #0f172a;   
-  border: 1px solid #1e293b;    
-  border-radius: 8px;          
+  background-color: #0f172a;   /* dark input background */
+  border: 1px solid #1e293b;   /* thin muted border line */
+  border-radius: 8px;          /* smooth rounded corners */
   padding: 12px 16px;
   gap: 12px;
   transition: all 0.3s ease-in-out;
 }
 
- 
+/* ✉️ envelope icon inside the email box */
 .input-icon-envelope {
-  color: #64748b;             
+  color: #64748b;              /* default grey colour */
   font-size: 20px !important;
 }
 
- 
+/* ✍️ style of the real text input field */
 .form-text-input-field {
-  background: none;            
-  border: none;                 
-  outline: none;               
+  background: none;            /* removed the background so the parent's dark colour shows */
+  border: none;                /* removed the borders */
+  outline: none;               /* stops the yellow outline */
   color: #ffffff;
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 14px;
   width: 100%;
 }
 
-/* 🔥 HOVER & FOCUS GLOW EFFECT:   */
+/* 🔥 HOVER & FOCUS GLOW EFFECT: when the user clicks the email box */
 .input-with-icon-holder:focus-within {
-  border-color: #6366f1;        
-  box-shadow: 0 0 15px rgba(99, 102, 241, 0.15);  
+  border-color: #6366f1;       /* border turns purple */
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.15); /* soft neon purple glow */
 }
 
 .input-with-icon-holder:focus-within .input-icon-envelope {
-  color: #6366f1;              
+  color: #6366f1;              /* envelope turns purple on click too */
 }
- 
+/* 🏢 label header row that puts the PASSWORD text and the Forgot? link side by side */
 .field-label-header-row {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between; /* pushes them to the two corners */
   align-items: center;
   width: 100%;
-  margin-bottom: 8px;           
+  margin-bottom: 8px;           /* space from the input box below */
 }
- 
+
+/* 🟣 font style and muted purple colour of the 'Forgot?' link */
 .forgot-password-trigger-link {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #6366f1;             
-  text-decoration: none;         
+  color: #6366f1;               /* muted purple colour */
+  text-decoration: none;        /* removes the underline */
   transition: color 0.2s ease-in-out;
 }
 
- 
+/* 'Forgot?' link gets a little brighter on hover */
 .forgot-password-trigger-link:hover {
   color: #818cf8;               
 }
 
- 
+/* 🔒 default style of the lock icon */
 .input-icon-lock {
-  color: #64748b;              
+  color: #64748b;               /* default grey colour */
   font-size: 20px !important;
 }
 
- 
+/* 🔥 FOCUS GLOW EFFECT FOR LOCK: when the user clicks the password box */
 .input-with-icon-holder:focus-within .input-icon-lock {
-  color: #6366f1;                
+  color: #6366f1;               /* lock turns purple on click too */
 }
- 
+/* ⚪ style of the privacy note just below the button */
 .form-privacy-policy-note-line {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 12px;             
-  color: #475569;              
+  font-size: 12px;             /* small and muted look */
+  color: #475569;              /* dark slate grey colour */
   text-align: center;
-  margin-top: 22px;            
-  margin-bottom: 25px;          
+  margin-top: 22px;            /* space from the button */
+  margin-bottom: 25px;         /* gap from the demo alert card below */
   line-height: 1.5;
 }
- 
+
+/* bright white links for Privacy and Terms */
 .policy-link-string {
-  color: #94a3b8;             
-  text-decoration: none;       
+  color: #94a3b8;              /* light slate colour */
+  text-decoration: none;       /* removes the underline */
+  font-weight: 600;
   transition: color 0.2s ease;
 }
 .policy-link-string:hover {
-  color: #ffffff;              
+  color: #ffffff;              /* turns pure white on hover */
 }
- 
+
+/* 🟢 the "Demo Build" alert card container at the bottom (glass border look) */
 .demo-build-alert-card-wrapper {
   display: flex;
-  align-items: flex-start;      
-  gap: 12px;                    
-   
+  align-items: flex-start;     /* keeps the icon and the long text lined up at the top */
+  gap: 12px;                   /* gap between the icon and the alert message */
+  
+  /* 🛠️ see-through dark green background and thin green border */
   background-color: rgba(16, 185, 129, 0.04); 
   border: 1px solid rgba(16, 185, 129, 0.12);  
   
-  padding: 14px 16px;          
-  border-radius: 8px;           
+  padding: 14px 16px;          /* padding inside the card */
+  border-radius: 8px;          /* smooth rounded corners */
   margin-top: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
-}
- 
-.alert-shield-check-icon {
-  color: #10b981;               
-  font-size: 20px !important;   
-  margin-top: 1px;              
-  filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.3));  
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* soft dark shadow below */
 }
 
- 
+/* 🛡️ glowing green shield-tick icon inside the alert card */
+.alert-shield-check-icon {
+  color: #10b981;              /* bright emerald green */
+  font-size: 20px !important;  /* same icon size */
+  margin-top: 1px;             /* lines up with the first line of text */
+  filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.3)); /* soft green glow */
+}
+
+/* 🟢 style of the message inside the alert card */
 .alert-card-message-string {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px;            
-  color: #94a3b8;               
-  line-height: 1.5;            
+  font-size: 13px;             /* small size that is easy to read */
+  color: #94a3b8;              /* slate grey colour */
+  line-height: 1.5;            /* space between the lines */
   font-weight: 500;
-  text-align: left;          
+  text-align: left;            /* message always starts from the left */
 }
- 
+/* 🚀 design of the main submit button */
 .form-submit-continue-btn {
-  width: 100%;                 
-  background-color: #6366f1;   
+  width: 100%;                 /* full width like the input box */
+  background-color: #6366f1;   /* our theme electric purple colour */
   color: #ffffff;
   border: none;
-  border-radius: 8px;           
+  border-radius: 8px;          /* smooth rounded corners */
   padding: 14px 20px;
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 15px;
-  font-weight: 700;             
+  font-weight: 700;            /* makes the button text bold */
   cursor: pointer;
   display: flex;
-  justify-content: center;     
+  justify-content: center;     /* keeps the text and the arrow in the centre */
   align-items: center;
-  gap: 8px;                    
+  gap: 8px;                    /* gap between the arrow and the text */
   transition: all 0.3s ease-in-out;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);  
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2); /* soft purple glow */
 }
 
- 
+/* ➔ arrow icon inside the button */
 .btn-arrow-icon {
   font-size: 18px !important;
-  transition: transform 0.2s ease-in-out; 
+  transition: transform 0.2s ease-in-out; /* speed of the arrow sliding */
 }
 
-/* 🔥 INTERACTIVE HOVER EFFECT:   */
+/* 🔥 INTERACTIVE HOVER EFFECT: button glows and the arrow moves forward on hover */
 .form-submit-continue-btn:hover {
-  background-color: #4f46e5;    
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);  
+  background-color: #4f46e5;   /* slightly darker purple */
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); /* neon purple glow */
 }
 
 .form-submit-continue-btn:hover .btn-arrow-icon {
-  transform: translateX(4px);   
+  transform: translateX(4px);  /* arrow slides forward on hover */
 }
 
- 
+/* ⚪ style of the foot notes below the button */
 .form-signup-footer-line {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 13px;
-  color: #64748b;              
+  color: #64748b;              /* light grey colour */
   text-align: center;
-  margin-top: 20px;            
+  margin-top: 20px;            /* space from the button */
 }
+
+/* purple "Create an account" link */
 .signup-redirect-link {
   color: #6366f1;
-  text-decoration: none;        
+  text-decoration: none;       /* removes the underline */
   font-weight: 600;
   transition: color 0.2s ease;
 }
 .signup-redirect-link:hover {
-  color: #818cf8;             
+  color: #818cf8;              /* light purple on hover */
 }
- 
+
+ /* 🏛️ dark background base of the whole dashboard page */
 .dashboard-body-canvas {
   background-color: #0b0f19;
   min-height: 100vh;
   color: #ffffff;
    margin: 0;
   padding: 0;
-     
+     /* very deep dark theme base */
   position: relative;
   overflow-x: hidden;
 }
- 
+/* 🎇 2. floating cyber dots and torch light layer */
+/* I run the animation on this hidden floating background layer, not on the navbar */
 .dashboard-body-canvas::before {
   content: '';
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
-  pointer-events: none;        
+  pointer-events: none;        /* so clicks on the page buttons are not blocked */
   
-   background-image: 
+  /* 🛠️ fine cyber dots grid pattern */
+  background-image: 
     radial-gradient(rgba(99, 102, 241, 0.15) 1px, transparent 1px), 
     radial-gradient(rgba(16, 185, 129, 0.05) 1px, transparent 1px);
   background-size: 24px 24px;
   background-position: 0 0, 12px 12px;
   
-   background-blend-mode: screen;
+  /* ⚡ neon torch light floating in the centre-right of the screen */
+  background-blend-mode: screen;
   background-color: transparent;
   
-   animation: cyberSmoothAmbientGlow 15s linear infinite;
+  /* 🔥 fix 2: smooth floating wave (no jerks, the navbar stays in place) */
+  animation: cyberSmoothAmbientGlow 15s linear infinite;
   z-index: 1;
 }
- 
+
+/* 🚀 main flex layout of the top navbar (stays fixed at the top) */
 .dashboard-master-navbar {
   display: flex;
-  justify-content: space-between;  
+  justify-content: space-between; /* logo on the left, menu in the middle, profile on the right */
   align-items: center;
-  background-color: #0f172a;    
-  border-bottom: 1px solid #1e293b; 
-  padding: 16px 40px;           
+  background-color: #0f172a;   /* slightly bright dark blue box */
+  border-bottom: 1px solid #1e293b; /* thin muted border line at the bottom */
+  padding: 16px 40px;          /* neat spacing inside the navbar */
   width: 100%;
-  position: sticky;             
+  position: sticky;            /* so the navbar stays at the top while scrolling */
   top: 0;
   z-index: 100;
 }
 
-/* (A) लोगो का लेआउट */
+/* (A) logo layout */
 .nav-brand-logo-hub {
   display: flex;
   align-items: center;
@@ -673,14 +716,15 @@
 }
 .purple-text { color: #6366f1; }
 
- 
+/* (B) design of the row of buttons in the middle */
 .nav-menu-links-center-row {
   display: flex;
   align-items: center;
   gap:15px;  
-                  
+                   /* gap between all the buttons */
 }
- 
+
+/* custom style of a single navbar button */
 /* .nav-menu-btn {
   display: flex;
   align-items: center;
@@ -706,38 +750,42 @@
   text-decoration: none;
   padding: 8px 16px;
   border-radius: 6px;
-   
+  
+  /* 📍 fix 3: keep an invisible (transparent) border from the start,
+     so when the real border shows on hover the navbar strip does not jump! */
   border: 1px solid transparent; 
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);  
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* smooth transition */
   letter-spacing: 0.5px;
 }
- 
+
+/* 🔵 ACTIVE TAB LINK BUTTON (like HOME) */
 .nav-menu-btn.active-tab {
   background-color: rgba(99, 102, 241, 0.1); 
   color: #ffffff;              
   border: 1px solid rgba(99, 102, 241, 0.2);
-} 
+}
+/* 🔵 ACTIVE TAB LINK BUTTON: the button that stays selected (like HOME) */
 .nav-menu-btn.active-tab {
-  background-color: rgba(99, 102, 241, 0.1);  
-  color: #ffffff;              
+  background-color: rgba(99, 102, 241, 0.1); /* light see-through purple background */
+  color: #ffffff;              /* bright white */
   border: 1px solid rgba(99, 102, 241, 0.2);
 }
 
- 
+/* hover effect when the mouse moves over it */
 .nav-menu-btn:hover {
   color: #ffffff;
    background-color: rgba(99, 102, 241, 0.12) !important;
   border: 1px solid rgba(99, 102, 241, 0.3) !important;
   box-shadow: 0 0 20px rgba(99, 102, 241, 0.25);
-  transform: translateY(-1px); /* हल्का सा ऊपर उठना */
+  transform: translateY(-1px); /* moves up a tiny bit */
   background-color: rgba(255, 255, 255, 0.02);
 }
 
 .nav-icon {
-  font-size: 18px !important;  
+  font-size: 18px !important;  /* small and crisp icon size */
 }
 
- 
+/* (C) right side profile area */
 .nav-profile-right-zone {
   display: flex;
   align-items: center;
@@ -756,9 +804,9 @@
     transform: scale(1);
   }
   50% {
-   
+    /* dots slowly float around in a circle without jerking */
     background-position: 12px 12px, 24px 24px;
-    transform: scale(1.02);    
+    transform: scale(1.02);    /* gentle breathing glow effect */
   }
   100% {
     background-position: 24px 24px, 36px 36px;
@@ -792,11 +840,11 @@
 .dash-logo{
   color: #eed300;  
   /* display: inline-flex; */
-  align-items: center;             
-  font-size: 20px !important;   
-  filter: drop-shadow(0 0 8px rgba(231, 251, 16, 0.3));  
+  align-items: center;            /* emerald neon green */
+  font-size: 20px !important;  /* icon size */
+  filter: drop-shadow(0 0 8px rgba(231, 251, 16, 0.3)); /* soft green light glow */
 }
- 
+/* 🏢 outer spacing of the main dashboard section */
 .dashboard-main-content-workspace {
   max-width: 1040px;
   margin: 40px auto 0 auto;
@@ -931,7 +979,8 @@
 .utility-action-card:hover {
   transform: translateY(-2px);
 }
- 
+
+/* 📄 blue theme card (Resume) */
 .blue-theme-card {
   background: linear-gradient(135deg, #0f1527 0%, #070a13 100%);
   border: 1px solid rgba(59, 130, 246, 0.1);
@@ -939,7 +988,7 @@
 .blue-badge { background-color: rgba(59, 130, 246, 0.1); color: #3b82f6; }
 .blue-link { color: #3b82f6; }
 
- 
+/* ⏱️ green theme card (Skill Test) */
 .green-theme-card {
   background: linear-gradient(135deg, #0a171d 0%, #050d12 100%);
   border: 1px solid rgba(16, 185, 129, 0.08);
@@ -964,11 +1013,12 @@
 .card-sub-description { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; color: #64748b; line-height: 1.5; text-align: left; margin-bottom: 16px; }
 .card-action-trigger-link { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 600; text-decoration: none; }
 
- 
+
+/* rule to keep the navbar buttons equal and clean */
 .nav-menu-links-center-row {
   display: flex;
   align-items: center;
-  gap: 15px;                  
+  gap: 15px;                   /* gap between all the buttons */
 }
 
 .nav-menu-btn {
@@ -1224,7 +1274,11 @@
 
 ---
 
- 
+/* ## 🎨 2. THE CHAMELEON TRACK LAYOUT CSS (added at the bottom of style.css) */
+
+/* I add these 5 tracks, the grid and the form styles at the bottom of style.css so everything has a dark high-tech look
+
+```css */
 /* ==========================================================================
    🧬 MULTI-STATE JOB TRACK GRID & FORM DESIGN SYSTEM
    ========================================================================== */
@@ -1299,7 +1353,7 @@
 
 .tracks-matrix-grid-system {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));  
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* fits the 5 cards into a row automatically */
   gap: 25px;
   margin-bottom: 50px;
 }
@@ -1328,7 +1382,7 @@
 }
 .track-timer { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11px; font-weight: 700; color: #475569; }
 
- 
+/* neon shades for the card icons */
 .icon-pink { color: #ec4899; filter: drop-shadow(0 0 6px rgba(236,72,153,0.4)); }
 .icon-blue { color: #3b82f6; filter: drop-shadow(0 0 6px rgba(59,130,246,0.4)); }
 .icon-green { color: #10b981; filter: drop-shadow(0 0 6px rgba(16,185,129,0.4)); }
@@ -1353,7 +1407,7 @@
 /* [ Select Path ] Button */
 .select-path-action-btn {
   width: 100%;
-  background-color: #312e81;   
+  background-color: #312e81;   /* dark purple */
   border: 1px solid rgba(99, 102, 241, 0.2);
   color: #ffffff;
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -1363,7 +1417,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-top: auto;             
+  margin-top: auto;            /* keeps the button locked at the bottom of the card */
 }
 .select-path-action-btn:hover { background-color: #6366f1; box-shadow: 0 4px 15px rgba(99,102,241,0.3); }
 
@@ -1371,7 +1425,7 @@
 .status-hidden { display: none !important; }
 
 
-/*  ULTRA UNIVERSAL ACTIVE TAB ENFORCER */
+/* 🔮 MEHER'S ULTRA UNIVERSAL ACTIVE TAB ENFORCER */
 .active-tab {
   background-color: rgba(99, 102, 241, 0.12) !important;   /* Crisp transparent purple glass box */
   color: #ffffff !important;                                /* Pure high-contrast white text */
@@ -1796,7 +1850,12 @@ display: none !important;
  /* ==========================================================================
    SKILL TEST PAGE STYLES
    ========================================================================== */
- 
+/*   */
+/* ==========================================================================
+   APPLYRANK · SKILL TEST  (skilltest.css)
+   Load AFTER style.css. Every class starts with "st-" so nothing clashes
+   with old styles. The robot circle keeps your existing .silly-face-circle.
+   ========================================================================== */
 
 .st-hidden { display: none !important; }
 
@@ -2575,3 +2634,15 @@ display: none !important;
 @keyframes pfJump{0%,100%{transform:translateY(0)}35%{transform:translateY(-26px)}65%{transform:translateY(0)}82%{transform:translateY(-9px)}}
 @media(max-width:960px){.pf-grid{grid-template-columns:1fr}.pf-two{grid-template-columns:1fr}}
 @media(max-width:640px){.pf-wrap{padding:22px 14px 150px}.pf-title{font-size:27px}.pf-form{grid-template-columns:1fr}.pf-dock{right:12px;bottom:12px}.pf-say{max-width:200px}.pf-audit-row{flex-direction:column;align-items:flex-start}}
+/* ---------- navbar on small screens (added with the AI Lab tab) ----------
+   With 6 tabs the menu is wider than a phone. Instead of making the whole page scroll sideways,
+   I let the navbar scroll by itself, and I make its padding smaller. */
+@media (max-width: 900px) {
+  .dashboard-master-navbar {
+    overflow-x: auto;          /* the navbar scrolls left/right inside itself */
+    padding: 12px 14px;
+    gap: 14px;
+  }
+  .nav-brand-logo-hub { margin-left: 0; padding-right: 0; flex: none; }
+  .nav-menu-links-center-row, .nav-profile-right-zone { flex: none; }
+}

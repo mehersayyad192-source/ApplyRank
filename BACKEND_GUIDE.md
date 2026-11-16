@@ -29,6 +29,8 @@ Ye file tumhare liye hai: kya ban chuka hai, kya baaki hai, kaunsa concept kahan
 | **API rate limit** (300 requests/minute/IP, phir 429) | HO GAYA (NAYA) | `RateLimitFilter` |
 | **10 IT tracks** (jobs ke liye) | HO GAYA (NAYA) | `tracks.js` |
 | **Pagination** | HO GAYA (NAYA) | jobs aur notifications me, `X-Total-Count` header |
+| **AI Lab: Code Review Coach** (rules + optional live AI, history, hourly limit) | HO GAYA (NAYA) | `AiLabController`, `CodeReviewService`, `AiClient`, `codereview.html`. Poori guide: `AI_LAB_GUIDE.md` |
+| **AI Lab: Scam Detector aur Page Auditor** | HO GAYA (NAYA) | `ScamDetectorService`, `PageAuditService`, `scamcheck.html`, `pageaudit.html`. Guide: `AI_LAB_GUIDE.md` |
 | MySQL support | HO GAYA | `application-mysql.properties` (neeche steps) |
 | Judge0 (server par code run) | BAAKI | Judge0 ka alag server chahiye + coding problems ke hidden tests frontend se server me le jaane padenge. Ye alag bada kaam hai |
 | AI resume rewrite | BAAKI | Paid LLM API key chahiye. Free plan me nahi ho sakta |

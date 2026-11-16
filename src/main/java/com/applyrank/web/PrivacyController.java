@@ -46,11 +46,13 @@ public class PrivacyController {
     private final TestSessionRepository sessions;
     private final AuthTokenRepository authTokens;
     private final SavedJobRepository savedJobs;
+    private final AiCheckRepository aiChecks;
 
     public PrivacyController(CurrentUser current, Mapper mapper, PasswordEncoder encoder, AuditService audit,
                              ProfileRepository profiles, TestResultRepository results, JobApplicationRepository apps,
                              NotificationRepository notifications, ResumeAnalysisRepository resumes, JobRepository jobs,
-                             UserRepository users, TestSessionRepository sessions, AuthTokenRepository authTokens, SavedJobRepository savedJobs) {
+                             UserRepository users, TestSessionRepository sessions, AuthTokenRepository authTokens, SavedJobRepository savedJobs, AiCheckRepository aiChecks) {
+        this.aiChecks = aiChecks;
         this.sessions = sessions; this.authTokens = authTokens; this.savedJobs = savedJobs;
         this.current = current; this.mapper = mapper; this.encoder = encoder; this.audit = audit; this.profiles = profiles;
         this.results = results; this.apps = apps; this.notifications = notifications; this.resumes = resumes;
@@ -68,6 +70,9 @@ public class PrivacyController {
         out.put("testResults", results.findByUserOrderByCreatedAtDesc(u).stream().map(mapper::test).toList());
         out.put("applications", apps.findByUserOrderByAppliedAtDesc(u).stream().map(mapper::application).toList());
         out.put("savedJobs", savedJobs.findByUserOrderByCreatedAtDesc(u).stream().map(s -> mapper.job(s.getJob())).toList());
+        out.put("aiLabChecks", aiChecks.findByUserOrderByCreatedAtDesc(u).stream()
+                .map(a -> Map.of("tool", a.getTool(), "label", String.valueOf(a.getLabel()), "score", a.getScore(), "usedAi", a.isUsedAi(), "at", a.getCreatedAt().toString()))
+                .toList());
         out.put("notifications", notifications.findByUserOrderByCreatedAtDesc(u).stream().map(mapper::notification).toList());
         out.put("resumeChecks", resumes.findByUser(u).stream()
                 .map(r -> Map.of("filename", r.getFilename(), "track", String.valueOf(r.getTrack()), "score", r.getScore(), "at", r.getCreatedAt().toString()))
@@ -95,6 +100,7 @@ public class PrivacyController {
         sessions.deleteByUser(u);
         authTokens.deleteByUser(u);
         savedJobs.deleteByUser(u);
+        aiChecks.deleteByUser(u);
         apps.deleteByUser(u);
         profiles.deleteByUser(u);
         List<Job> mine = jobs.findByPostedByOrderByCreatedAtDesc(u);   // recruiter: close their jobs, keep candidates' history

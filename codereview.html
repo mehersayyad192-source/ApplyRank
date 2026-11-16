@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApplyRank - Code Review Coach</title>
+  <!-- Google icons and my font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- style.css has the shared navbar and background, ailab.css has only the AI Lab parts -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="silly-robot.css">
+  <link rel="stylesheet" href="ailab.css">
+  <script src="api.js"></script>
+</head>
+<body class="dashboard-body-canvas">
+
+  <!-- Top navbar: the same on every page so moving between pages feels smooth. AI LAB is the active tab here. -->
+  <nav class="dashboard-master-navbar">
+    <div class="nav-brand-logo-hub">
+      <span class="nav-logo-text">Apply<span class="purple-text">Rank</span></span>
+    </div>
+    <div class="nav-menu-links-center-row">
+      <a href="#" class="nav-menu-btn" onclick="location.href='dashboard.html'"><span class="material-symbols-outlined nav-icon">home</span>HOME</a>
+      <a href="#" class="nav-menu-btn" onclick="location.href='jobs.html'"><span class="material-symbols-outlined nav-icon">work</span>JOB CORNER</a>
+      <a href="#" class="nav-menu-btn" onclick="location.href='skilltest.html'"><span class="material-symbols-outlined nav-icon">quiz</span>SKILL TEST</a>
+      <a href="ailab.html" class="nav-menu-btn active-tab"><span class="material-symbols-outlined nav-icon">psychology</span><span class="btn-text">AI LAB</span></a>
+      <a href="#" class="nav-menu-btn" onclick="location.href='resume.html'"><span class="material-symbols-outlined nav-icon">description</span>RESUME</a>
+      <a href="#" class="nav-menu-btn" onclick="location.href='notifications.html'"><span class="material-symbols-outlined nav-icon">notifications</span><span class="btn-text">NOTIFICATIONS</span></a>
+    </div>
+    <div class="nav-profile-right-zone" style="cursor:pointer" onclick="location.href='profile.html'">
+      <span class="material-symbols-outlined nav-icon">account_circle</span>
+      <span class="profile-name-string">YOUR PROFILE</span>
+    </div>
+  </nav>
+
+  <main class="al-wrap">
+    <a class="al-back" href="ailab.html">&larr; AI Lab</a>
+    <h1 class="al-title">Code Review <span>Coach</span></h1>
+    <p class="al-sub">Paste a file of your project code. My rules check it instantly. If you want, the AI also writes friendly advice, live, while you watch.</p>
+
+    <!-- Shown when something is wrong (not logged in, backend off, limit reached...) -->
+    <div id="msg"></div>
+
+    <!-- ===== Step 1: paste the code ===== -->
+    <section class="al-panel">
+      <h2>1. Your code</h2>
+      <textarea id="code" class="al-editor" spellcheck="false" placeholder="Paste Java, JavaScript or Python code here..."></textarea>
+      <div class="al-row">
+        <span class="al-count" id="count">0 characters</span>
+        <span class="al-spacer"></span>
+        <button class="al-btn ghost" id="example" type="button">Try an example</button>
+      </div>
+
+      <!-- AI is optional. It is switched off automatically if the server has no API key. -->
+      <label class="al-check" style="margin-top:16px">
+        <input type="checkbox" id="useAi">
+        <span><b>Also get friendly AI advice</b> <span class="al-note" id="aiNote"></span></span>
+      </label>
+
+      <!-- The user must agree before the code leaves my server and goes to the AI company -->
+      <div class="al-consent" id="consentBox" hidden>
+        <label class="al-check">
+          <input type="checkbox" id="consent">
+          <span>I agree to send this code to Google's Gemini AI for review. I will not paste passwords, keys or private company code.
+            <span class="al-note">The free Gemini tier may let Google use what is sent to improve its products.</span></span>
+        </label>
+      </div>
+
+      <div class="al-row">
+        <button class="al-btn green" id="go" type="button">Analyze my code</button>
+        <span class="al-note" id="quota"></span>
+      </div>
+    </section>
+
+    <!-- ===== Step 2: the result (hidden until the first check) ===== -->
+    <section class="al-panel" id="resultBox" hidden>
+      <h2>2. Result</h2>
+      <div class="al-result-head">
+        <div class="al-ring" id="ring"><div class="al-ring-in"><div><b id="scoreNum">0</b><small>OUT OF 100</small></div></div></div>
+        <div>
+          <div id="verdict" style="font-size:18px;font-weight:800;color:#fff"></div>
+          <div class="al-meta" id="meta"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="al-panel" id="findBox" hidden>
+      <h2>What I found</h2>
+      <div id="finds"></div>
+    </section>
+
+    <section class="al-panel" id="aiBox" hidden>
+      <h2>AI coach <span class="al-note" id="aiState"></span></h2>
+      <div class="al-ai" id="aiText"></div>
+    </section>
+
+    <section class="al-panel">
+      <h2>Recent checks</h2>
+      <div id="hist"><p class="al-note">Loading...</p></div>
+    </section>
+  </main>
+
+  <script>
+    // ---------- small helpers ----------
+    function $(id) { return document.getElementById(id); }
+    function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+    // Example with mistakes on purpose, so a new user sees what the tool does
+    var EXAMPLE = [
+      'public class UserService {',
+      '    public String name;',
+      '    private String password = "admin12345";',
+      '',
+      '    public boolean login(String input) {',
+      '        try {',
+      '            String sql = "SELECT * FROM users WHERE name=" + input;',
+      '            if (input == "admin") { System.out.println("admin logged in"); return true; }',
+      '        } catch (Exception e) { }',
+      '        return false;',
+      '    }',
+      '}'
+    ].join('\n');
+
+    var maxChars = 12000, aiEnabled = false, busy = false;
+
+    function showMsg(text, kind, withLogin) {
+      var m = $('msg'); m.textContent = '';
+      if (!text) return;
+      var d = el('div', 'al-msg ' + (kind || 'err'), text);
+      if (withLogin) { d.appendChild(document.createTextNode(' ')); var a = el('a', null, 'Go to login'); a.href = 'index.html'; d.appendChild(a); }
+      m.appendChild(d);
+    }
+
+    // ---------- the character counter under the box ----------
+    function updateCount() {
+      var n = $('code').value.length, c = $('count');
+      c.textContent = n + ' / ' + maxChars + ' characters';
+      c.className = 'al-count' + (n > maxChars ? ' over' : '');
+    }
+    $('code').addEventListener('input', updateCount);
+    $('example').onclick = function () { $('code').value = EXAMPLE; updateCount(); };
+
+    // The consent box only appears when the AI option is ticked
+    $('useAi').addEventListener('change', function () { $('consentBox').hidden = !this.checked; });
+
+    // ---------- ask the server if the AI is switched on, and how many AI checks are left ----------
+    function loadStatus() {
+      ApplyRankAPI.ailabStatus().then(function (s) {
+        aiEnabled = s.aiEnabled; maxChars = s.maxChars; updateCount();
+        $('useAi').disabled = !s.aiEnabled;
+        $('aiNote').textContent = s.aiEnabled ? '' : '(the AI is switched off on this server, the rules review still works)';
+        $('quota').textContent = s.aiEnabled ? s.aiLeftThisHour + ' of ' + s.hourlyQuota + ' AI checks left this hour' : '';
+        if (!s.aiEnabled) { $('useAi').checked = false; $('consentBox').hidden = true; }
+      }).catch(function (e) {
+        $('useAi').disabled = true;
+        showMsg(e.offline ? 'The backend is not running. Start it with mvn spring-boot:run, then refresh.' : 'Please log in first so I can keep your history private.', 'err', !e.offline);
+      });
+    }
+
+    // ---------- the history list ----------
+    function loadHistory() {
+      ApplyRankAPI.ailabHistory().then(function (list) {
+        var box = $('hist'); box.textContent = '';
+        if (!list.length) { box.appendChild(el('p', 'al-note', 'No checks yet.')); return; }
+        list.forEach(function (h) {
+          var row = el('div', 'al-hist');
+          var nm = { CODE_REVIEW: 'Code Review', SCAM_CHECK: 'Scam Detector', PAGE_AUDIT: 'Page Auditor' }[h.tool] || h.tool;
+          row.appendChild(el('span', null, nm + ' \u00b7 ' + h.lines + ' lines' + (h.usedAi ? ' \u00b7 with AI' : '')));
+          var r = el('span'); r.appendChild(el('b', null, (h.tool === 'SCAM_CHECK' ? 'Risk ' : 'Score ') + h.score)); r.appendChild(el('small', null, '  ' + new Date(h.at).toLocaleString()));
+          row.appendChild(r); box.appendChild(row);
+        });
+      }).catch(function () { $('hist').textContent = ''; $('hist').appendChild(el('p', 'al-note', 'History is not available right now.')); });
+    }
+
+    // ---------- draw the score circle and the list of findings ----------
+    function showRules(r) {
+      $('resultBox').hidden = false; $('findBox').hidden = false;
+      var color = r.score >= 80 ? '#10b981' : r.score >= 50 ? '#f59e0b' : '#f87171';
+      $('ring').style.setProperty('--p', r.score); $('ring').style.setProperty('--c', color);
+      $('scoreNum').textContent = r.score;
+      $('verdict').textContent = r.score >= 80 ? 'Looking good!' : r.score >= 50 ? 'Okay, but fix the important things' : 'Needs work before you show this';
+      var meta = $('meta'); meta.textContent = '';
+      [r.language === 'js' ? 'JavaScript' : r.language, r.lines + ' lines', r.findings.length + ' findings'].forEach(function (t) { meta.appendChild(el('span', null, t)); });
+
+      var box = $('finds'); box.textContent = '';
+      if (!r.findings.length) { box.appendChild(el('p', 'al-note', 'No problems found by my rules. Nice work!')); return; }
+      r.findings.forEach(function (f) {
+        var row = el('div', 'al-find');
+        row.appendChild(el('span', 'al-sev ' + f.severity, f.severity));
+        var body = el('div'); var h = el('h4', null, f.title);
+        if (f.line > 0) h.appendChild(el('span', 'al-line', 'line ' + f.line));
+        body.appendChild(h); body.appendChild(el('p', null, f.tip)); row.appendChild(body); box.appendChild(row);
+      });
+    }
+
+    // ---------- the main button ----------
+    $('go').onclick = function () {
+      if (busy) return;
+      var code = $('code').value;
+      if (!code.trim()) { showMsg('Paste some code first (or press "Try an example").', 'info'); return; }
+      var useAi = $('useAi').checked && aiEnabled, consent = $('consent').checked;
+      if (useAi && !consent) { showMsg('Please tick the agreement box to send your code to the AI, or untick the AI option.', 'info'); return; }
+
+      showMsg(''); busy = true; $('go').disabled = true; $('go').textContent = 'Analyzing...';
+      $('aiBox').hidden = !useAi; $('aiText').textContent = ''; $('aiState').textContent = useAi ? '(writing...)' : '';
+      var caret = el('span', 'al-caret');
+
+      ApplyRankAPI.codeReview(code, useAi, consent, function (name, data) {
+        if (name === 'rules') showRules(data);                                  // instant result from my rules
+        else if (name === 'ai') { $('aiText').textContent += data.text; $('aiText').appendChild(caret); }   // add one piece of the AI text
+        else if (name === 'error') showMsg(data.message, 'info');               // the AI failed, but the rules result is still fine
+        else if (name === 'done') { caret.remove(); $('aiState').textContent = data.usedAi ? '' : (useAi ? '(AI did not finish)' : ''); }
+      }).catch(function (e) {
+        showMsg(e.offline ? 'The backend is not running. Start it with mvn spring-boot:run.' :
+                e.status === 401 ? 'Please log in first.' : e.message, 'err', e.status === 401);
+      }).then(function () {
+        busy = false; $('go').disabled = false; $('go').textContent = 'Analyze my code';
+        caret.remove(); loadStatus(); loadHistory();                            // refresh the quota text and the history
+      });
+    };
+
+    updateCount(); loadStatus(); loadHistory();
+  </script>
+
+  <!-- The calm ApplyRank helper (same file as every other page). If it fails to load the page still works. -->
+  <script src="silly-robot.js"></script>
+  <script>
+    if (typeof SillyBot !== 'undefined') {
+      SillyBot.dock({ greet: 'Paste a file and press Analyze. I fix nothing for you, I only show you what to learn. \ud83d\udc9a', tips: ['Start with the HIGH items. Those are security problems \ud83d\udd10', 'Run it again after fixing: watch the score go up \ud83d\udcc8'] });
+    }
+  </script>
+
+</body>
+</html>

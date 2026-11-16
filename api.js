@@ -37,6 +37,46 @@
     });
   }
 
+  /* Streaming helper for the AI Lab.
+     A normal fetch waits for the whole answer. Here I read the answer piece by piece while it is still coming,
+     so the user sees the text appear live. The server sends "events": a line "event: name", a line "data: {json}",
+     then a blank line. (The browser's built-in EventSource cannot send a POST body or a login header, so I read the stream by hand.) */
+  function stream(path, body, onEvent) {
+    var headers = { 'Content-Type': 'application/json' };
+    if (token()) headers['Authorization'] = 'Bearer ' + token();
+    return fetch(BASE + path, { method: 'POST', headers: headers, body: JSON.stringify(body) }).then(function (res) {
+      if (!res.ok) {   // mistakes (empty code, too many checks...) come back as normal JSON, before any streaming
+        return res.text().then(function (txt) {
+          var d = null; try { d = JSON.parse(txt); } catch (e) {}
+          if (res.status === 401 && token()) setToken('');
+          var err = new Error((d && d.message) || ('Request failed (' + res.status + ')'));
+          err.status = res.status; err.offline = false; throw err;
+        });
+      }
+      var reader = res.body.getReader(), decoder = new TextDecoder(), buffer = '';
+      function handle(block) {            // one finished event block -> call onEvent(name, data)
+        var name = 'message', data = '';
+        block.split('\n').forEach(function (line) {
+          if (line.indexOf('event:') === 0) name = line.slice(6).trim();
+          else if (line.indexOf('data:') === 0) data += line.slice(5).trim();
+        });
+        if (!data) return;
+        try { onEvent(name, JSON.parse(data)); } catch (e) { /* ignore a broken piece */ }
+      }
+      function pump() {
+        return reader.read().then(function (r) {
+          if (r.done) { if (buffer.trim()) handle(buffer); return; }
+          buffer += decoder.decode(r.value, { stream: true }).replace(/\r\n/g, '\n');
+          var blocks = buffer.split('\n\n');   // events are separated by a blank line
+          buffer = blocks.pop();                 // the last piece may be unfinished, keep it for the next round
+          blocks.forEach(handle);
+          return pump();
+        });
+      }
+      return pump();
+    }, function () { var err = new Error('Backend is not reachable'); err.offline = true; err.status = 0; throw err; });
+  }
+
   function remember(auth) {
     setToken(auth.token);
     try {
@@ -109,6 +149,11 @@
     submitTest: function (payload) { return request('POST', '/tests/submit', payload); },
     exportMyData: function () { return request('GET', '/privacy/export'); },
     deleteMyAccount: function (password) { return request('DELETE', '/privacy/account', { password: password }).then(function (r) { setToken(''); return r; }); },
+    ailabStatus: function () { return request('GET', '/ailab/status'); },
+    ailabHistory: function () { return request('GET', '/ailab/history'); },
+    codeReview: function (code, useAi, consent, onEvent) { return stream('/ailab/code-review', { code: code, useAi: useAi, consent: consent }, onEvent); },
+    scamCheck: function (text, useAi, consent, onEvent) { return stream('/ailab/scam-check', { text: text, useAi: useAi, consent: consent }, onEvent); },
+    pageAudit: function (text, useAi, consent, onEvent) { return stream('/ailab/page-audit', { text: text, useAi: useAi, consent: consent }, onEvent); },
     testHistory: function () { return request('GET', '/tests/history'); },
     latestTest: function () { return request('GET', '/tests/latest'); },
     uploadResume: function (file, track) {

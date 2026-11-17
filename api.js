@@ -92,7 +92,13 @@
   window.ApplyRankAPI = {
     base: BASE,
     isLoggedIn: function () { return !!token(); },
-    logout: function () { setToken(''); },
+    /* Log out: first tell the server (it makes this token and every other token of mine invalid), then forget the token here.
+       If the server cannot be reached I still log out in this browser. Returns a promise so a page can wait before it redirects. */
+    logout: function () {
+      var p = token() ? request('POST', '/auth/logout').catch(function () {}) : Promise.resolve();
+      setToken('');
+      return p;
+    },
     ping: function () { return request('GET', '/health'); },
     /* login; if the account does not exist yet, create it (a friendly "continue" flow) */
     loginOrRegister: function (email, password, name) {

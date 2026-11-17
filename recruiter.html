@@ -46,7 +46,10 @@ var $ = function (id) { return document.getElementById(id); };
 (window.APPLYRANK_TRACKS || []).forEach(function (t) { var o = document.createElement('option'); o.value = t.key; o.textContent = t.name; $('jk').appendChild(o); });
 function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 function say(id, ok, t) { var m = $(id); m.className = 'rc-msg ' + (ok ? 'ok' : 'err'); m.textContent = t; }
-$('out').onclick = function () { ApplyRankAPI.logout(); try { localStorage.removeItem('applyrank_role'); } catch (e) {} location.href = 'index.html'; };
+$('out').onclick = function () {
+  // I wait for the server to answer before leaving the page, otherwise the browser can cancel the logout request
+  ApplyRankAPI.logout().then(function () { try { localStorage.removeItem('applyrank_role'); } catch (e) {} location.href = 'index.html'; });
+};
 
 function guard(msg) { $('guard').style.display = 'block'; if (msg) $('guardMsg').textContent = msg; }
 if (!ApplyRankAPI.isLoggedIn() || ApplyRankAPI.role() !== 'RECRUITER') guard();

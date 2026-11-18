@@ -117,6 +117,40 @@ class AuthApiTest {
     }
 
     @Test
+    void logoutEndsTheTokenEverywhere() throws Exception {
+        String res = mvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"lo@x.dev\",\"password\":\"secret12\",\"name\":\"Lo\"}")).andReturn().getResponse().getContentAsString();
+        String bearer = "Bearer " + res.replaceAll(".*\"token\":\"([^\"]+)\".*", "$1");
+        mvc.perform(get("/api/ailab/status").header("Authorization", bearer)).andExpect(status().isOk());
+        mvc.perform(post("/api/auth/logout").header("Authorization", bearer)).andExpect(status().isOk());
+        // the same token is dead now, even though it has not expired
+        mvc.perform(get("/api/ailab/status").header("Authorization", bearer)).andExpect(status().isUnauthorized());
+        // a fresh login gives a working token again
+        String again = mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"lo@x.dev\",\"password\":\"secret12\"}")).andReturn().getResponse().getContentAsString();
+        mvc.perform(get("/api/ailab/status").header("Authorization", "Bearer " + again.replaceAll(".*\"token\":\"([^\"]+)\".*", "$1")))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void logoutNeedsLogin() throws Exception {
+        mvc.perform(post("/api/auth/logout")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void passwordResetLogsOutOldTokens() throws Exception {
+        String res = mvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"rs@x.dev\",\"password\":\"oldpass12\",\"name\":\"Rs\"}")).andReturn().getResponse().getContentAsString();
+        String stolen = "Bearer " + res.replaceAll(".*\"token\":\"([^\"]+)\".*", "$1");     // pretend someone else holds this token
+        mvc.perform(get("/api/ailab/status").header("Authorization", stolen)).andExpect(status().isOk());
+        mvc.perform(post("/api/auth/forgot-password").contentType(MediaType.APPLICATION_JSON).content("{\"email\":\"rs@x.dev\"}")).andExpect(status().isOk());
+        String token = tokenFrom(email.lastLink("rs@x.dev"));
+        mvc.perform(post("/api/auth/reset-password").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"token\":\"" + token + "\",\"password\":\"newpass34\"}")).andExpect(status().isOk());
+        mvc.perform(get("/api/ailab/status").header("Authorization", stolen)).andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void fakeResetTokenIsRejected() throws Exception {
         mvc.perform(post("/api/auth/reset-password").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"token\":\"not-a-real-token\",\"password\":\"newpass34\"}")).andExpect(status().isBadRequest());

@@ -5,3 +5,12 @@ uploads/
 *.iml
 .vscode/
 *.log
+
+# secrets and local settings - NEVER commit these
+.env
+.env.*
+application-local.properties
+*.pem
+*.key
+*.p12
+.DS_Store

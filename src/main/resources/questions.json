@@ -448,5 +448,893 @@
     ]
    }
   ]
+ },
+ "ml": {
+  "name": "AI / ML Engineer",
+  "titles": [
+   "Model Rookie",
+   "Feature Crafter",
+   "Pipeline Builder",
+   "Model Master"
+  ],
+  "mcqKeys": [
+   2,
+   0,
+   3,
+   1,
+   1
+  ],
+  "interview": [
+   {
+    "q": "What is overfitting, how can you detect it, and how can you reduce it?",
+    "rubric": [
+     {
+      "label": "model memorises training data and fails on new data",
+      "words": [
+       "memor",
+       "training",
+       "new data",
+       "unseen",
+       "generalis",
+       "generaliz",
+       "noise"
+      ]
+     },
+     {
+      "label": "detect: high training score but low validation/test score",
+      "words": [
+       "validation",
+       "test",
+       "gap",
+       "difference",
+       "cross",
+       "higher",
+       "lower",
+       "curve",
+       "score"
+      ]
+     },
+     {
+      "label": "reduce: more data, regularisation, simpler model, early stopping",
+      "words": [
+       "regulari",
+       "dropout",
+       "more data",
+       "simpler",
+       "early stopping",
+       "cross-validation",
+       "augment",
+       "prune",
+       "l1",
+       "l2"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "You must predict whether a customer will leave (churn). Walk me through your steps from raw data to a model.",
+    "rubric": [
+     {
+      "label": "cleaned/explored the data and chose features",
+      "words": [
+       "clean",
+       "missing",
+       "explore",
+       "feature",
+       "eda",
+       "encode",
+       "outlier",
+       "null"
+      ]
+     },
+     {
+      "label": "split the data and trained a model",
+      "words": [
+       "split",
+       "train",
+       "test",
+       "fit",
+       "model",
+       "logistic",
+       "tree",
+       "forest",
+       "algorithm"
+      ]
+     },
+     {
+      "label": "evaluated with a suitable metric",
+      "words": [
+       "metric",
+       "recall",
+       "precision",
+       "f1",
+       "auc",
+       "accuracy",
+       "confusion",
+       "evaluate",
+       "validation"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "Tell me about a data or ML project you did. What went wrong, and what did you learn?",
+    "rubric": [
+     {
+      "label": "described the project",
+      "words": [
+       "project",
+       "dataset",
+       "data",
+       "model",
+       "predict",
+       "built",
+       "trained",
+       "kaggle"
+      ]
+     },
+     {
+      "label": "explained what went wrong",
+      "words": [
+       "wrong",
+       "problem",
+       "issue",
+       "overfit",
+       "missing",
+       "poor",
+       "low accuracy",
+       "bias",
+       "imbalance",
+       "error"
+      ]
+     },
+     {
+      "label": "lesson or improvement",
+      "words": [
+       "learn",
+       "lesson",
+       "improve",
+       "fix",
+       "next time",
+       "tried",
+       "tuned",
+       "better",
+       "changed"
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "devops": {
+  "name": "DevOps & Cloud",
+  "titles": [
+   "Pipeline Rookie",
+   "Container Captain",
+   "Cloud Architect",
+   "Ops Legend"
+  ],
+  "mcqKeys": [
+   3,
+   1,
+   0,
+   2,
+   2
+  ],
+  "interview": [
+   {
+    "q": "Explain the difference between CI and CD, and why teams use them.",
+    "rubric": [
+     {
+      "label": "CI = every change is built and tested automatically",
+      "words": [
+       "build",
+       "test",
+       "integrat",
+       "every commit",
+       "merge",
+       "automat"
+      ]
+     },
+     {
+      "label": "CD = automatically delivering / deploying",
+      "words": [
+       "deploy",
+       "release",
+       "deliver",
+       "production",
+       "staging"
+      ]
+     },
+     {
+      "label": "benefit: faster, safer releases with fewer bugs",
+      "words": [
+       "fast",
+       "safe",
+       "bug",
+       "quick",
+       "feedback",
+       "reliable",
+       "risk",
+       "early"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "How would you update a small web app so that users never see downtime?",
+    "rubric": [
+     {
+      "label": "new version runs alongside the old one (blue-green / rolling)",
+      "words": [
+       "blue",
+       "green",
+       "rolling",
+       "canary",
+       "alongside",
+       "parallel",
+       "new version"
+      ]
+     },
+     {
+      "label": "traffic is switched with a load balancer or gradually",
+      "words": [
+       "load balancer",
+       "traffic",
+       "switch",
+       "route",
+       "gradual",
+       "proxy"
+      ]
+     },
+     {
+      "label": "has health checks or a rollback plan",
+      "words": [
+       "rollback",
+       "roll back",
+       "health",
+       "probe",
+       "monitor",
+       "revert"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "Tell me about a time something broke (or you broke something) while deploying or running a project. What did you do first, and what changed afterwards?",
+    "rubric": [
+     {
+      "label": "described what broke",
+      "words": [
+       "broke",
+       "down",
+       "crash",
+       "bug",
+       "outage",
+       "fail",
+       "error",
+       "issue",
+       "incident"
+      ]
+     },
+     {
+      "label": "took action methodically",
+      "words": [
+       "rollback",
+       "roll back",
+       "logs",
+       "monitor",
+       "investigat",
+       "fix",
+       "hotfix",
+       "debug",
+       "root cause",
+       "reproduce"
+      ]
+     },
+     {
+      "label": "added prevention or a lesson",
+      "words": [
+       "test",
+       "alert",
+       "prevent",
+       "lesson",
+       "learn",
+       "next time",
+       "process",
+       "review",
+       "monitoring"
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "mobile": {
+  "name": "Mobile App Developer",
+  "titles": [
+   "App Rookie",
+   "Screen Crafter",
+   "Mobile Architect",
+   "App Legend"
+  ],
+  "mcqKeys": [
+   0,
+   2,
+   1,
+   3,
+   3
+  ],
+  "interview": [
+   {
+    "q": "Why must slow work (network, database) stay off the main thread in a mobile app, and what do you use instead?",
+    "rubric": [
+     {
+      "label": "the main thread draws the UI, so blocking it freezes the app",
+      "words": [
+       "freeze",
+       "ui",
+       "main thread",
+       "block",
+       "lag",
+       "not responding",
+       "anr",
+       "smooth"
+      ]
+     },
+     {
+      "label": "use background work (coroutines, async, threads)",
+      "words": [
+       "background",
+       "async",
+       "coroutine",
+       "thread",
+       "worker",
+       "await",
+       "future",
+       "executor"
+      ]
+     },
+     {
+      "label": "then update the UI with the result",
+      "words": [
+       "callback",
+       "update the ui",
+       "state",
+       "observe",
+       "live data",
+       "return",
+       "result",
+       "main thread"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "Your app crashes for some users but not on your own phone. How do you investigate?",
+    "rubric": [
+     {
+      "label": "collect crash reports and logs",
+      "words": [
+       "crashlytics",
+       "log",
+       "crash report",
+       "stack trace",
+       "logcat",
+       "sentry",
+       "report"
+      ]
+     },
+     {
+      "label": "try to reproduce with the same device / OS / conditions",
+      "words": [
+       "reproduce",
+       "device",
+       "os version",
+       "emulator",
+       "same",
+       "version",
+       "network"
+      ]
+     },
+     {
+      "label": "fix, test and release, then monitor",
+      "words": [
+       "fix",
+       "test",
+       "release",
+       "update",
+       "monitor",
+       "patch",
+       "verify"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "Tell me about an app or screen you built. What was the hardest part and how did you solve it?",
+    "rubric": [
+     {
+      "label": "described what they built",
+      "words": [
+       "built",
+       "made",
+       "app",
+       "screen",
+       "project",
+       "developed",
+       "created"
+      ]
+     },
+     {
+      "label": "explained the hard part",
+      "words": [
+       "hard",
+       "difficult",
+       "challenge",
+       "problem",
+       "bug",
+       "struggle",
+       "stuck"
+      ]
+     },
+     {
+      "label": "how they solved it / what they learned",
+      "words": [
+       "solved",
+       "fixed",
+       "research",
+       "documentation",
+       "learned",
+       "tried",
+       "tested",
+       "asked"
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "qa": {
+  "name": "QA & Test Engineer",
+  "titles": [
+   "Bug Spotter",
+   "Test Crafter",
+   "Quality Architect",
+   "Test Legend"
+  ],
+  "mcqKeys": [
+   1,
+   3,
+   2,
+   0,
+   0
+  ],
+  "interview": [
+   {
+    "q": "What is the difference between unit, integration and end-to-end testing?",
+    "rubric": [
+     {
+      "label": "unit = one small piece tested in isolation",
+      "words": [
+       "unit",
+       "single",
+       "small",
+       "function",
+       "isolat",
+       "one component"
+      ]
+     },
+     {
+      "label": "integration = parts working together",
+      "words": [
+       "integration",
+       "together",
+       "modules",
+       "api",
+       "database",
+       "interact",
+       "combined"
+      ]
+     },
+     {
+      "label": "end-to-end = the whole user flow",
+      "words": [
+       "end-to-end",
+       "e2e",
+       "user flow",
+       "whole",
+       "full",
+       "browser",
+       "ui",
+       "real user",
+       "journey"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "You are testing a signup form. Which test cases would you write?",
+    "rubric": [
+     {
+      "label": "valid input (happy path)",
+      "words": [
+       "valid",
+       "happy",
+       "correct",
+       "success",
+       "works"
+      ]
+     },
+     {
+      "label": "invalid, empty or wrongly formatted input",
+      "words": [
+       "invalid",
+       "empty",
+       "blank",
+       "wrong",
+       "format",
+       "negative",
+       "error",
+       "missing"
+      ]
+     },
+     {
+      "label": "edge cases, boundaries or security cases",
+      "words": [
+       "boundary",
+       "edge",
+       "limit",
+       "max",
+       "min",
+       "long",
+       "special",
+       "sql",
+       "injection",
+       "duplicate",
+       "xss"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "Tell me about a bug you found (in your own project or someone else's). How did you find it and what happened next?",
+    "rubric": [
+     {
+      "label": "described the bug",
+      "words": [
+       "bug",
+       "issue",
+       "error",
+       "crash",
+       "wrong",
+       "broken",
+       "fail"
+      ]
+     },
+     {
+      "label": "how they found or reproduced it",
+      "words": [
+       "found",
+       "reproduce",
+       "steps",
+       "test",
+       "noticed",
+       "log",
+       "debug",
+       "check"
+      ]
+     },
+     {
+      "label": "reported or fixed it and learned something",
+      "words": [
+       "fix",
+       "report",
+       "ticket",
+       "lesson",
+       "learn",
+       "prevent",
+       "regression",
+       "test case"
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "cyber": {
+  "name": "Cybersecurity",
+  "titles": [
+   "Safe Rookie",
+   "Threat Spotter",
+   "Security Architect",
+   "Cyber Guardian"
+  ],
+  "mcqKeys": [
+   2,
+   0,
+   3,
+   1,
+   1
+  ],
+  "interview": [
+   {
+    "q": "Explain SQL injection and XSS in simple words, and how you prevent each one.",
+    "rubric": [
+     {
+      "label": "SQL injection: malicious input changes the database query",
+      "words": [
+       "sql",
+       "query",
+       "database",
+       "input",
+       "inject"
+      ]
+     },
+     {
+      "label": "XSS: malicious script runs in another user's browser",
+      "words": [
+       "xss",
+       "script",
+       "browser",
+       "javascript",
+       "cross-site",
+       "html"
+      ]
+     },
+     {
+      "label": "prevention: prepared statements, escaping, validation",
+      "words": [
+       "prepared",
+       "parameter",
+       "escape",
+       "sanitiz",
+       "validat",
+       "encode",
+       "textcontent",
+       "csp",
+       "orm"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "How should a website store and protect user passwords?",
+    "rubric": [
+     {
+      "label": "hash them and never store plain text",
+      "words": [
+       "hash",
+       "bcrypt",
+       "argon",
+       "scrypt",
+       "never plain",
+       "not plain",
+       "one-way"
+      ]
+     },
+     {
+      "label": "use a salt so equal passwords give different hashes",
+      "words": [
+       "salt",
+       "rainbow",
+       "unique",
+       "random"
+      ]
+     },
+     {
+      "label": "extra protection: HTTPS, rate limiting, MFA",
+      "words": [
+       "https",
+       "tls",
+       "rate limit",
+       "lockout",
+       "mfa",
+       "2fa",
+       "two-factor",
+       "brute"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "Tell me about a time you noticed something insecure (an app, a message or your own code). What did you do?",
+    "rubric": [
+     {
+      "label": "described the risk",
+      "words": [
+       "insecure",
+       "risk",
+       "vulnerab",
+       "password",
+       "phishing",
+       "leak",
+       "exposed",
+       "suspicious"
+      ]
+     },
+     {
+      "label": "took action (reported, fixed or avoided it)",
+      "words": [
+       "report",
+       "fix",
+       "changed",
+       "removed",
+       "told",
+       "avoid",
+       "rotate",
+       "patch",
+       "blocked"
+      ]
+     },
+     {
+      "label": "lesson or prevention",
+      "words": [
+       "lesson",
+       "learn",
+       "prevent",
+       "next time",
+       "habit",
+       "always",
+       "never",
+       "mfa",
+       "review"
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "uiux": {
+  "name": "UI / UX Designer",
+  "titles": [
+   "Sketch Rookie",
+   "Flow Crafter",
+   "Design Architect",
+   "Design Legend"
+  ],
+  "mcqKeys": [
+   3,
+   1,
+   0,
+   2,
+   2
+  ],
+  "interview": [
+   {
+    "q": "What is the difference between UI design and UX design?",
+    "rubric": [
+     {
+      "label": "UI = the visual look: colours, typography, layout",
+      "words": [
+       "visual",
+       "look",
+       "colour",
+       "color",
+       "typography",
+       "layout",
+       "interface",
+       "appearance",
+       "buttons"
+      ]
+     },
+     {
+      "label": "UX = the whole experience: ease of use and user needs",
+      "words": [
+       "experience",
+       "ease",
+       "usab",
+       "journey",
+       "flow",
+       "user need",
+       "research",
+       "feel",
+       "easy"
+      ]
+     },
+     {
+      "label": "how they work together, with an example",
+      "words": [
+       "together",
+       "both",
+       "example",
+       "for instance",
+       "e.g",
+       "balance",
+       "combine"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "How would you check whether users can easily complete a task in your design (like signing up)?",
+    "rubric": [
+     {
+      "label": "usability test with real users",
+      "words": [
+       "usability",
+       "test",
+       "real users",
+       "observe",
+       "watch",
+       "interview",
+       "user test"
+      ]
+     },
+     {
+      "label": "measure it (success rate, time, drop-offs)",
+      "words": [
+       "measure",
+       "time",
+       "success",
+       "drop",
+       "analytics",
+       "metric",
+       "rate",
+       "count",
+       "click"
+      ]
+     },
+     {
+      "label": "improve the design and test again",
+      "words": [
+       "iterate",
+       "improve",
+       "change",
+       "redesign",
+       "feedback",
+       "fix",
+       "repeat",
+       "again"
+      ]
+     }
+    ]
+   },
+   {
+    "q": "Tell me about a design you made (or a screen you disliked). What would you change and why?",
+    "rubric": [
+     {
+      "label": "described the design",
+      "words": [
+       "design",
+       "screen",
+       "app",
+       "page",
+       "layout",
+       "website",
+       "made",
+       "created"
+      ]
+     },
+     {
+      "label": "gave specific problems and reasons",
+      "words": [
+       "because",
+       "problem",
+       "confusing",
+       "contrast",
+       "hard",
+       "hierarchy",
+       "spacing",
+       "readab",
+       "navigation"
+      ]
+     },
+     {
+      "label": "proposed an improvement",
+      "words": [
+       "change",
+       "improve",
+       "better",
+       "instead",
+       "simplif",
+       "would",
+       "fix",
+       "add"
+      ]
+     }
+    ]
+   }
+  ]
  }
 }

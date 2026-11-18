@@ -24,11 +24,18 @@ public class JwtService {
         this.expirationMillis = hours * 3_600_000L;
     }
 
+    /** Same as below with version 0 (used by tests and for brand new users). */
     public String generate(String email, String role) {
+        return generate(email, role, 0);
+    }
+
+    /** "version" is the user's tokenVersion at the moment of login. The filter compares it on every request. */
+    public String generate(String email, String role, int version) {
         Date now = new Date();
         return Jwts.builder()
                 .subject(email)
                 .claim("role", role)
+                .claim("v", version)
                 .issuedAt(now)
                 .expiration(new Date(now.getTime() + expirationMillis))
                 .signWith(key)

@@ -148,6 +148,15 @@
           <div class="pf-items" id="pfCerts"></div>
         </section>
 
+        <!-- Account and security: is my email verified, and log out on every device -->
+        <section class="pf-card pf-edit-only" id="pfAccount">
+          <h3>Account &amp; security</h3>
+          <p id="pfVerifyLine" style="font-size:13px;margin:0 0 10px">Checking your email status...</p>
+          <button type="button" class="pf-btn" id="pfResend" hidden>Resend verification email</button>
+          <button type="button" class="pf-btn" id="pfLogout">Log out on all devices</button>
+          <p id="pfAccMsg" style="font-size:13px;margin-top:10px;min-height:16px"></p>
+        </section>
+
         <section class="pf-card" id="pfPrivacy">
           <h3>Privacy &amp; data</h3>
           <p style="font-size:13px;opacity:.8;margin:6px 0 12px">Your data belongs to you. Recruiters see your full e-mail only after they shortlist you. You can download everything we store, or delete your account for good.</p>
@@ -226,6 +235,36 @@
         ['applyrank_profile','applyrank_last_result','applyrank_email','applyrank_read','applyrank_lessons'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
         alert('Your account was deleted.'); location.href = 'index.html';
       }, e => msg(e.message));
+    });
+  })();
+  /* ---------- account and security (needs the backend + login) ---------- */
+  (function(){
+    const msg = t => { const m = $('pfAccMsg'); if (m) m.textContent = t; };
+    const line = $('pfVerifyLine');
+    if (!(window.ApplyRankAPI && ApplyRankAPI.isLoggedIn())) {
+      line.textContent = 'Log in (with the backend running) to see your account status.';
+      $('pfLogout').hidden = true;
+      return;
+    }
+    // Ask the server if my email is verified. If not, show the "Resend" button.
+    ApplyRankAPI.me().then(res => {
+      const u = res.user || res;                                   // the server may wrap the user or not, I accept both
+      if (u.emailVerified) { line.textContent = 'Your email ' + (u.email || '') + ' is verified.'; }
+      else { line.textContent = 'Your email ' + (u.email || '') + ' is not verified yet. Open the link we sent you.'; $('pfResend').hidden = false; }
+    }, () => { line.textContent = 'Could not check your account right now.'; });
+
+    $('pfResend').addEventListener('click', () => {
+      $('pfResend').disabled = true;
+      ApplyRankAPI.resendVerification().then(r => msg(r.message || 'Sent.'), e => msg(e.message))
+        .then(() => setTimeout(() => { $('pfResend').disabled = false; }, 60000));      // the server allows 1 mail per minute, so I wait too
+    });
+
+    $('pfLogout').addEventListener('click', () => {
+      // The server ends every session of mine (all devices). Then I clear what is saved in this browser.
+      ApplyRankAPI.logout().then(() => {
+        ['applyrank_profile','applyrank_last_result','applyrank_email','applyrank_role'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
+        location.href = 'index.html';
+      });
     });
   })();
   window.sillyReact = function(state, msg){

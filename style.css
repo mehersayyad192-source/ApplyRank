@@ -2646,3 +2646,51 @@ display: none !important;
   .nav-brand-logo-hub { margin-left: 0; padding-right: 0; flex: none; }
   .nav-menu-links-center-row, .nav-profile-right-zone { flex: none; }
 }
+
+
+/* ============================================================
+   PHONE LAYOUT
+   Most people open a job site on a phone, so these rules make the main pages work on small screens.
+   (Laptop view is not changed: every rule here is inside a max-width media query.)
+   ============================================================ */
+
+/* ---- tablets and phones: the login page (index.html) stacks instead of two columns ---- */
+@media (max-width: 820px) {
+  .master_container_box { flex-direction: column; width: 100%; height: auto; min-height: 100vh; overflow: visible; }
+  .login-left-robot-zone { width: 100%; flex: none; height: auto; padding: 22px 18px 18px; }
+  .applyrank-logo-wrapper { position: static; margin: 0 0 10px; font-size: 24px; }
+  .robot-neaon-circle-canvas { display: none; }              /* the big circle is only decoration, it takes too much room on a phone */
+  .robot-slogan-block { margin: 0 auto; }
+  .slogan-maain-title { font-size: 22px; margin-bottom: 4px; }
+  .slogan-sub-description { display: none; }
+  .robot-footer-features { margin-top: 12px; gap: 18px; flex-wrap: wrap; }
+  .right_box { width: 100%; flex: none; height: auto; padding: 24px 18px 48px; flex-direction: column !important; justify-content: flex-start; align-items: stretch; border: 0; }
+  .login-interface-form-card { max-width: 100%; }
+  .form-main-title { font-size: 26px; }
+  .secure-badge-container { margin-bottom: 18px; }
+}
+
+/* ---- phones ---- */
+@media (max-width: 640px) {
+  /* dashboard: the coach card goes from "picture left, text right" to one column */
+  .silly-hero-card { flex-direction: column; align-items: flex-start; padding: 22px 18px; gap: 18px; }
+  .silly-face-circle { width: 96px; height: 96px; }
+  .silly-title-name { font-size: 21px; }
+  .silly-header-badge-row { flex-wrap: wrap; }
+  .silly-content-zone { width: 100%; min-width: 0; }
+
+  /* dashboard: the two action cards (Resume, Skill test) go under each other, one card per row */
+  .dashboard-utility-grid-hub { grid-template-columns: 1fr !important; }
+  .utility-action-card { min-width: 0; }
+
+  /* jobs: the two big buttons go under each other (they have inline flex styles, so !important is needed) */
+  .dual-gateway-action-button-row { flex-direction: column !important; align-items: stretch !important; gap: 12px !important; }
+
+  /* a finger needs about 40px of height to hit a button */
+  .pf-btn, .nt-tab, .card-action-trigger-link, .select-path-action-btn, .nt-fi-cta { min-height: 40px; }
+  #pfRankCta { display: inline-block; padding: 10px 0; }
+  .forgot-password-trigger-link, .policy-link-string { display: inline-block; padding: 10px 4px; }
+  /* the small dots under the "reality check" cards stay small to look at, but get a bigger area to tap */
+  .nt-rdot { position: relative; }
+  .nt-rdot::after { content: ''; position: absolute; inset: -14px -6px; }
+}

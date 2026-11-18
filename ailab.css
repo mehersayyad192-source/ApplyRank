@@ -99,3 +99,13 @@
   .al-title { font-size: 26px; }
   .al-wrap { padding: 20px 14px 60px; }
 }
+
+
+/* An element with the "hidden" attribute must really disappear, even if a class gives it display:flex or inline-block */
+[hidden] { display: none !important; }
+
+/* phones: bigger areas to tap */
+@media (max-width: 640px) {
+  .al-back { display: inline-block; padding: 12px 0; }
+  .al-btn { min-height: 42px; }
+}

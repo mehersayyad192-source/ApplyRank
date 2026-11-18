@@ -39,9 +39,9 @@
   <main class="al-wrap">
     <span class="al-badge">AI LAB</span>
     <h1 class="al-title">Check it <span>before you send it</span></h1>
-    <p class="al-sub">A fresher has to get three things right: the code, the portfolio website and the job offer. AI Lab checks all three. Every tool gives you instant results from built-in rules, and optional AI advice on top.</p>
+    <p class="al-sub">A fresher has to get four things right: the code, the portfolio website, the resume and the job offer. AI Lab checks all four. Every tool gives you instant results from built-in rules, and optional AI advice on top.</p>
 
-    <!-- The three tools. Each card opens its own page. -->
+    <!-- The four tools. Each card opens its own page. -->
     <section class="al-grid">
       <article class="al-card">
         <span class="material-symbols-outlined al-ico">code</span>
@@ -64,6 +64,13 @@
         <p>Paste a job offer message. It shows the warning signs of a fake offer, like fees, OTP requests and WhatsApp-only chats.</p>
         <a class="al-btn" href="scamcheck.html">Open Scam Detector</a>
       </article>
+      <article class="al-card">
+        <span class="material-symbols-outlined al-ico">description</span>
+        <span class="al-chip ready">READY</span>
+        <h3>Resume Polish</h3>
+        <p>Paste your resume text. Your email, phone and links are hidden first. You get a score, the weak spots, and AI help to rewrite weak bullets.</p>
+        <a class="al-btn" href="resumepolish.html">Open Resume Polish</a>
+      </article>
     </section>
 
     <!-- My latest checks come from my account on the server -->
@@ -85,7 +92,7 @@
     function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
     // How each tool is named in the list, and what its number means (for scams the number is a RISK)
-    var TOOLS = { CODE_REVIEW: { name: 'Code Review', word: 'Score' }, SCAM_CHECK: { name: 'Scam Detector', word: 'Risk' }, PAGE_AUDIT: { name: 'Page Auditor', word: 'Score' } };
+    var TOOLS = { CODE_REVIEW: { name: 'Code Review', word: 'Score' }, SCAM_CHECK: { name: 'Scam Detector', word: 'Risk' }, PAGE_AUDIT: { name: 'Page Auditor', word: 'Score' }, RESUME_POLISH: { name: 'Resume Polish', word: 'Score' } };
 
     // Show the history list. I use textContent everywhere so nothing from the server can run as HTML.
     function showHistory(list) {

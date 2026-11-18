@@ -42,9 +42,12 @@
      so the user sees the text appear live. The server sends "events": a line "event: name", a line "data: {json}",
      then a blank line. (The browser's built-in EventSource cannot send a POST body or a login header, so I read the stream by hand.) */
   function stream(path, body, onEvent) {
-    var headers = { 'Content-Type': 'application/json' };
+    var headers = {};
+    // a FormData body (a file upload) must NOT get a Content-Type from me: the browser adds it with the right boundary
+    var isForm = (typeof FormData !== 'undefined') && body instanceof FormData;
+    if (!isForm) headers['Content-Type'] = 'application/json';
     if (token()) headers['Authorization'] = 'Bearer ' + token();
-    return fetch(BASE + path, { method: 'POST', headers: headers, body: JSON.stringify(body) }).then(function (res) {
+    return fetch(BASE + path, { method: 'POST', headers: headers, body: isForm ? body : JSON.stringify(body) }).then(function (res) {
       if (!res.ok) {   // mistakes (empty code, too many checks...) come back as normal JSON, before any streaming
         return res.text().then(function (txt) {
           var d = null; try { d = JSON.parse(txt); } catch (e) {}
@@ -160,6 +163,11 @@
     codeReview: function (code, useAi, consent, onEvent) { return stream('/ailab/code-review', { code: code, useAi: useAi, consent: consent }, onEvent); },
     scamCheck: function (text, useAi, consent, onEvent) { return stream('/ailab/scam-check', { text: text, useAi: useAi, consent: consent }, onEvent); },
     pageAudit: function (text, useAi, consent, onEvent) { return stream('/ailab/page-audit', { text: text, useAi: useAi, consent: consent }, onEvent); },
+    resumePolish: function (text, useAi, consent, onEvent) { return stream('/ailab/resume-polish', { text: text, useAi: useAi, consent: consent }, onEvent); },
+    resumePolishFile: function (file, useAi, consent, onEvent) {
+      var fd = new FormData(); fd.append('file', file); fd.append('useAi', useAi ? 'true' : 'false'); fd.append('consent', consent ? 'true' : 'false');
+      return stream('/ailab/resume-polish/file', fd, onEvent);
+    },
     testHistory: function () { return request('GET', '/tests/history'); },
     latestTest: function () { return request('GET', '/tests/latest'); },
     uploadResume: function (file, track) {

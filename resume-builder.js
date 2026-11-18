@@ -76,6 +76,12 @@
       (p.headline ? '<div class="headline">' + esc(p.headline) + '</div>' : '') + '<div class="contact">' + contact.join(' &nbsp;|&nbsp; ') + '</div>' + verifiedLine() + h, '');
   }
 
+  /* If the resume fits on ONE page, I remove the page margin right before printing, so the browser has no room left to print
+     its own header and footer (date, page address). The same space is given back as padding. A longer resume keeps the normal margin. */
+  var PRINTFIX = 'window.addEventListener("beforeprint",function(){var g=document.querySelector(".page");if(!g||g.scrollHeight>1000)return;' +
+    'var s=document.createElement("style");s.id="pm";s.textContent="@page{size:A4;margin:0}.page{padding:16mm 18mm!important}";document.head.appendChild(s)});' +
+    'window.addEventListener("afterprint",function(){var s=document.getElementById("pm");if(s)s.remove()});';
+
   function shell(title, tipBox, pageHtml, script) {
     return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + esc(title) + ' - Resume</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet"><style>' +
       '*{box-sizing:border-box}body{font:14px/1.45 Calibri,Arial,sans-serif;color:#111;margin:0;padding:0 12px 40px;background:radial-gradient(circle at 20% 0%,#1b2145 0,#0b1020 55%) fixed}' +
@@ -84,13 +90,13 @@
       'h1{font-size:26px;margin:0}.headline{color:#444;margin:2px 0 6px}.contact{font-size:12.5px;color:#333}.contact a{color:#1a56c4}' +
       'h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1.5px solid #6366f1;margin:16px 0 6px;padding-bottom:2px}' +
       'p{margin:0}ul{margin:4px 0 6px 18px;padding:0}li{margin:1px 0}.row{display:flex;justify-content:space-between;gap:12px}.tech{font-size:12.5px;color:#444;font-style:italic}' +
-      'a{color:#1a56c4}.nonum{background:#fff6c2}' +
+      'a{color:#1a56c4}.nonum{background:#fff6c2}.ttl{font-weight:700;margin-top:8px}' +
       '.tips{max-width:794px;margin:16px auto 0;background:rgba(17,24,52,.92);color:#dfe3f8;border:1px solid rgba(99,102,241,.45);border-left:5px solid #10b981;border-radius:14px;padding:14px 20px;font:500 13.5px/1.5 "Plus Jakarta Sans",sans-serif}.tips b{color:#fff}.tips ul{margin-top:6px}.tips a{color:#9fb0ff}.tips u{text-decoration-color:#10b981}' +
       '.tips button{background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;border:0;border-radius:10px;padding:9px 18px;font:700 13px "Plus Jakarta Sans",sans-serif;cursor:pointer;margin:6px 12px 0 0;box-shadow:0 0 18px rgba(99,102,241,.55)}' +
       '@media print{body{background:#fff;padding:0}.tips,.brand{display:none}.page{box-shadow:none;margin:0;padding:0;max-width:none}.nonum{background:none}@page{size:A4;margin:16mm}}' +
       '.add{background:#d9f7e8}.fix{background:#e0e4ff}mark{color:inherit}.tips label{display:inline-block;margin:4px 14px 0 0}.tips code{color:#9fe8c8}.ln{margin:2px 0}.addrow{margin-top:4px}' +
       '@media print{mark,.add,.fix{background:none}}' +
-      '</style></head><body><div class="brand">Apply<span>Rank</span><small>Resume builder</small></div>' + tipBox + '<div class="page">' + pageHtml + '</div>' + (script ? '<script>' + script + '<\/script>' : '') + '</body></html>';
+      '</style></head><body><div class="brand">Apply<span>Rank</span><small>Resume builder</small></div>' + tipBox + '<div class="page">' + pageHtml + '</div>' + '<script>' + PRINTFIX + (script || '') + '<\/script>' + '</body></html>';
   }
 
 
@@ -107,7 +113,7 @@
     'seperate':'separate','definately':'definitely','occured':'occurred','refrence':'reference','projet':'project','intership':'internship','internhip':'internship','desgined':'designed','buit':'built','wokred':'worked','tecnical':'technical','tecnology':'technology','teamwrok':'teamwork'
   };
   var FIXRE = new RegExp('(^|[^A-Za-z0-9])(' + Object.keys(FIX).sort(function (a, b) { return b.length - a.length; }).map(function (k) { return k.replace(/ /g, '\\s+'); }).join('|') + ')(?![A-Za-z0-9])', 'gi');
-  var HEAD = /^(summary|objective|career objective|profile|professional summary|skills?|technical skills|key skills|experience|work experience|professional experience|employment|internships?|projects?|academic projects?|education|certifications?|achievements|languages|interests|declaration)\s*:?$/i;
+  var HEAD = /^(summary|objective|career objective|profile|professional summary|skills?|technical skills|key skills|experience|experience\s*\/\s*internships?|work experience|professional experience|employment|internships?|projects?|academic projects?|education|certifications?|achievements|awards|training|courses|languages|languages known|interests|hobbies|personal details|personal information|personal profile|extracurricular activities|references|declaration)\s*:?$/i;
 
   function fixLine(line, fixes) {
     var keep = [];
@@ -129,11 +135,14 @@
     p = p || {};
     var fixes = [], lines = String(text || '').split(/\r?\n/).map(function (l) { return l.replace(/\s+/g, ' ').trim(); }).filter(Boolean).map(function (l) { return fixLine(l, fixes); });
     var plain = lines.join('\n').replace(/[\u0003\u0004]/g, '');
-    function canon(k) { return FIX[k.toLowerCase()] || (/^[a-z]/.test(k) ? k.charAt(0).toUpperCase() + k.slice(1) : k); }
+    // Nice spelling for keywords. This list is only for keywords I SUGGEST. It is not used to change the user's own text
+    // (a word like "rest" in a normal sentence must never be changed).
+    var KW = { rest: 'REST API', api: 'API', jpa: 'JPA', etl: 'ETL', sql: 'SQL', git: 'Git', ci: 'CI/CD', pandas: 'Pandas', tableau: 'Tableau', excel: 'Excel', statistics: 'Statistics', dashboard: 'Dashboards', analysis: 'Data analysis', responsive: 'Responsive design', accessibility: 'Accessibility', security: 'Security', testing: 'Testing' };
+    function canon(k) { return KW[k.toLowerCase()] || FIX[k.toLowerCase()] || (/^[a-z]/.test(k) ? k.charAt(0).toUpperCase() + k.slice(1) : k); }
     var fromProfile = csv(p.skills).map(canon).filter(function (k) { return !hasSkill(plain, k); });
     var missing = ((analysis && analysis.missing) || []).map(canon).filter(function (k) { return !hasSkill(plain, k) && !fromProfile.some(function (x) { return x.toLowerCase() === k.toLowerCase(); }); });
 
-    var out = '', ul = false, nameDone = false, inHead = true, skillsAt = -1, i, l;
+    var out = '', ul = false, nameDone = false, inHead = true, skillsAt = -1, i, l, pendingBullet = false, inBlock = false;
     function close() { if (ul) { out += '</ul>'; ul = false; } }
     var addHtml = '<p class="addrow" id="ar"></p>', addPlaced = false;
     for (i = 0; i < lines.length; i++) {
@@ -141,15 +150,33 @@
       var bare = l.replace(/[\u0003\u0004]/g, '');
       if (!nameDone && bare.length < 50 && !/@/.test(bare)) { out += '<h1>' + lineHtml(l) + '</h1>'; nameDone = true; continue; }
       nameDone = true;
+      // A bullet sign alone on a line (PDF text often does this): the text of the bullet is on the next line.
+      // Before, this made an empty bullet, so I remember it and use it for the next line.
+      if (/^[\u2022\u25aa\u25cf\u25e6\u2023\-*\u2013]$/.test(bare)) { pendingBullet = true; continue; }
       if (HEAD.test(bare)) {
+        pendingBullet = false; inBlock = false;
         close(); inHead = false;
         if (skillsAt >= 0 && !addPlaced) { out += addHtml; addPlaced = true; }
         if (/skill/i.test(bare)) skillsAt = i;
         out += '<h2>' + lineHtml(l.replace(/:$/, '')) + '</h2>'; continue;
       }
       if (inHead) { close(); out += '<div class="contact">' + lineHtml(l) + '</div>'; continue; }
-      if (/^[•▪●◦‣\-*–]\s*/.test(bare)) { if (!ul) { out += '<ul>'; ul = true; } out += '<li>' + lineHtml(l.replace(/^[•▪●◦‣\-*–]\s*/, '')) + '</li>'; continue; }
-      close(); out += '<div class="ln">' + lineHtml(l) + '</div>';
+      var nextBare = (lines[i + 1] || '').replace(/[\u0003\u0004]/g, '');
+      // A line is a "title" (project name, job title) when the next line starts with Technologies: or is a date range
+      var isTitle = /^(technologies|technology|tech stack|tools)\s*:/i.test(nextBare) ||
+        /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{4}\s*(-|\u2013|\u2014|to)/i.test(nextBare) || /^\d{4}\s*(-|\u2013|\u2014)\s*(\d{4}|present)/i.test(nextBare);
+      var isBullet = pendingBullet || /^[\u2022\u25aa\u25cf\u25e6\u2023\-*\u2013]\s*/.test(bare);
+      var isTech = /^(technologies|technology|tech stack|tools)\s*:/i.test(bare);
+      if (isTitle) inBlock = false;
+      if (isTech || /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{4}\s*(-|\u2013|\u2014|to)/i.test(bare)) inBlock = true;
+      if (isBullet || (inBlock && !isTech && !isTitle && !/^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{4}/i.test(bare))) {
+        var btxt = l.replace(/^[\u2022\u25aa\u25cf\u25e6\u2023\-*\u2013]\s*/, '');
+        pendingBullet = false;
+        if (!btxt.replace(/[\u0003\u0004]/g, '').trim()) continue;       // never print an empty bullet
+        if (!ul) { out += '<ul>'; ul = true; }
+        out += '<li>' + lineHtml(btxt) + '</li>'; continue;
+      }
+      close(); out += '<div class="ln' + (isTitle ? ' ttl' : isTech ? ' tech' : '') + '">' + lineHtml(l) + '</div>';
     }
     close();
     if (skillsAt >= 0 && !addPlaced) { out += addHtml; addPlaced = true; }
@@ -160,12 +187,20 @@
     }
 
     var uniq = fixes.filter(function (f, x) { return fixes.indexOf(f) === x; });
+    // Things I do NOT change by myself (I never invent facts), but the student should look at
+    var weak = ['responsible for', 'worked on', 'helped in', 'helped with', 'hardworking', 'hard working', 'team player', 'good communication', 'passionate', 'reputed company', 'various']
+      .filter(function (w) { return plain.toLowerCase().indexOf(w) >= 0; });
+    var personal = /date of birth|\bdob\b|marital status|father'?s name/i.test(plain);
+    var noNumbers = (plain.match(/\d+\s*%|\d{2,}\+?\s*(users|students|records|tests|apis?|pages|projects)/gi) || []).length === 0;
     var tip = '<div class="tips"><b>Your enhanced resume</b><ul>' +
       '<li>All your original lines are kept as they were. Layout is simplified to one clean ATS-friendly column (columns/tables from the original may merge).</li>' +
       '<li>' + (uniq.length ? 'Spelling fixed (blue on screen): <code>' + uniq.slice(0, 14).map(esc).join(', ') + '</code>' : 'No known spelling mistakes found. Still read it once yourself.') + '</li>' +
       '<li>' + (fromProfile.length ? 'Skills added from your profile (green): <b>' + fromProfile.map(esc).join(', ') + '</b>' : 'Your profile skills are already in the resume (or your profile has none yet).') + '</li>' +
       (missing.length ? '<li>Missing keywords for your track. Tick <u>only the ones you really know</u>:<br>' + missing.map(function (k) { return '<label><input type="checkbox" data-kw="' + esc(k) + '"> ' + esc(k) + '</label>'; }).join('') + '</li>' : '') +
-      '<li>To save: click the button, choose <b>Save as PDF</b> as destination, and untick <b>Headers and footers</b>.</li></ul>' +
+      (weak.length ? '<li>Wording I did <u>not</u> change (only you know the real facts): <code>' + weak.slice(0, 8).map(esc).join(', ') + '</code>. Say what you built and the result instead. Use <a href="resumepolish.html">Resume Polish</a> for help.</li>' : '') +
+      (noNumbers ? '<li>No numbers found (users, percent, tests). Add one real number to each project.</li>' : '') +
+      (personal ? '<li>Remove date of birth and similar personal details. They are not needed.</li>' : '') +
+      '<li>To save: click the button and choose <b>Save as PDF</b> as destination (NOT "Microsoft Print to PDF": that one saves a picture of the text, so recruiters\' systems and ApplyRank cannot read it).</li></ul>' +
       '<button onclick="window.print()">Print / Save as PDF</button> <a href="profile.html">Edit profile</a></div>';
     var data = JSON.stringify({ base: fromProfile, opt: missing }).replace(/</g, '\\u003c');
     var script = 'var D=' + data + ';function r(){var a=D.base.slice();document.querySelectorAll("input[data-kw]").forEach(function(c){if(c.checked)a.push(c.getAttribute("data-kw"))});' +

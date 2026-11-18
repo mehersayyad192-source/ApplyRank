@@ -15,5 +15,5 @@ body.auth-body{margin:0;min-height:100vh;display:flex;align-items:center;justify
 .auth-btn:disabled{opacity:.6;cursor:wait}
 .auth-msg{min-height:20px;margin-top:14px;font-size:14px;font-weight:600}
 .auth-msg.ok{color:#10b981}.auth-msg.err{color:#f87171}
-.auth-back{display:inline-block;margin-top:18px;color:#9fb0ff;font-size:13px;text-decoration:none}
+.auth-back{display:inline-block;margin-top:10px;padding:8px 0;color:#9fb0ff;font-size:13px;text-decoration:none}
 .auth-hint{font-size:12px;color:#8b93c4;margin-top:6px}

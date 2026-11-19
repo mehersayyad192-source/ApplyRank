@@ -2694,3 +2694,27 @@ display: none !important;
   .nt-rdot { position: relative; }
   .nt-rdot::after { content: ''; position: absolute; inset: -14px -6px; }
 }
+
+
+/* ============================================================
+   SMALL POLISH (hover, press and keyboard focus)
+   The site already has page-enter and scroll animations. These rules only add a little feel to cards and buttons.
+   Nothing here changes the layout.
+   ============================================================ */
+.track-item-cyber-card:hover { border-color: rgba(99, 102, 241, 0.55); box-shadow: 0 14px 34px rgba(99, 102, 241, 0.22); transform: translateY(-4px); }
+.utility-action-card { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.utility-action-card:hover { transform: translateY(-3px); }
+
+/* buttons move down a tiny bit when pressed, so a tap feels real */
+.select-path-action-btn, .state1-choose-track-btn, .gateway-improve-skills-btn, .form-submit-continue-btn,
+.pf-btn, .nav-menu-btn, .silly-talk-action-btn { transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease; }
+.select-path-action-btn:active, .state1-choose-track-btn:active, .gateway-improve-skills-btn:active, .form-submit-continue-btn:active,
+.pf-btn:active, .nav-menu-btn:active, .silly-talk-action-btn:active { transform: scale(.97); }
+
+/* a clear ring when someone uses the keyboard (Tab key) */
+a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid #10b981; outline-offset: 3px; border-radius: 8px; }
+
+/* people who switched off animations in their phone or computer settings get no motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

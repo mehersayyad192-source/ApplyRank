@@ -67,7 +67,7 @@
 
     if (hints.count) warn.push(hints.count + ' line(s) have no numbers (yellow on screen). Add a real number where you can, e.g. "reduced load time by 40%".');
     var missing = analysis && analysis.missing && analysis.missing.length ? analysis.missing : [];
-    var tipBox = '<div class="tips"><b>Before you send this</b><ul>' + warn.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') +
+    var tipBox = '<div class="tips"><b>Before you send this</b><ul>' + '<li class="must">To save: press the button below. In the print window, set <b>Destination = Save as PDF</b> (Chrome\'s own option). Do NOT choose "Microsoft Print to PDF": that one saves a picture of the text, so recruiters\' systems and ApplyRank cannot read your resume.</li>' + + warn.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') +
       (missing.length ? '<li>Keywords recruiters look for in your track: <b>' + missing.map(esc).join(', ') + '</b>. Add one <u>only if you really know it</u>.</li>' : '') +
       (!warn.length && !missing.length ? '<li>Looks complete. Check spelling once more.</li>' : '') +
       '</ul><button onclick="window.print()">Print / Save as PDF</button> <a href="profile.html">Edit profile</a></div>';
@@ -92,7 +92,7 @@
       'p{margin:0}ul{margin:4px 0 6px 18px;padding:0}li{margin:1px 0}.row{display:flex;justify-content:space-between;gap:12px}.tech{font-size:12.5px;color:#444;font-style:italic}' +
       'a{color:#1a56c4}.nonum{background:#fff6c2}.ttl{font-weight:700;margin-top:8px}' +
       '.tips{max-width:794px;margin:16px auto 0;background:rgba(17,24,52,.92);color:#dfe3f8;border:1px solid rgba(99,102,241,.45);border-left:5px solid #10b981;border-radius:14px;padding:14px 20px;font:500 13.5px/1.5 "Plus Jakarta Sans",sans-serif}.tips b{color:#fff}.tips ul{margin-top:6px}.tips a{color:#9fb0ff}.tips u{text-decoration-color:#10b981}' +
-      '.tips button{background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;border:0;border-radius:10px;padding:9px 18px;font:700 13px "Plus Jakarta Sans",sans-serif;cursor:pointer;margin:6px 12px 0 0;box-shadow:0 0 18px rgba(99,102,241,.55)}' +
+      '.tips .must{background:rgba(245,158,11,.16);border-radius:8px;padding:8px 10px;margin:8px 0;list-style-position:inside}.tips button{background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;border:0;border-radius:10px;padding:9px 18px;font:700 13px "Plus Jakarta Sans",sans-serif;cursor:pointer;margin:6px 12px 0 0;box-shadow:0 0 18px rgba(99,102,241,.55)}' +
       '@media print{body{background:#fff;padding:0}.tips,.brand{display:none}.page{box-shadow:none;margin:0;padding:0;max-width:none}.nonum{background:none}@page{size:A4;margin:16mm}}' +
       '.add{background:#d9f7e8}.fix{background:#e0e4ff}mark{color:inherit}.tips label{display:inline-block;margin:4px 14px 0 0}.tips code{color:#9fe8c8}.ln{margin:2px 0}.addrow{margin-top:4px}' +
       '@media print{mark,.add,.fix{background:none}}' +
@@ -193,6 +193,7 @@
     var personal = /date of birth|\bdob\b|marital status|father'?s name/i.test(plain);
     var noNumbers = (plain.match(/\d+\s*%|\d{2,}\+?\s*(users|students|records|tests|apis?|pages|projects)/gi) || []).length === 0;
     var tip = '<div class="tips"><b>Your enhanced resume</b><ul>' +
+      '<li class="must">To save: press the button below. In the print window, set <b>Destination = Save as PDF</b> (Chrome\'s own option). Do NOT choose "Microsoft Print to PDF": that one saves a picture of the text, so recruiters\' systems and ApplyRank cannot read your resume.</li>' +
       '<li>All your original lines are kept as they were. Layout is simplified to one clean ATS-friendly column (columns/tables from the original may merge).</li>' +
       '<li>' + (uniq.length ? 'Spelling fixed (blue on screen): <code>' + uniq.slice(0, 14).map(esc).join(', ') + '</code>' : 'No known spelling mistakes found. Still read it once yourself.') + '</li>' +
       '<li>' + (fromProfile.length ? 'Skills added from your profile (green): <b>' + fromProfile.map(esc).join(', ') + '</b>' : 'Your profile skills are already in the resume (or your profile has none yet).') + '</li>' +
@@ -200,7 +201,6 @@
       (weak.length ? '<li>Wording I did <u>not</u> change (only you know the real facts): <code>' + weak.slice(0, 8).map(esc).join(', ') + '</code>. Say what you built and the result instead. Use <a href="resumepolish.html">Resume Polish</a> for help.</li>' : '') +
       (noNumbers ? '<li>No numbers found (users, percent, tests). Add one real number to each project.</li>' : '') +
       (personal ? '<li>Remove date of birth and similar personal details. They are not needed.</li>' : '') +
-      '<li>To save: click the button and choose <b>Save as PDF</b> as destination (NOT "Microsoft Print to PDF": that one saves a picture of the text, so recruiters\' systems and ApplyRank cannot read it).</li></ul>' +
       '<button onclick="window.print()">Print / Save as PDF</button> <a href="profile.html">Edit profile</a></div>';
     var data = JSON.stringify({ base: fromProfile, opt: missing }).replace(/</g, '\\u003c');
     var script = 'var D=' + data + ';function r(){var a=D.base.slice();document.querySelectorAll("input[data-kw]").forEach(function(c){if(c.checked)a.push(c.getAttribute("data-kw"))});' +

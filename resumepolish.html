@@ -27,7 +27,6 @@
       <a href="#" class="nav-menu-btn" onclick="location.href='jobs.html'"><span class="material-symbols-outlined nav-icon">work</span>JOB CORNER</a>
       <a href="#" class="nav-menu-btn" onclick="location.href='skilltest.html'"><span class="material-symbols-outlined nav-icon">quiz</span>SKILL TEST</a>
       <a href="ailab.html" class="nav-menu-btn active-tab"><span class="material-symbols-outlined nav-icon">psychology</span><span class="btn-text">AI LAB</span></a>
-      <a href="#" class="nav-menu-btn" onclick="location.href='resume.html'"><span class="material-symbols-outlined nav-icon">description</span>RESUME</a>
       <a href="#" class="nav-menu-btn" onclick="location.href='notifications.html'"><span class="material-symbols-outlined nav-icon">notifications</span><span class="btn-text">NOTIFICATIONS</span></a>
     </div>
     <div class="nav-profile-right-zone" style="cursor:pointer" onclick="location.href='profile.html'">
@@ -47,6 +46,16 @@
     <!-- ===== Step 1: paste the code ===== -->
     <section class="al-panel">
       <h2>1. Your resume text</h2>
+      <div id="fileCard" class="al-filecard" hidden>
+        <div class="al-fc-tick">&#10003;</div>
+        <h3 id="fcName">Your resume is ready</h3>
+        <p>Great job &mdash; you are one step closer to a stronger resume. Your file is read only in memory and never saved.</p>
+        <ul>
+          <li>Press <b>Polish my resume</b> below to get your score.</li>
+          <li>Tip: keep every bullet short, start with a strong verb, and add one number.</li>
+          <li>Want to type instead? Press <b>Remove file</b>.</li>
+        </ul>
+      </div>
       <textarea id="code" class="al-editor" spellcheck="false" placeholder="Paste your resume text here. Please remove your name and home address first..."></textarea>
       <div class="al-row">
         <span class="al-count" id="count">0 characters</span>
@@ -73,7 +82,7 @@
       <div class="al-consent" id="consentBox" hidden>
         <label class="al-check">
           <input type="checkbox" id="consent">
-          <span>I agree to send my resume text to Google's Gemini AI. I removed my name and address. I understand that email, phone and links are hidden by the page first. The free Gemini tier may let Google use what is sent to improve its products.
+          <span>I agree to send my resume text to Google's Gemini AI. I removed my name and address. I understand that email, phone and links are hidden by the page first.
             <span class="al-note">The free Gemini tier may let Google use what is sent to improve its products.</span></span>
         </label>
       </div>
@@ -140,6 +149,8 @@
     function setFile(f) {
       pickedFile = f;
       $('code').disabled = !!f; $('example').disabled = !!f;
+      $('code').hidden = !!f; $('fileCard').hidden = !f;
+      if (f) $('fcName').textContent = f.name + ' is ready';
       $('code').placeholder = f ? 'Using your file. Press Remove file to paste text instead.' : 'Paste your resume text here. Please remove your name and home address first...';
       $('fileName').textContent = f ? f.name : '';
       $('clearFile').hidden = !f;

@@ -1,4 +1,4 @@
- /* ApplyRank — intro.css : welcome walk-in for index.html (prefix sbi-) */
+/* ApplyRank — intro.css : welcome walk-in for index.html (prefix sbi-) */
 #sbIntro{position:fixed;inset:0;z-index:8000;background:radial-gradient(ellipse at 50% 70%,#1e1b4b 0%,#0b0f19 60%,#070a13 100%);overflow:hidden;transition:opacity .7s ease,visibility .7s;font-family:'Plus Jakarta Sans','Inter',sans-serif}
 #sbIntro.sbi-out{opacity:0;visibility:hidden}
 .sbi-dots{position:absolute;left:0;right:0;top:-180px;bottom:-180px;background-image:radial-gradient(rgba(129,140,248,.55) 1px,transparent 1.5px),radial-gradient(rgba(52,211,153,.4) 1px,transparent 1.5px);background-size:90px 90px,180px 180px;background-position:0 0,40px 60px;opacity:.35;animation:sbiDrift 24s linear infinite;will-change:transform}

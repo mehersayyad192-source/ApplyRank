@@ -40,3 +40,12 @@
 .jl-save.on{background:rgba(16,185,129,.15);border-color:#10b981;color:#10b981}
 .jl-pager{display:flex;justify-content:center;align-items:center;gap:14px;margin:18px 0 6px;font:600 13px 'Plus Jakarta Sans',sans-serif;color:#9fb0ff}
 .jl-pager button:disabled{opacity:.4;cursor:not-allowed}
+
+/* ---- small polish ---- */
+/* more air between the "VERIFIED TEST READY" chip and the button under it */
+.track-soon-chip, .track-ready-chip { margin: 14px 0 16px; }
+.jl-card { transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.jl-card:hover { transform: translateY(-2px); }
+.jl-btn { transition: transform .15s ease, box-shadow .2s ease; }
+.jl-btn:hover { box-shadow: 0 0 24px rgba(99, 102, 241, .75); }
+.jl-btn:active { transform: scale(.97); }

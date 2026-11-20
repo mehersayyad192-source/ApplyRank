@@ -109,3 +109,10 @@
   .al-back { display: inline-block; padding: 12px 0; }
   .al-btn { min-height: 42px; }
 }
+
+/* file-ready card shown instead of the empty text box */
+.al-filecard{border:1px dashed #10b981;border-radius:14px;background:rgba(16,185,129,.07);padding:26px 22px;min-height:200px}
+.al-filecard h3{margin:10px 0 6px;font-size:20px;word-break:break-word}
+.al-filecard p{opacity:.85;margin:0 0 10px;font-size:14px}
+.al-filecard ul{margin:0;padding-left:20px;font-size:14px;line-height:1.7;opacity:.9}
+.al-fc-tick{width:42px;height:42px;border-radius:50%;background:#10b981;color:#06231a;font-weight:800;font-size:22px;display:flex;align-items:center;justify-content:center}

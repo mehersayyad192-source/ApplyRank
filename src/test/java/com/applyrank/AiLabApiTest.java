@@ -112,4 +112,18 @@ class AiLabApiTest {
         mvc.perform(post("/api/ailab/page-audit").header("Authorization", t).contentType(MediaType.APPLICATION_JSON)
                 .content("{\"text\":\"" + "a".repeat(41000) + "\"}")).andExpect(status().isBadRequest());
     }
+
+    // ---- Resume Polish: private details must be hidden before anything else happens ----
+    @Test
+    void resumePolishHidesEmailAndNeedsLogin() throws Exception {
+        mvc.perform(post("/api/ailab/resume-polish").contentType(MediaType.APPLICATION_JSON).content("{\"text\":\"x\"}"))
+                .andExpect(status().isUnauthorized());
+        String t = login("lab-resume@x.dev");
+        String out = mvc.perform(post("/api/ailab/resume-polish").header("Authorization", t).contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"text\":\"Meher\\nmeher@example.com\\nSkills\\nJava\\nProjects\\n- Built an app\"}"))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        assertTrue(out.contains("event: rules"), out);
+        assertTrue(out.contains("[email]"), out);
+        assertTrue(!out.contains("meher@example.com"), "the email must never come back in the stream");
+    }
 }

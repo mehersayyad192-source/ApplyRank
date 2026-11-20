@@ -1,6 +1,7 @@
 package com.applyrank.security;
 
 import io.jsonwebtoken.Claims;
+import com.applyrank.repo.UserRepository;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,9 +20,11 @@ import java.util.List;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwt;
+    private final UserRepository users;
 
-    public JwtAuthFilter(JwtService jwt) {
+    public JwtAuthFilter(JwtService jwt, UserRepository users) {
         this.jwt = jwt;
+        this.users = users;
     }
 
     @Override
@@ -32,6 +35,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             try {
                 Claims claims = jwt.parse(header.substring(7));
                 String role = claims.get("role", String.class);
+                // A token is only good while its version number is the same as the user's current number.
+                // (Tokens made before this feature have no "v", so I treat them as version 0.)
+                Integer v = claims.get("v", Integer.class);
+                int tokenVersion = v == null ? 0 : v;
+                var user = users.findByEmail(claims.getSubject()).orElse(null);
+                if (user == null || user.getTokenVersion() != tokenVersion) {
+                    chain.doFilter(request, response);       // logged out / password reset / deleted account: stay anonymous (401)
+                    return;
+                }
                 var auth = new UsernamePasswordAuthenticationToken(
                         claims.getSubject(), null, List.of(new SimpleGrantedAuthority("ROLE_" + role)));
                 SecurityContextHolder.getContext().setAuthentication(auth);

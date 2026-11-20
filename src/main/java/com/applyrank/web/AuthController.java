@@ -59,7 +59,7 @@ public class AuthController {
         notes.push(u, "updates", "Welcome to ApplyRank!", "Take the skill test to earn your verified rank.",
                 "Take the test", "link", "skilltest.html");
         sendVerification(u);
-        return new AuthResponse(jwt.generate(u.getEmail(), u.getRole().name()), mapper.user(u));
+        return new AuthResponse(jwt.generate(u.getEmail(), u.getRole().name(), u.getTokenVersion()), mapper.user(u));
     }
 
     @PostMapping("/login")
@@ -80,7 +80,7 @@ public class AuthController {
         }
         attempts.succeeded(email, ip);
         audit.record(email, "LOGIN_OK", null, ip);
-        return new AuthResponse(jwt.generate(u.getEmail(), u.getRole().name()), mapper.user(u));
+        return new AuthResponse(jwt.generate(u.getEmail(), u.getRole().name(), u.getTokenVersion()), mapper.user(u));
     }
 
     private void sendVerification(User u) {
@@ -108,12 +108,26 @@ public class AuthController {
                 .orElseThrow(() -> new ApiException(HttpStatus.BAD_REQUEST, "This reset link is invalid or has expired. Please ask for a new one."));
         User u = t.getUser();
         u.setPasswordHash(encoder.encode(r.password()));
+        u.bumpTokenVersion();                // everyone who was logged in with the old password is logged out now
         users.save(u);
         attempts.succeeded(u.getEmail(), req.getRemoteAddr());
         audit.record(u.getEmail(), "PASSWORD_RESET_DONE", null, req.getRemoteAddr());
         notes.push(u, "updates", "Password changed", "Your password was just changed. If this was not you, reset it again right away.",
                 "Open", "link", "index.html");
         return Map.of("message", "Password changed. You can log in now.");
+    }
+
+    /**
+     * "Log out everywhere": adding 1 to the version makes every token of this user (this browser and any other
+     * device) invalid immediately. Before this, logout only deleted the token in the browser.
+     */
+    @PostMapping("/logout")
+    public Map<String, String> logout(HttpServletRequest req) {
+        User u = current.get();
+        u.bumpTokenVersion();
+        users.save(u);
+        audit.record(u.getEmail(), "LOGOUT", "all sessions ended", req.getRemoteAddr());
+        return Map.of("message", "Logged out.");
     }
 
     @PostMapping("/verify-email")

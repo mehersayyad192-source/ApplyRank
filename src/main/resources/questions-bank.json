@@ -418,5 +418,1013 @@
   ],
   "answer": 0,
   "why": "A transaction lets you inspect the affected rows and roll back mistakes. Previewing with a SELECT that uses the same WHERE catches most errors."
+ },
+ {
+  "domain": "ml",
+  "type": "Concept",
+  "q": "Your model scores 99% on the training data but only 70% on new data. What is this problem called?",
+  "code": null,
+  "options": [
+   "Underfitting",
+   "Normalisation",
+   "Overfitting",
+   "Regularisation"
+  ],
+  "answer": 2,
+  "why": "The model memorised the training data (including its noise) instead of learning patterns that generalise to new data."
+ },
+ {
+  "domain": "ml",
+  "type": "Predict the output",
+  "q": "What does this Python code print?",
+  "code": "preds = [1 if s > 0.5 else 0 for s in [0.2, 0.9, 0.6]]\nprint(preds)",
+  "options": [
+   "[0, 1, 1]",
+   "[1, 1, 1]",
+   "[0, 1, 0]",
+   "[False, True, True]"
+  ],
+  "answer": 0,
+  "why": "0.2 is not above 0.5 so it becomes 0; 0.9 and 0.6 are above 0.5 so both become 1."
+ },
+ {
+  "domain": "ml",
+  "type": "Spot the bug",
+  "q": "What is wrong with the order of these two lines?",
+  "code": "X_scaled = scaler.fit_transform(X)\nX_train, X_test = train_test_split(X_scaled)",
+  "options": [
+   "fit_transform cannot be used on arrays",
+   "train_test_split must run before importing sklearn",
+   "Nothing is wrong. Scaling before splitting is the recommended way",
+   "The scaler learns from the test data too (data leakage). Split first, then fit the scaler on the training part only"
+  ],
+  "answer": 3,
+  "why": "Fitting the scaler on all rows lets information from the test set leak into training, so the test score looks better than it really is."
+ },
+ {
+  "domain": "ml",
+  "type": "Scenario",
+  "q": "A fraud dataset has 99% normal and 1% fraud transactions. Your model predicts \"normal\" every time. What accuracy does it get and what is the problem?",
+  "code": null,
+  "options": [
+   "1% accuracy",
+   "99% accuracy, but it catches no fraud. Accuracy is misleading on imbalanced data",
+   "50% accuracy",
+   "99% accuracy and it is a great model"
+  ],
+  "answer": 1,
+  "why": "With imbalanced classes, accuracy hides the failure. Look at recall, precision or F1 for the rare class instead."
+ },
+ {
+  "domain": "ml",
+  "type": "Concept",
+  "q": "Which metric matters most when missing a real positive case is very costly (for example, disease screening)?",
+  "code": null,
+  "options": [
+   "Precision",
+   "Recall",
+   "Accuracy",
+   "Mean squared error"
+  ],
+  "answer": 1,
+  "why": "Recall = real positives found / all real positives. High recall means few real cases are missed."
+ },
+ {
+  "domain": "ml",
+  "type": "Predict the output",
+  "q": "What does this Python code print?",
+  "code": "a = [1, 2, 3]\nb = a\nb.append(4)\nprint(len(a))",
+  "options": [
+   "3",
+   "Error",
+   "None",
+   "4"
+  ],
+  "answer": 3,
+  "why": "b = a does not copy the list. Both names point to the same list, so appending through b changes a too."
+ },
+ {
+  "domain": "ml",
+  "type": "Concept",
+  "q": "What does a learning rate that is too high usually cause in gradient descent?",
+  "code": null,
+  "options": [
+   "The loss can bounce around or diverge because each step overshoots the minimum",
+   "Training always finishes faster with a better result",
+   "The model memorises the data",
+   "Fewer features are used"
+  ],
+  "answer": 0,
+  "why": "Big steps jump over the lowest point. A smaller learning rate takes steadier steps."
+ },
+ {
+  "domain": "ml",
+  "type": "Scenario",
+  "q": "Your regression model has a high error on both the training data and the test data. What is the most likely issue?",
+  "code": null,
+  "options": [
+   "Overfitting",
+   "Data leakage",
+   "Underfitting: the model is too simple for the data",
+   "Too much training data"
+  ],
+  "answer": 2,
+  "why": "If even the training error is high, the model cannot capture the pattern. Try better features or a more flexible model."
+ },
+ {
+  "domain": "ml",
+  "type": "Spot the bug",
+  "q": "Why is this evaluation wrong?",
+  "code": "y_pred = model.predict(X_test)\nprint(accuracy_score(y_train, y_pred))",
+  "options": [
+   "accuracy_score only works on training data",
+   "predict() must be called on X_train",
+   "The print statement is not allowed",
+   "Predictions for the test set are compared with the training labels. It should use y_test"
+  ],
+  "answer": 3,
+  "why": "Predictions must be compared with the true labels of the same rows, so y_test goes with X_test."
+ },
+ {
+  "domain": "ml",
+  "type": "Concept",
+  "q": "Which technique turns a category like \"red\", \"green\", \"blue\" into numbers without implying any order?",
+  "code": null,
+  "options": [
+   "Label encoding with 1, 2, 3",
+   "One-hot encoding",
+   "Standardisation",
+   "Dropout"
+  ],
+  "answer": 1,
+  "why": "One-hot encoding makes one 0/1 column per category, so the model does not think blue > red."
+ },
+ {
+  "domain": "ml",
+  "type": "Scenario",
+  "q": "5-fold cross-validation gives accuracies 0.91, 0.90, 0.92, 0.55, 0.91. What should you do?",
+  "code": null,
+  "options": [
+   "Average them and ignore the 0.55",
+   "Delete the other four folds",
+   "Investigate the odd fold (unshuffled or unusual data?) before trusting the average",
+   "Increase the learning rate"
+  ],
+  "answer": 2,
+  "why": "One very different fold is a warning sign of how the data was split or of a data problem. Find the cause first."
+ },
+ {
+  "domain": "ml",
+  "type": "Concept",
+  "q": "Why do we keep a separate test set that the model never trains on?",
+  "code": null,
+  "options": [
+   "To measure how the model performs on data it has not seen",
+   "To make training faster",
+   "To remove duplicate rows",
+   "To increase the number of features"
+  ],
+  "answer": 0,
+  "why": "Only unseen data shows whether the model generalises. Scores on training data are too optimistic."
+ },
+ {
+  "domain": "devops",
+  "type": "Concept",
+  "q": "What is the main benefit of a Docker container compared with installing an app directly on a server?",
+  "code": null,
+  "options": [
+   "It makes the app run faster than native code",
+   "It removes the need for an operating system",
+   "It automatically writes the tests",
+   "The app runs with its own dependencies in an isolated, repeatable package"
+  ],
+  "answer": 3,
+  "why": "\"It works on my machine\" problems shrink because the container carries the app and everything it needs."
+ },
+ {
+  "domain": "devops",
+  "type": "Predict the output",
+  "q": "What does this shell script print?",
+  "code": "x=5\nif [ $x -gt 3 ]; then echo big; else echo small; fi",
+  "options": [
+   "small",
+   "big",
+   "5",
+   "Nothing, it is a syntax error"
+  ],
+  "answer": 1,
+  "why": "-gt means \"greater than\". 5 is greater than 3, so the first branch runs."
+ },
+ {
+  "domain": "devops",
+  "type": "Spot the bug",
+  "q": "Why is this Dockerfile slow to rebuild after every small code change?",
+  "code": "FROM node:20\nCOPY . .\nRUN npm install\nCMD [\"node\", \"app.js\"]",
+  "options": [
+   "Copying all the source before npm install invalidates the cached install layer on every change. Copy package.json first",
+   "CMD must be written before FROM",
+   "node:20 cannot run npm",
+   "RUN is not allowed in a Dockerfile"
+  ],
+  "answer": 0,
+  "why": "Docker caches each layer. Copy package*.json, run npm install, and only then copy the rest, so dependencies are reinstalled only when they change."
+ },
+ {
+  "domain": "devops",
+  "type": "Scenario",
+  "q": "A new deployment broke production five minutes ago. What is the best first action?",
+  "code": null,
+  "options": [
+   "Edit the code directly on the production server",
+   "Wait to see if it fixes itself",
+   "Roll back to the last working version, then investigate",
+   "Delete the logs to save space"
+  ],
+  "answer": 2,
+  "why": "Restore service first, then find the cause calmly with the logs. Fixing live on the server is risky."
+ },
+ {
+  "domain": "devops",
+  "type": "Concept",
+  "q": "What does CI (Continuous Integration) mean?",
+  "code": null,
+  "options": [
+   "Deploying to production once a year",
+   "Manually copying files to the server",
+   "Every code change is automatically built and tested, many times a day",
+   "Backing up the database every night"
+  ],
+  "answer": 2,
+  "why": "CI catches broken code early because each change is merged and tested automatically."
+ },
+ {
+  "domain": "devops",
+  "type": "Concept",
+  "q": "What is \"Infrastructure as Code\" (for example Terraform)?",
+  "code": null,
+  "options": [
+   "Describing servers and networks in versioned files so they can be created repeatably",
+   "Writing code that only runs on physical servers",
+   "Storing passwords in source code",
+   "Drawing network diagrams by hand"
+  ],
+  "answer": 0,
+  "why": "Because the setup is in files, you can review it, version it in Git and recreate the same environment any time."
+ },
+ {
+  "domain": "devops",
+  "type": "Predict the output",
+  "q": "What does this command print?",
+  "code": "echo \"a,b,c\" | cut -d',' -f2",
+  "options": [
+   "a",
+   "b",
+   "c",
+   "a,b,c"
+  ],
+  "answer": 1,
+  "why": "cut splits the text at commas (-d) and -f2 picks the second field, which is b."
+ },
+ {
+  "domain": "devops",
+  "type": "Scenario",
+  "q": "Your server disk is 100% full and the app is crashing. Which command helps you find the folders using the most space?",
+  "code": null,
+  "options": [
+   "ping",
+   "chmod 777",
+   "git log",
+   "du -sh * (and sort by size)"
+  ],
+  "answer": 3,
+  "why": "du (\"disk usage\") shows how much space each folder uses. ping tests the network and chmod changes permissions."
+ },
+ {
+  "domain": "devops",
+  "type": "Concept",
+  "q": "How is a container different from a virtual machine?",
+  "code": null,
+  "options": [
+   "A container shares the host OS kernel and is lighter. A VM includes a full guest operating system",
+   "A container needs a full OS each. A VM does not",
+   "They are exactly the same thing",
+   "VMs always start faster than containers"
+  ],
+  "answer": 0,
+  "why": "Sharing the kernel makes containers small and quick to start. VMs are heavier but isolate more strongly."
+ },
+ {
+  "domain": "devops",
+  "type": "Spot the bug",
+  "q": "What is the security problem here?",
+  "code": "# docker-compose.yml (committed to GitHub)\nenvironment:\n  DB_PASSWORD: \"Sup3rS3cret!\"",
+  "options": [
+   "YAML does not allow quotes",
+   "Passwords must be shorter",
+   "A secret is committed to the repository. Use environment secrets or a secrets manager instead",
+   "environment cannot be used in a compose file"
+  ],
+  "answer": 2,
+  "why": "Anyone who can read the repo can read the password, and it stays in the Git history. Keep secrets out of code."
+ },
+ {
+  "domain": "devops",
+  "type": "Scenario",
+  "q": "You want to release a new version with no downtime. Which approach helps?",
+  "code": null,
+  "options": [
+   "Stop the app, deploy, and start it again at night",
+   "Deploy straight to the only server and hope",
+   "Delete the old version first",
+   "Rolling or blue-green deployment: start the new version, move traffic over, then stop the old one"
+  ],
+  "answer": 3,
+  "why": "Running old and new side by side lets traffic shift smoothly, and you can switch back if something is wrong."
+ },
+ {
+  "domain": "devops",
+  "type": "Concept",
+  "q": "What does a health check (liveness / readiness probe) do?",
+  "code": null,
+  "options": [
+   "It measures how many users signed up",
+   "It lets the platform detect an unhealthy app and restart it or stop sending traffic to it",
+   "It encrypts the database",
+   "It compresses images"
+  ],
+  "answer": 1,
+  "why": "Probes let Kubernetes or a load balancer react automatically when an instance stops responding."
+ },
+ {
+  "domain": "mobile",
+  "type": "Concept",
+  "q": "Why should network calls NOT run on the main (UI) thread of a mobile app?",
+  "code": null,
+  "options": [
+   "They can freeze the screen, and the OS may show \"App not responding\" or close the app",
+   "Mobile networks only work for background apps",
+   "The UI thread has no internet permission",
+   "It makes the battery charge faster"
+  ],
+  "answer": 0,
+  "why": "The main thread draws the screen and handles touches. If it waits for the network, the app looks frozen."
+ },
+ {
+  "domain": "mobile",
+  "type": "Predict the output",
+  "q": "What does this Kotlin code print?",
+  "code": "val list = listOf(1, 2, 3, 4)\nprintln(list.filter { it % 2 == 0 }.map { it * 10 })",
+  "options": [
+   "[10, 30]",
+   "[2, 4]",
+   "[20, 40]",
+   "[20, 40, 60]"
+  ],
+  "answer": 2,
+  "why": "filter keeps the even numbers (2 and 4), then map multiplies each by 10."
+ },
+ {
+  "domain": "mobile",
+  "type": "Spot the bug",
+  "q": "Why does the counter on screen never change?",
+  "code": "const [count, setCount] = useState(0);\nconst add = () => { count = count + 1; };",
+  "options": [
+   "useState cannot hold numbers",
+   "State must be changed with setCount(). Assigning to count does not update the screen (and a const cannot be reassigned)",
+   "add must be an async function",
+   "count must be a string"
+  ],
+  "answer": 1,
+  "why": "The setter tells React to re-render. Writing to the variable directly does nothing visible."
+ },
+ {
+  "domain": "mobile",
+  "type": "Scenario",
+  "q": "Users on slow, unreliable networks see a blank feed screen. What is a good improvement?",
+  "code": null,
+  "options": [
+   "Remove the feed",
+   "Force users to switch to Wi-Fi",
+   "Increase the app icon size",
+   "Cache the last data locally and show it immediately, then refresh in the background with clear loading and error states"
+  ],
+  "answer": 3,
+  "why": "Showing saved content first makes the app feel fast and useful even on a bad connection."
+ },
+ {
+  "domain": "mobile",
+  "type": "Concept",
+  "q": "What does the app lifecycle mean for your code?",
+  "code": null,
+  "options": [
+   "Apps always run until the user closes them",
+   "Only the developer decides when the app stops",
+   "The lifecycle only matters on tablets",
+   "The OS can pause, stop or kill your screen at any time, so you must save state and release resources"
+  ],
+  "answer": 3,
+  "why": "Because the system can reclaim memory, important data must be saved when the screen goes to the background."
+ },
+ {
+  "domain": "mobile",
+  "type": "Concept",
+  "q": "Why do apps ask for permissions (camera, location) at runtime?",
+  "code": null,
+  "options": [
+   "It makes the app faster",
+   "The user stays in control of their privacy, so the app should explain why it needs it and cope if the answer is no",
+   "Permissions are only needed for games",
+   "Stores require every app to ask for every permission"
+  ],
+  "answer": 1,
+  "why": "Ask only for what you need, at the moment you need it, and handle a refusal politely."
+ },
+ {
+  "domain": "mobile",
+  "type": "Scenario",
+  "q": "A list of 5,000 items scrolls slowly and uses a lot of memory. Which approach helps most?",
+  "code": null,
+  "options": [
+   "Create all 5,000 views at once",
+   "Reduce the screen brightness",
+   "Use a lazy / recycling list (RecyclerView, LazyColumn, FlatList) that creates only the visible rows",
+   "Use a bigger font"
+  ],
+  "answer": 2,
+  "why": "Recycling lists reuse a few row views as you scroll, which keeps memory and work small."
+ },
+ {
+  "domain": "mobile",
+  "type": "Predict the output",
+  "q": "What does this Dart code print?",
+  "code": "void main() {\n  var a = [1, 2, 3];\n  var b = a.map((x) => x * 2).toList();\n  print(b.length + a.first);\n}",
+  "options": [
+   "4",
+   "7",
+   "3",
+   "It does not compile"
+  ],
+  "answer": 0,
+  "why": "b is [2, 4, 6] so its length is 3. a.first is 1. 3 + 1 = 4."
+ },
+ {
+  "domain": "mobile",
+  "type": "Concept",
+  "q": "What is the difference between a native app and a cross-platform app (Flutter, React Native)?",
+  "code": null,
+  "options": [
+   "Native apps cannot use the camera",
+   "Native apps are written separately for each platform. Cross-platform apps share most code between Android and iOS",
+   "Cross-platform apps only run in the browser",
+   "There is no difference"
+  ],
+  "answer": 1,
+  "why": "Cross-platform saves effort by sharing code. Native gives the deepest access to each platform."
+ },
+ {
+  "domain": "mobile",
+  "type": "Scenario",
+  "q": "Where should an app store a login token securely?",
+  "code": null,
+  "options": [
+   "In a public text file on the SD card",
+   "Hard-coded in the source code",
+   "In the app name",
+   "In the platform secure storage (Android Keystore / EncryptedSharedPreferences, iOS Keychain)"
+  ],
+  "answer": 3,
+  "why": "Secure storage encrypts the value with keys protected by the device, so other apps cannot read it."
+ },
+ {
+  "domain": "mobile",
+  "type": "Spot the bug",
+  "q": "What is wrong with this Kotlin code, called from onCreate()?",
+  "code": "fun loadUser() {\n  val user = api.getUser()   // network call\n  nameText.text = user.name\n}",
+  "options": [
+   "A blocking network call runs on the main thread. Move it to a coroutine or background thread",
+   "nameText cannot show text",
+   "onCreate cannot call functions",
+   "user.name must be uppercase"
+  ],
+  "answer": 0,
+  "why": "Do the slow work in the background, then update the screen with the result."
+ },
+ {
+  "domain": "mobile",
+  "type": "Concept",
+  "q": "What is a responsive layout on mobile?",
+  "code": null,
+  "options": [
+   "Every device gets the same fixed pixel layout",
+   "The app works only in portrait",
+   "A UI that adapts to different screen sizes, orientations and densities",
+   "Images are removed on small phones"
+  ],
+  "answer": 2,
+  "why": "Phones, tablets and foldables all differ, so layouts use flexible units and constraints instead of fixed positions."
+ },
+ {
+  "domain": "qa",
+  "type": "Concept",
+  "q": "What is the difference between the severity and the priority of a bug?",
+  "code": null,
+  "options": [
+   "They mean exactly the same thing",
+   "Severity is how badly it affects the system. Priority is how soon it should be fixed",
+   "Severity is set by the customer budget and priority by the tester mood",
+   "Priority is only used for passed tests"
+  ],
+  "answer": 1,
+  "why": "A typo in the company name can be low severity but high priority. A crash in a rarely used screen can be high severity but lower priority."
+ },
+ {
+  "domain": "qa",
+  "type": "Predict the output",
+  "q": "What does this JavaScript code print?",
+  "code": "const nums = [10, 9, 1];\nnums.sort();\nconsole.log(nums.join(','));",
+  "options": [
+   "1,9,10",
+   "10,9,1",
+   "9,10,1",
+   "1,10,9"
+  ],
+  "answer": 3,
+  "why": "Without a compare function, sort() orders items as TEXT. As text, \"1\" comes before \"10\", which comes before \"9\"."
+ },
+ {
+  "domain": "qa",
+  "type": "Spot the bug",
+  "q": "Why is this automated UI test flaky (sometimes passes, sometimes fails)?",
+  "code": "await page.click('#save');\nawait sleep(500);\nexpect(await page.text('#msg')).toBe('Saved');",
+  "options": [
+   "click cannot be awaited",
+   "toBe is deprecated",
+   "A fixed sleep only guesses the waiting time. Wait explicitly until the message appears",
+   "#msg is an invalid selector"
+  ],
+  "answer": 2,
+  "why": "If the server is slower than 500 ms the check runs too early. Explicit waits for the element make the test reliable."
+ },
+ {
+  "domain": "qa",
+  "type": "Scenario",
+  "q": "A password field must accept 8 to 20 characters. Which lengths make the best boundary-value test?",
+  "code": null,
+  "options": [
+   "7, 8, 20 and 21",
+   "1, 10, 15 and 30",
+   "8, 9, 10 and 11",
+   "0, 5, 25 and 100"
+  ],
+  "answer": 0,
+  "why": "Bugs hide at the edges. Test just outside and just inside each limit: 7 (too short), 8 (ok), 20 (ok), 21 (too long)."
+ },
+ {
+  "domain": "qa",
+  "type": "Concept",
+  "q": "What is regression testing?",
+  "code": null,
+  "options": [
+   "Re-running tests after a change to check that the old features still work",
+   "Testing only the new feature",
+   "Testing code before it is written",
+   "Measuring how fast the app loads"
+  ],
+  "answer": 0,
+  "why": "New changes can accidentally break existing features. Regression tests catch that."
+ },
+ {
+  "domain": "qa",
+  "type": "Concept",
+  "q": "What does the test pyramid recommend?",
+  "code": null,
+  "options": [
+   "Mostly manual UI tests",
+   "Only end-to-end tests",
+   "Many fast unit tests, fewer integration tests and only a few slow end-to-end UI tests",
+   "Equal numbers of every kind of test"
+  ],
+  "answer": 2,
+  "why": "Small tests are fast and pinpoint problems. Big UI tests are slow and fragile, so keep them few."
+ },
+ {
+  "domain": "qa",
+  "type": "Scenario",
+  "q": "You found a bug but cannot reproduce it a second time. What should you do?",
+  "code": null,
+  "options": [
+   "Ignore it. It was a one-time glitch",
+   "Close it as invalid",
+   "Tell the developer it is their fault",
+   "Report it with everything you know (steps tried, environment, logs, screenshots) and mark it as intermittent"
+  ],
+  "answer": 3,
+  "why": "Intermittent bugs are real. Good evidence lets someone else spot the pattern later."
+ },
+ {
+  "domain": "qa",
+  "type": "Concept",
+  "q": "What is the difference between verification and validation?",
+  "code": null,
+  "options": [
+   "They are the same word",
+   "Verification asks \"are we building the product right?\" (matches the spec). Validation asks \"are we building the right product?\" (meets user needs)",
+   "Verification is done only by users and validation only by developers",
+   "Validation means fixing bugs"
+  ],
+  "answer": 1,
+  "why": "A product can match its spec perfectly and still not solve the user problem. You need both."
+ },
+ {
+  "domain": "qa",
+  "type": "Predict the output",
+  "q": "What does this JavaScript code print?",
+  "code": "console.log(0.1 + 0.2 === 0.3);",
+  "options": [
+   "true",
+   "undefined",
+   "false",
+   "It throws an error"
+  ],
+  "answer": 2,
+  "why": "Decimal fractions like 0.1 cannot be stored exactly in binary, so 0.1 + 0.2 is 0.30000000000000004. Compare with a small tolerance."
+ },
+ {
+  "domain": "qa",
+  "type": "Concept",
+  "q": "What makes a good bug report?",
+  "code": null,
+  "options": [
+   "A clear title, exact steps to reproduce, expected vs actual result and the environment",
+   "\"It does not work\" with a screenshot of the desktop",
+   "A long story about the developer",
+   "Only the tester opinion of the severity"
+  ],
+  "answer": 0,
+  "why": "The developer should be able to repeat your steps and see the same problem without asking questions."
+ },
+ {
+  "domain": "qa",
+  "type": "Scenario",
+  "q": "The release is tomorrow and you cannot test everything. How do you choose what to test first?",
+  "code": null,
+  "options": [
+   "Test the easiest features first",
+   "Risk-based: test the most critical and most recently changed features first",
+   "Test in alphabetical order",
+   "Skip testing"
+  ],
+  "answer": 1,
+  "why": "When time is short, put effort where a failure would hurt most and where bugs are most likely."
+ },
+ {
+  "domain": "qa",
+  "type": "Spot the bug",
+  "q": "These tests pass alone, but the second one fails when the first is skipped. What is the cause?",
+  "code": "let user;\ntest('creates user', () => { user = createUser('a'); });\ntest('reads user', () => { expect(user.name).toBe('a'); });",
+  "options": [
+   "expect must come before test",
+   "let cannot be used in tests",
+   "createUser must be async",
+   "The tests share state and depend on their order. Each test should set up its own data"
+  ],
+  "answer": 3,
+  "why": "Independent tests can run in any order, in parallel, and one failure does not cause others."
+ },
+ {
+  "domain": "cyber",
+  "type": "Concept",
+  "q": "What is SQL injection?",
+  "code": null,
+  "options": [
+   "A way to speed up SQL queries",
+   "A backup method for databases",
+   "An attacker puts SQL code into an input so the database runs commands it should not",
+   "A type of firewall"
+  ],
+  "answer": 2,
+  "why": "If user input is joined into a query as text, it can change the meaning of the query."
+ },
+ {
+  "domain": "cyber",
+  "type": "Predict the output",
+  "q": "What does this browser JavaScript print?",
+  "code": "const input = '<b>hi</b>';\nconst div = document.createElement('div');\ndiv.textContent = input;\nconsole.log(div.innerHTML);",
+  "options": [
+   "&lt;b&gt;hi&lt;/b&gt;",
+   "<b>hi</b>",
+   "hi",
+   "It throws an error"
+  ],
+  "answer": 0,
+  "why": "textContent treats the value as plain text, so the browser escapes < and >. This is why textContent is safe against XSS."
+ },
+ {
+  "domain": "cyber",
+  "type": "Spot the bug",
+  "q": "What is the vulnerability here, and what is the standard fix?",
+  "code": "String sql = \"SELECT * FROM users WHERE name = '\" + name + \"'\";",
+  "options": [
+   "Buffer overflow. Use a bigger string",
+   "Cross-site scripting. Encode the output",
+   "Nothing. String concatenation is safe",
+   "SQL injection. Use a PreparedStatement with parameters"
+  ],
+  "answer": 3,
+  "why": "Parameters keep data separate from the SQL command, so input can never change the query."
+ },
+ {
+  "domain": "cyber",
+  "type": "Scenario",
+  "q": "You get an email: \"Your bank account is locked. Click this link and enter your password.\" What should you do?",
+  "code": null,
+  "options": [
+   "Click and log in quickly",
+   "Do not click. It is probably phishing. Open the bank website yourself or call the bank",
+   "Forward it to all your friends",
+   "Reply with your password so they can verify you"
+  ],
+  "answer": 1,
+  "why": "Phishing creates panic to make you act quickly. Always go to the real site on your own."
+ },
+ {
+  "domain": "cyber",
+  "type": "Concept",
+  "q": "What is the best way to store user passwords?",
+  "code": null,
+  "options": [
+   "In plain text so you can email them back",
+   "As a salted hash made with a slow algorithm such as bcrypt or Argon2",
+   "Encrypted with a key stored in the same table",
+   "As a fast MD5 hash without a salt"
+  ],
+  "answer": 1,
+  "why": "Hashing is one-way, the salt makes every hash unique, and a slow algorithm makes guessing expensive for attackers."
+ },
+ {
+  "domain": "cyber",
+  "type": "Concept",
+  "q": "What is XSS (Cross-Site Scripting)?",
+  "code": null,
+  "options": [
+   "Stealing passwords by guessing them",
+   "A denial-of-service attack",
+   "Encrypting website traffic",
+   "Injecting malicious script into a page that other users then run in their browser"
+  ],
+  "answer": 3,
+  "why": "The attacker script runs with the same rights as the real page, so it can steal sessions or change the page."
+ },
+ {
+  "domain": "cyber",
+  "type": "Concept",
+  "q": "What does HTTPS (TLS) protect against?",
+  "code": null,
+  "options": [
+   "Someone on the network reading or changing the data between the browser and the server",
+   "SQL injection on the server",
+   "A user choosing a weak password",
+   "Bugs in the application code"
+  ],
+  "answer": 0,
+  "why": "HTTPS encrypts data in transit. It does not fix flaws inside the application itself."
+ },
+ {
+  "domain": "cyber",
+  "type": "Concept",
+  "q": "What is multi-factor authentication (MFA)?",
+  "code": null,
+  "options": [
+   "Using a very long password",
+   "Logging in from two devices",
+   "Requiring two or more kinds of proof, such as a password plus a code from your phone",
+   "Having two accounts"
+  ],
+  "answer": 2,
+  "why": "Even if a password leaks, the attacker still needs the second factor."
+ },
+ {
+  "domain": "cyber",
+  "type": "Scenario",
+  "q": "A website shows another user's order when you change /orders/101 to /orders/102 in the address. What is this flaw?",
+  "code": null,
+  "options": [
+   "A slow database",
+   "Weak encryption on the disk",
+   "A DNS error",
+   "Broken access control (IDOR). The server must check that the user owns that record"
+  ],
+  "answer": 3,
+  "why": "Hiding links is not security. Every request must be checked against the logged-in user on the server."
+ },
+ {
+  "domain": "cyber",
+  "type": "Spot the bug",
+  "q": "What is the security problem in this server code?",
+  "code": "app.post('/login', (req, res) => {\n  console.log('Login:', req.body.email, req.body.password);\n  // ...\n});",
+  "options": [
+   "console.log is not allowed on servers",
+   "Passwords are written to the logs in plain text. Never log secrets",
+   "req.body cannot contain emails",
+   "post must be get"
+  ],
+  "answer": 1,
+  "why": "Logs are often shared and stored for a long time. Anyone who can read them could read every password."
+ },
+ {
+  "domain": "cyber",
+  "type": "Predict the output",
+  "q": "What does this Python code print?",
+  "code": "import hashlib\nprint(hashlib.sha256(b'a').hexdigest() == hashlib.sha256(b'a').hexdigest())",
+  "options": [
+   "False",
+   "It throws an error",
+   "True",
+   "It depends on the time of day"
+  ],
+  "answer": 2,
+  "why": "A hash function is deterministic: the same input always gives the same hash. That is why passwords need a unique salt."
+ },
+ {
+  "domain": "cyber",
+  "type": "Scenario",
+  "q": "A developer pushed an AWS secret key to a public GitHub repository. What is the right first step?",
+  "code": null,
+  "options": [
+   "Revoke and rotate the key immediately, then remove it from the code",
+   "Delete the file and carry on. It is gone now",
+   "Wait and see if anyone notices",
+   "Only make the repository private"
+  ],
+  "answer": 0,
+  "why": "Bots scan GitHub within minutes. Once a key was public, assume it is stolen and replace it. Removing the file is not enough."
+ },
+ {
+  "domain": "uiux",
+  "type": "Concept",
+  "q": "What does UX (user experience) design focus on?",
+  "code": null,
+  "options": [
+   "Only colours and fonts",
+   "Only the database design",
+   "Only the company logo",
+   "How easy, useful and pleasant the product is to use, not only how it looks"
+  ],
+  "answer": 3,
+  "why": "UI is the look of the screens. UX is the whole experience of getting something done with them."
+ },
+ {
+  "domain": "uiux",
+  "type": "Predict the output",
+  "q": "What colour is the text of <p class=\"note\">Hello</p> with these CSS rules?",
+  "code": "p { color: red; }\n.note { color: blue; }",
+  "options": [
+   "Red. The first rule always wins",
+   "Blue. A class selector is more specific than an element selector",
+   "Purple. The colours mix",
+   "Black. The rules cancel each other"
+  ],
+  "answer": 1,
+  "why": "When two rules match, the more specific selector wins. A class beats a plain element name."
+ },
+ {
+  "domain": "uiux",
+  "type": "Spot the bug",
+  "q": "Why is this button a design and accessibility problem?",
+  "code": ".btn {\n  background: #ffffff;\n  color: #dddddd;\n}",
+  "options": [
+   "Light grey text on white has very low contrast, so it is hard to read for many people",
+   "#ffffff is not valid CSS",
+   "btn is a reserved word",
+   "color cannot be set on buttons"
+  ],
+  "answer": 0,
+  "why": "Low contrast hurts people with low vision, and everyone in bright sunlight."
+ },
+ {
+  "domain": "uiux",
+  "type": "Scenario",
+  "q": "In a usability test, 4 out of 5 users cannot find the \"Checkout\" button. What should you do?",
+  "code": null,
+  "options": [
+   "Tell users to read the manual",
+   "Ignore it. One user found it",
+   "Treat it as a design problem: make the button more visible and clearly labelled, then test again",
+   "Move it to the footer in a lighter colour"
+  ],
+  "answer": 2,
+  "why": "If most users fail at the same step, the design is at fault, not the users."
+ },
+ {
+  "domain": "uiux",
+  "type": "Concept",
+  "q": "According to WCAG, what is the minimum contrast ratio for normal body text against its background (level AA)?",
+  "code": null,
+  "options": [
+   "1.5 : 1",
+   "2 : 1",
+   "4.5 : 1",
+   "10 : 1"
+  ],
+  "answer": 2,
+  "why": "WCAG AA asks for at least 4.5:1 for normal text (3:1 for large text)."
+ },
+ {
+  "domain": "uiux",
+  "type": "Concept",
+  "q": "What is a wireframe?",
+  "code": null,
+  "options": [
+   "A simple, low-detail layout sketch that shows where things go",
+   "A final high-fidelity animation",
+   "A coded website",
+   "A brand colour palette"
+  ],
+  "answer": 0,
+  "why": "Wireframes let you test structure and flow cheaply before spending time on colours and details."
+ },
+ {
+  "domain": "uiux",
+  "type": "Concept",
+  "q": "What is the purpose of a design system?",
+  "code": null,
+  "options": [
+   "To store user passwords",
+   "Reusable components, colours and rules so the product looks and behaves consistently",
+   "To speed up the server",
+   "To write the marketing text"
+  ],
+  "answer": 1,
+  "why": "A shared set of building blocks saves time and keeps every screen consistent."
+ },
+ {
+  "domain": "uiux",
+  "type": "Concept",
+  "q": "What does \"mobile-first\" design mean?",
+  "code": null,
+  "options": [
+   "Only design for phones and never for desktop",
+   "Design the desktop first and shrink it",
+   "Publish in the mobile app store first",
+   "Design the small-screen layout first, then enhance it for bigger screens"
+  ],
+  "answer": 3,
+  "why": "Starting small forces you to keep only what matters, and it is easier to add to a simple layout than to remove from a crowded one."
+ },
+ {
+  "domain": "uiux",
+  "type": "Scenario",
+  "q": "A signup form has 14 required fields and many users give up. What is the best improvement?",
+  "code": null,
+  "options": [
+   "Remove or postpone non-essential fields, and split a long form into clear steps",
+   "Add more fields so the data is complete",
+   "Make the submit button smaller",
+   "Remove all labels"
+  ],
+  "answer": 0,
+  "why": "Every extra field costs you users. Ask only for what you really need now."
+ },
+ {
+  "domain": "uiux",
+  "type": "Concept",
+  "q": "What does Fitts's Law say?",
+  "code": null,
+  "options": [
+   "People remember at most 7 items",
+   "People scan pages in an F-shape",
+   "Bigger and closer targets are faster and easier to hit, so make important buttons large and easy to reach",
+   "Colours change people's mood"
+  ],
+  "answer": 2,
+  "why": "It is why primary buttons are large and why thumb-friendly zones matter on phones."
+ },
+ {
+  "domain": "uiux",
+  "type": "Scenario",
+  "q": "Which error message is the most helpful for a user?",
+  "code": null,
+  "options": [
+   "\"Error 4021\"",
+   "\"Invalid input!\"",
+   "\"Something went wrong.\"",
+   "\"Password must be at least 8 characters. Add 2 more.\""
+  ],
+  "answer": 3,
+  "why": "A good error message says what happened and how to fix it, in plain words."
+ },
+ {
+  "domain": "uiux",
+  "type": "Spot the bug",
+  "q": "Why is this a problem for accessibility?",
+  "code": "<img src=\"chart.png\">",
+  "options": [
+   "PNG files cannot be used on the web",
+   "It has no alt text, so screen reader users get no description of the image",
+   "img needs a closing </img> tag",
+   "src must be written in capital letters"
+  ],
+  "answer": 1,
+  "why": "The alt attribute describes the image for screen readers and shows when the image fails to load."
  }
 ]

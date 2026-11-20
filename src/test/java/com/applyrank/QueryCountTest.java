@@ -74,6 +74,7 @@ class QueryCountTest {
                         .header("Authorization", "Bearer " + jwt.generate(rec.getEmail(), "RECRUITER")))
                 .andExpect(status().isOk());
         long statements = stats.getPrepareStatementCount();
-        assertTrue(statements <= 10, "Expected a handful of SQL statements, but got " + statements + " (N+1 problem?)");
+        // 12 (was 10): the login filter now does one extra lookup to check the token version. An N+1 bug would still give 30+.
+        assertTrue(statements <= 12, "Expected a handful of SQL statements, but got " + statements + " (N+1 problem?)");
     }
 }

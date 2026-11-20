@@ -1,6 +1,7 @@
 # ApplyRank Backend (Spring Boot 3 + Java 17)
 
-The API address is set in one place: `api.js` (the `BASE` line at the top).
+REST API for the ApplyRank site: login (JWT), profile, jobs & applications, server-side skill-test scoring
+(the verified rank can't be faked from the browser), notifications, recruiter ranking, resume check.
 
 ## Run (VS Code)
 1. Install **JDK 17+** (Temurin) and **Maven 3.9+**. Check: `java -version`, `mvn -version`.

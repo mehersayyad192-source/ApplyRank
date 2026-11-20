@@ -1,5 +1,8 @@
-.DS_Store
-Thumbs.db
+target/
+data/
+uploads/
+.idea/
+*.iml
 .vscode/
 node_modules/
 .env

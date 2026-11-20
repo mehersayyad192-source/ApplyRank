@@ -161,6 +161,7 @@
           <h3>Privacy &amp; data</h3>
           <p style="font-size:13px;opacity:.8;margin:6px 0 12px">Your data belongs to you. Recruiters see your full e-mail only after they shortlist you. You can download everything we store, or delete your account for good.</p>
           <button type="button" class="pf-btn" id="pfExport">Download my data</button>
+          <button type="button" class="pf-btn" id="pfExportJson" style="margin-left:8px;opacity:.75">Technical copy (JSON)</button>
           <button type="button" class="pf-btn" id="pfDelete" style="margin-left:8px;color:#ef4444">Delete my account</button>
           <p id="pfPrivMsg" style="font-size:13px;margin-top:10px;min-height:16px"></p>
         </section>
@@ -219,13 +220,42 @@
   (function(){
     const msg = t => { const m = $('pfPrivMsg'); if (m) m.textContent = t; };
     const live = () => window.ApplyRankAPI && ApplyRankAPI.isLoggedIn();
+    // turns the data into plain readable lines (no curly brackets)
+    function nice(k){ return String(k).replace(/([a-z])([A-Z])/g,'$1 $2').replace(/_/g,' ').replace(/^./,function(c){return c.toUpperCase();}); }
+    function lines(v, ind){
+      var pad = new Array(ind + 1).join('  '), out = [];
+      if (Array.isArray(v)) {
+        if (!v.length) return [pad + '(nothing)'];
+        v.forEach(function(it, i){
+          if (it && typeof it === 'object') { out.push(pad + '#' + (i + 1)); out = out.concat(lines(it, ind + 1)); }
+          else out.push(pad + '- ' + it);
+        });
+      } else if (v && typeof v === 'object') {
+        Object.keys(v).forEach(function(k){
+          var x = v[k];
+          if (x && typeof x === 'object') { out.push(pad + nice(k) + ':'); out = out.concat(lines(x, ind + 1)); }
+          else out.push(pad + nice(k) + ': ' + (x === null || x === '' ? '-' : x));
+        });
+      } else out.push(pad + v);
+      return out;
+    }
+    function save(name, text, type){
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([text], { type: type }));
+      a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    }
     $('pfExport').addEventListener('click', () => {
       if (!live()) return msg('Log in with the backend running to download your data.');
       ApplyRankAPI.exportMyData().then(d => {
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' }));
-        a.download = 'my-applyrank-data.json'; a.click(); msg('Downloaded.');
+        var head = 'MY APPLYRANK DATA\nDownloaded on ' + new Date().toLocaleString() + '\n' + new Array(40).join('=') + '\n\n';
+        save('my-applyrank-data.txt', head + lines(d, 0).join('\n') + '\n', 'text/plain');
+        msg('Downloaded as my-applyrank-data.txt. Check your Downloads folder.');
       }, e => msg(e.message));
+    });
+    var jb = $('pfExportJson');
+    if (jb) jb.addEventListener('click', () => {
+      if (!live()) return msg('Log in with the backend running to download your data.');
+      ApplyRankAPI.exportMyData().then(d => { save('my-applyrank-data.json', JSON.stringify(d, null, 2), 'application/json'); msg('Downloaded the JSON copy.'); }, e => msg(e.message));
     });
     $('pfDelete').addEventListener('click', () => {
       if (!live()) return msg('Log in with the backend running to delete your account.');

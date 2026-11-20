@@ -46,6 +46,16 @@
     <!-- ===== Step 1: paste the code ===== -->
     <section class="al-panel">
       <h2>1. Your resume text</h2>
+      <div id="fileCard" class="al-filecard" hidden>
+        <div class="al-fc-tick">&#10003;</div>
+        <h3 id="fcName">Your resume is ready</h3>
+        <p>Great job &mdash; you are one step closer to a stronger resume. Your file is read only in memory and never saved.</p>
+        <ul>
+          <li>Press <b>Polish my resume</b> below to get your score.</li>
+          <li>Tip: keep every bullet short, start with a strong verb, and add one number.</li>
+          <li>Want to type instead? Press <b>Remove file</b>.</li>
+        </ul>
+      </div>
       <textarea id="code" class="al-editor" spellcheck="false" placeholder="Paste your resume text here. Please remove your name and home address first..."></textarea>
       <div class="al-row">
         <span class="al-count" id="count">0 characters</span>
@@ -139,6 +149,8 @@
     function setFile(f) {
       pickedFile = f;
       $('code').disabled = !!f; $('example').disabled = !!f;
+      $('code').hidden = !!f; $('fileCard').hidden = !f;
+      if (f) $('fcName').textContent = f.name + ' is ready';
       $('code').placeholder = f ? 'Using your file. Press Remove file to paste text instead.' : 'Paste your resume text here. Please remove your name and home address first...';
       $('fileName').textContent = f ? f.name : '';
       $('clearFile').hidden = !f;

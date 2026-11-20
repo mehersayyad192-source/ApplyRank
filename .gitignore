@@ -1,11 +1,15 @@
-.DS_Store
-Thumbs.db
+target/
+data/
+uploads/
+.idea/
+*.iml
 .vscode/
 *.log
 
 # secrets and local settings - NEVER commit these
 .env
 .env.*
+!.env.example
 application-local.properties
 *.pem
 *.key

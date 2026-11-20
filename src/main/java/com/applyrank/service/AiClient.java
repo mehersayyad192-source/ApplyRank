@@ -38,7 +38,7 @@ public class AiClient {
     private final HttpClient http = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
 
     public AiClient(@Value("${app.ai.api-key:}") String apiKey,
-                    @Value("${app.ai.model:gemini-3.8-flash}") String model,
+                    @Value("${app.ai.model:gemini-3.5-flash-lite}") String model,
                     @Value("${app.ai.base-url:https://generativelanguage.googleapis.com/v1beta}") String baseUrl,
                     ObjectMapper json) {
         this.apiKey = apiKey == null ? "" : apiKey.trim();

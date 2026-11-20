@@ -133,7 +133,7 @@ mvn spring-boot:run
 
 Menu ke naam Google thoda badal sakta hai. Agar button alag naam ka ho to screenshot bhej do.
 
-Free tier ke baare me: Google ne abhi (Nov 2026) model `gemini-3.8-flash` ko free list me rakha hai, par **limits ke numbers publish nahi kiye** (account me login karke dikhte hain), aur free tier me **Google tumhara bheja hua text apne products behtar karne me use kar sakta hai**. Isiliye page par consent checkbox hai aur AI ko code bhejne se pehle poochha jata hai. Model ka naam badalna ho to `$env:GEMINI_MODEL="naya-naam"`.
+Free tier ke baare me: Google ne abhi (Nov 2026) model `gemini-3.8-flash` ko free list me rakha tha (tumhari key par ye naam nahi chala, `gemini-3.5-flash-lite` chala, isliye ab wahi default hai), par **limits ke numbers publish nahi kiye** (account me login karke dikhte hain), aur free tier me **Google tumhara bheja hua text apne products behtar karne me use kar sakta hai**. Isiliye page par consent checkbox hai aur AI ko code bhejne se pehle poochha jata hai. Model ka naam badalna ho to `$env:GEMINI_MODEL="naya-naam"`.
 
 ### Step 5: Ab AI ke saath chalao
 Code Review page -> example daalo -> **Also get friendly AI advice** tick -> agreement tick -> **Analyze**. Neeche "AI coach" me text live likhta dikhega.

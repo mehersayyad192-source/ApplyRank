@@ -1,0 +1,12 @@
+flowchart TB
+  U([User in browser]) -->|HTML CSS JS| FE[Frontend<br/>static pages<br/>Live Server :5500]
+  FE -->|REST + JWT<br/>fetch / SSE stream| API[Spring Boot API :8080]
+  subgraph BE[Backend]
+    API --> SEC[Security<br/>JwtAuthFilter, rate limit, CORS]
+    SEC --> CTL[Controllers<br/>auth, jobs, tests, resume,<br/>ailab, profile, privacy,<br/>notifications, recruiter]
+    CTL --> SVC[Services<br/>scoring, resume reader,<br/>code review, scam check,<br/>page audit, resume polish]
+    SVC --> REPO[(JPA repositories)]
+  end
+  REPO --> DB[(H2 default<br/>MySQL profile)]
+  SVC -.optional, with consent.-> AI[Google Gemini API]
+  SVC -.optional.-> MAIL[SMTP e-mail]

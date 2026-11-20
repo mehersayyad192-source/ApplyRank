@@ -90,3 +90,9 @@ To print every SQL statement the app runs: `mvn spring-boot:run -Dspring-boot.ru
 - Anyone can register as RECRUITER (demo). In production: invite codes or admin approval.
 - Resume Polish works on pasted text only (no PDF upload to the AI) and cannot find a person's name or address, so the page asks the user to remove them. On the free Gemini tier Google may use sent text to improve its products, so the demo uses fake data.
 - Change `app.jwt.secret` before deploying (use an environment variable).
+
+## Docs and config files
+- `docs/ARCHITECTURE.md` shows how the pieces fit together (diagram + request flow).
+- `.env.example` lists every setting name. Copy the names into your terminal as environment variables. Never put real secrets in files.
+- `LICENSE` is MIT.
+- `.github/workflows/ci.yml` runs `mvn verify` on every push, so GitHub shows a green tick when all tests pass.

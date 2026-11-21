@@ -15,3 +15,12 @@ jobs:
           cache: maven
       - name: Build and run all tests
         run: mvn -B verify
+
+  docker:
+    # proves that the Docker image (the one the live server uses) really builds
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the Docker image
+        run: docker build -t applyrank-backend .

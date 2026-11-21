@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.applyrank.AiLabApiTest
--------------------------------------------------------------------------------
-Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.687 s -- in com.applyrank.AiLabApiTest

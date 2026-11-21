@@ -2,9 +2,12 @@ package com.applyrank.config;
 
 import com.applyrank.model.*;
 import com.applyrank.repo.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 /** First start only: creates demo logins and a few jobs (all companies are fictional). */
 @Component
@@ -13,16 +16,30 @@ public class DataSeeder implements CommandLineRunner {
     private final ProfileRepository profiles;
     private final JobRepository jobs;
     private final PasswordEncoder encoder;
+    private final String candidatePassword;
+    private final String recruiterPassword;
 
-    public DataSeeder(UserRepository users, ProfileRepository profiles, JobRepository jobs, PasswordEncoder encoder) {
+    /**
+     * The demo passwords come from settings. On your own computer they have easy defaults (see application.properties).
+     * On the LIVE server (prod profile) there is no default: if you do not set DEMO_CANDIDATE_PASSWORD / DEMO_RECRUITER_PASSWORD,
+     * the account gets a random password nobody knows. Otherwise anyone reading GitHub could log in as the recruiter.
+     */
+    public DataSeeder(UserRepository users, ProfileRepository profiles, JobRepository jobs, PasswordEncoder encoder,
+                      @Value("${app.demo.candidate-password:}") String candidatePassword,
+                      @Value("${app.demo.recruiter-password:}") String recruiterPassword) {
         this.users = users; this.profiles = profiles; this.jobs = jobs; this.encoder = encoder;
+        this.candidatePassword = candidatePassword; this.recruiterPassword = recruiterPassword;
+    }
+
+    private static String orRandom(String pw) {
+        return (pw == null || pw.isBlank()) ? UUID.randomUUID() + "-" + UUID.randomUUID() : pw;
     }
 
     @Override
     public void run(String... args) {
         if (users.count() > 0) return;
-        User rec = user("recruiter@applyrank.dev", "Recruiter@123", "Demo Recruiter", Role.RECRUITER);
-        user("demo@applyrank.dev", "Demo@1234", "Demo Candidate", Role.CANDIDATE);
+        User rec = user("recruiter@applyrank.dev", orRandom(recruiterPassword), "Demo Recruiter", Role.RECRUITER);
+        user("demo@applyrank.dev", orRandom(candidatePassword), "Demo Candidate", Role.CANDIDATE);
 
         job(rec, "React Frontend Developer", "Nimbus Labs", "Remote", "frontend", "6-9 LPA", 40, "React,JavaScript,CSS,Git",
                 "Build fast, accessible interfaces for a SaaS dashboard.");

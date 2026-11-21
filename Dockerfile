@@ -13,4 +13,6 @@ RUN groupadd -r app && useradd -r -g app app && mkdir -p /app/uploads /app/data 
 COPY --from=build --chown=app:app /app/target/*.jar app.jar
 USER app
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+# JAVA_OPTS lets you pass extra options. MaxRAMPercentage keeps Java inside the small memory of a free host.
+ENV JAVA_OPTS=""
+ENTRYPOINT ["sh","-c","exec java $JAVA_OPTS -XX:MaxRAMPercentage=70 -jar app.jar"]

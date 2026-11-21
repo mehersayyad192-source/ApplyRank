@@ -77,7 +77,7 @@ public class SecurityConfig {
         c.setAllowedOriginPatterns(Arrays.asList(origins.split("\\s*,\\s*")));
         c.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         c.setAllowedHeaders(List.of("*"));
-        c.setExposedHeaders(List.of("X-Total-Count", "X-Total-Pages"));      // so the browser may read paging info
+        c.setExposedHeaders(List.of("X-Total-Count", "X-Total-Pages", "X-Request-Id"));      // so the browser may read paging info
         c.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource src = new UrlBasedCorsConfigurationSource();
         src.registerCorsConfiguration("/**", c);

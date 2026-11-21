@@ -1,0 +1,38 @@
+name: Live smoke test
+# Run this by hand after every deploy: Actions tab -> "Live smoke test" -> Run workflow -> paste your Render address.
+# It also runs every day by itself, so you notice if the live site is down.
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Backend address, for example https://applyrank-api.onrender.com'
+        required: true
+  schedule:
+    - cron: '30 3 * * *'
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the live backend
+        env:
+          # for the daily run, store the address once under: Settings -> Secrets and variables -> Actions -> Variables -> LIVE_API_URL
+          URL: ${{ github.event.inputs.url || vars.LIVE_API_URL }}
+        run: |
+          if [ -z "$URL" ]; then echo "No URL given. Skipping."; exit 0; fi
+          echo "Waking the server (a free host can need up to 2 minutes)..."
+          for i in $(seq 1 12); do
+            code=$(curl -s -o health.json -w "%{http_code}" --max-time 20 "$URL/api/health" || true)
+            echo "try $i -> HTTP $code"
+            [ "$code" = "200" ] && break
+            sleep 10
+          done
+          [ "$code" = "200" ] || { echo "Health check failed"; exit 1; }
+          cat health.json; echo
+          grep -q '"status":"ok"' health.json
+          echo "Jobs list (public) ..."
+          curl -sf --max-time 30 "$URL/api/jobs" > /dev/null
+          echo "Protected page must refuse anonymous users ..."
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 "$URL/api/profile")
+          echo "profile without login -> HTTP $code"
+          [ "$code" = "401" ] || [ "$code" = "403" ]
+          echo "Smoke test passed"

@@ -21,3 +21,12 @@ js/     scripts (api.js talks to the backend)
 .github/workflows/check.yml   checks JS syntax and links on every push
 ```
 How the whole system fits together: see `docs/ARCHITECTURE.md` in the backend repo.
+
+## Production features
+- **Docker** image (`Dockerfile`, `docker-compose.yml`), built and checked on every push.
+- **CI/CD:** GitHub Actions run all tests and the Docker build (`.github/workflows/ci.yml`); Render redeploys on every push. A daily **live smoke test** checks the deployed site (`smoke.yml`).
+- **Safe by default in production:** the `prod` profile refuses to start with a weak `JWT_SECRET`, turns off the H2 console and has no public demo passwords. Real client addresses are read behind the proxy, so the rate limit works per user.
+- **Logging:** one line per request with a request id and timing, slow requests flagged, no personal data in the log.
+- **Monitoring:** `/api/health` (with uptime) watched by an uptime monitor.
+- **Load test:** `loadtest/k6-smoke.js` (k6).
+- **Deploy guide:** `docs/DEPLOY.md`.

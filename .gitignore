@@ -1,8 +1,20 @@
+# build output and local databases (never commit these)
 target/
 data/
 uploads/
+*.mv.db
+*.trace.db
+*.log
+
+# editors
 .idea/
 *.iml
 .vscode/
 node_modules/
+
+# secrets: real settings files stay on your computer. Only .env.example (names only) goes to GitHub.
 .env
+.env.*
+!.env.example
+*.pem
+*.key

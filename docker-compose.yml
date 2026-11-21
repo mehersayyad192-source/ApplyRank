@@ -1,3 +1,4 @@
+# These passwords are for LOCAL use only. To change them: set DB_PASSWORD / DB_ROOT_PASSWORD in your terminal first.
 # One command:  docker compose up --build      (API on http://localhost:8080, Swagger on /swagger-ui.html)
 services:
   db:
@@ -5,12 +6,12 @@ services:
     environment:
       MYSQL_DATABASE: applyrank
       MYSQL_USER: applyrank
-      MYSQL_PASSWORD: applyrank_pw
-      MYSQL_ROOT_PASSWORD: root_pw
+      MYSQL_PASSWORD: ${DB_PASSWORD:-applyrank_pw}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_pw}
     volumes:
       - dbdata:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot_pw"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_ROOT_PASSWORD:-root_pw}"]
       interval: 5s
       timeout: 5s
       retries: 30
@@ -26,7 +27,7 @@ services:
       SPRING_PROFILES_ACTIVE: mysql
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/applyrank?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: applyrank
-      SPRING_DATASOURCE_PASSWORD: applyrank_pw
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-applyrank_pw}
       JWT_SECRET: ${JWT_SECRET:-dev-only-compose-secret-change-me-0123456789abcdef}
     volumes:
       - uploads:/app/uploads

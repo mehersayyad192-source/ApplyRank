@@ -10,10 +10,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <!-- style.css has the shared navbar and background, ailab.css has only the AI Lab parts -->
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="silly-robot.css">
-  <link rel="stylesheet" href="ailab.css">
-  <script src="api.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/silly-robot.css">
+  <link rel="stylesheet" href="css/ailab.css">
+  <script src="js/api.js"></script>
 </head>
 <body class="dashboard-body-canvas">
 
@@ -232,7 +232,7 @@
   </script>
 
   <!-- The calm ApplyRank helper (same file as every other page). If it fails to load the page still works. -->
-  <script src="silly-robot.js"></script>
+  <script src="js/silly-robot.js"></script>
   <script>
     if (typeof SillyBot !== 'undefined') {
       SillyBot.dock({ greet: 'Paste your page source and press Audit. I read it, I never run it. \ud83d\udc9a', tips: ['Phone view matters: most recruiters open links on a phone \ud83d\udcf1', 'Add alt text to every image \ud83d\uddbc\ufe0f', 'Run it again after fixing: watch the score go up \ud83d\udcc8'] });

@@ -17,8 +17,8 @@
   <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
   <!-- <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
    -->
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="silly-robot.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/silly-robot.css">
 </head>
 <body class="dashboard-body-canvas">
 
@@ -131,12 +131,12 @@
     
   </main>
   <script>window.__sbErr=[];window.addEventListener("error",function(e){window.__sbErr.push((e.message||"error")+" ["+String(e.filename||"").split("/").pop()+":"+e.lineno+"]");});</script>
-  <script src="silly-robot.js" onerror="window.__sbMissing=1"></script>
+  <script src="js/silly-robot.js" onerror="window.__sbMissing=1"></script>
   <script>
   /* If silly-robot.js did not load, keep the page working and show WHY (instead of crashing). */
   if (typeof SillyBot === "undefined") {
     (function () {
-      var why = window.__sbMissing ? "silly-robot.js was NOT FOUND. Put silly-robot.js in the same folder as this page and check the file name (no spaces or (1))." : "silly-robot.js loaded but has an error: " + (window.__sbErr && window.__sbErr[0] || "unknown") + ". Re-download the latest silly-robot.js.";
+      var why = window.__sbMissing ? "silly-robot.js was NOT FOUND. Check that js/silly-robot.js exists (the file name must have no spaces or (1))." : "silly-robot.js loaded but has an error: " + (window.__sbErr && window.__sbErr[0] || "unknown") + ". Re-download the latest silly-robot.js.";
       console.warn("[ApplyRank Coach] " + why);
       var noop = function () {}, P = function () { return Promise.resolve(); };
       function bot() { return { el: document.createElement("div"), set: noop, sit: noop, stand: noop, say: P, hush: noop, walkTo: P, hearts: noop, destroy: noop, nextTip: noop }; }

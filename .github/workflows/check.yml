@@ -1,0 +1,30 @@
+name: Frontend check
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: JavaScript files have no syntax errors
+        run: |
+          for f in js/*.js; do node --check "$f" || exit 1; done
+          echo "all JS files OK"
+      - name: Every local CSS, JS and page link exists
+        run: |
+          python3 - <<'PY'
+          import re, glob, os, sys
+          bad = 0
+          for page in glob.glob('*.html'):
+              text = open(page, encoding='utf-8').read()
+              for ref in re.findall(r'(?:href|src)="([^"#:?]+\.(?:css|js|html))"', text):
+                  if not os.path.exists(ref):
+                      print('MISSING in', page, '->', ref); bad += 1
+          print('missing links:', bad)
+          sys.exit(1 if bad else 0)
+          PY

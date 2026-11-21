@@ -1,9 +1,36 @@
 /* ApplyRank API client - talks to the Spring Boot backend.
    Fail-soft: if the backend is not running, every call rejects with {offline:true} and the pages
-   keep working in demo mode from localStorage. Change the URL below when you deploy. */
+   keep working in demo mode from localStorage. */
 (function () {
-  var BASE = window.APPLYRANK_API || 'http://localhost:8080/api';
+  // After you deploy the backend (Render), paste its address here. Only this one line needs to change.
+  var LIVE_API = 'https://YOUR-APP-NAME.onrender.com/api';
+  // On my own computer the site talks to localhost; on the internet it talks to LIVE_API.
+  var isLocal = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === 'file:';
+  var BASE = window.APPLYRANK_API || (isLocal ? 'http://localhost:8080/api' : LIVE_API);
+  // A free server falls asleep after ~15 minutes and needs up to a minute to wake up, so live requests may wait longer.
+  var TIMEOUT = isLocal ? 8000 : 75000;
   var TK = 'applyrank_token';
+
+  /* "Server is waking up" message. If any request is still waiting after 3.5 seconds, a small banner explains why. */
+  var waiting = 0, wakeTimers = [];
+  function banner() {
+    var b = document.getElementById('arWake');
+    if (!b) {
+      b = document.createElement('div'); b.id = 'arWake'; b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:99999;max-width:92vw;' +
+        'background:#111a2b;color:#e5e7eb;border:1px solid #6366f1;border-radius:12px;padding:10px 16px;font:600 13px system-ui,sans-serif;' +
+        'box-shadow:0 0 24px rgba(99,102,241,.45);display:none;text-align:center';
+      b.textContent = 'The server is waking up (free hosting sleeps when nobody uses it). This can take up to a minute. Please wait...';
+      (document.body || document.documentElement).appendChild(b);
+    }
+    return b;
+  }
+  function waitStart() {                       // call when a request begins; returns a function to call when it ends
+    var t = setTimeout(function () { waiting++; banner().style.display = 'block'; t = null; }, 3500);
+    return function () { if (t) clearTimeout(t); else { waiting = Math.max(0, waiting - 1); if (!waiting) banner().style.display = 'none'; } t = null; };
+  }
+  // On the internet, wake the server as soon as any page opens (so it is ready when the user clicks something).
+  if (!isLocal && BASE.indexOf('YOUR-APP-NAME') < 0) { try { fetch(BASE + '/health').catch(function () {}); } catch (e) {} }
 
   function token() { try { return localStorage.getItem(TK) || ''; } catch (e) { return ''; } }
   function setToken(t) { try { t ? localStorage.setItem(TK, t) : localStorage.removeItem(TK); } catch (e) {} }
@@ -17,9 +44,11 @@
       else { headers['Content-Type'] = 'application/json'; opt.body = JSON.stringify(body); }
     }
     var ctl = ('AbortController' in window) ? new AbortController() : null;
-    var timer = ctl ? setTimeout(function () { ctl.abort(); }, 8000) : null;
+    var timer = ctl ? setTimeout(function () { ctl.abort(); }, TIMEOUT) : null;
     if (ctl) opt.signal = ctl.signal;
+    var endWait = waitStart();
     return fetch(BASE + path, opt).then(function (res) {
+      endWait();
       if (timer) clearTimeout(timer);
       return res.text().then(function (txt) {
         var data = null; try { data = txt ? JSON.parse(txt) : null; } catch (e) {}
@@ -32,6 +61,7 @@
         return data;
       });
     }, function () {
+      endWait();
       if (timer) clearTimeout(timer);
       var err = new Error('Backend is not reachable'); err.offline = true; err.status = 0; throw err;
     });
@@ -47,7 +77,9 @@
     var isForm = (typeof FormData !== 'undefined') && body instanceof FormData;
     if (!isForm) headers['Content-Type'] = 'application/json';
     if (token()) headers['Authorization'] = 'Bearer ' + token();
+    var endWait = waitStart();
     return fetch(BASE + path, { method: 'POST', headers: headers, body: isForm ? body : JSON.stringify(body) }).then(function (res) {
+      endWait();
       if (!res.ok) {   // mistakes (empty code, too many checks...) come back as normal JSON, before any streaming
         return res.text().then(function (txt) {
           var d = null; try { d = JSON.parse(txt); } catch (e) {}
@@ -77,7 +109,7 @@
         });
       }
       return pump();
-    }, function () { var err = new Error('Backend is not reachable'); err.offline = true; err.status = 0; throw err; });
+    }, function () { endWait(); var err = new Error('Backend is not reachable'); err.offline = true; err.status = 0; throw err; });
   }
 
   function remember(auth) {

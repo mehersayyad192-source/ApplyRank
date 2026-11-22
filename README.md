@@ -1,4 +1,8 @@
-# ApplyRank (frontend)
+# ApplyRank
+
+[![CI](https://github.com)](https://github.com)
+
+**Live Website:** https://mehersayyad192-source.github.io/ApplyRank/
 
 Static HTML, CSS and JavaScript. No build step.
 

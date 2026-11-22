@@ -1,9 +1,9 @@
-/* ApplyRank API client - talks to the Spring Boot backend.
+﻿/* ApplyRank API client - talks to the Spring Boot backend.
    Fail-soft: if the backend is not running, every call rejects with {offline:true} and the pages
    keep working in demo mode from localStorage. */
 (function () {
   // After you deploy the backend (Render), paste its address here. Only this one line needs to change.
-  var LIVE_API = 'https://YOUR-APP-NAME.onrender.com/api';
+  var LIVE_API = 'https://applyrank-backend.onrender.com/api';
   // On my own computer the site talks to localhost; on the internet it talks to LIVE_API.
   var isLocal = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === 'file:';
   var BASE = window.APPLYRANK_API || (isLocal ? 'http://localhost:8080/api' : LIVE_API);

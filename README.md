@@ -34,3 +34,11 @@ How the whole system fits together: see `docs/ARCHITECTURE.md` in the backend re
 - **Monitoring:** `/api/health` (with uptime) watched by an uptime monitor.
 - **Load test:** `loadtest/k6-smoke.js` (k6).
 - **Deploy guide:** `docs/DEPLOY.md`.
+
+## Load Test Results (k6)
+
+Tested live cloud deployment (`20 VUs`, `40s` ramp profile via `loadtest/k6-smoke.js`):
+- **Functional Checks Passed:** 100.00% (126 / 126 checks across `/api/health`, `/api/jobs`, and `/api/auth/login`)
+- **Server Errors (5xx):** 0.00% *(33.33% HTTP 4xx corresponds to the 42 intentional invalid-login test cases)*
+- **Response Latency (2xx endpoints):** `184.18 ms` min | `734.48 ms` median | `1.19 s` avg
+- **Total Requests Handled:** 126 requests (`2.95 req/s`)

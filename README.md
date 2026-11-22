@@ -1,6 +1,6 @@
 # ApplyRank
 
-[![CI](https://github.com)](https://github.com)
+[![CI](https://github.com/mehersayyad192-source/ApplyRank/actions/workflows/ci.yml/badge.svg)](https://github.com/mehersayyad192-source/ApplyRank/actions/workflows/ci.yml)
 
 **Live Website:** https://mehersayyad192-source.github.io/ApplyRank/
 

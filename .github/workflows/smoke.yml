@@ -6,7 +6,7 @@ on:
     inputs:
       url:
         description: 'Backend address, for example https://applyrank-api.onrender.com'
-        required: true
+        required: false
   schedule:
     - cron: '30 3 * * *'
 jobs:

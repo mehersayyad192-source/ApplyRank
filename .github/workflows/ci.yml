@@ -1,4 +1,4 @@
-name: CI
+ name: CI
 on:
   push:
     branches: [main, master]
@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -22,5 +22,14 @@ jobs:
     needs: test
     steps:
       - uses: actions/checkout@v4
-      - name: Build the Docker image
-        run: docker build -t applyrank-backend .
+      - name: Build the Docker image (up to 3 tries)
+        # Maven Central sometimes answers GitHub's servers with "429 Too Many Requests".
+        # That is a temporary download problem, not a bug in the project, so we simply try again.
+        run: |
+          for i in 1 2 3; do
+            docker build -t applyrank-backend . && exit 0
+            echo "Build failed (try $i of 3). Waiting 45 seconds, then trying again..."
+            sleep 45
+          done
+          echo "Docker build failed 3 times"
+          exit 1
